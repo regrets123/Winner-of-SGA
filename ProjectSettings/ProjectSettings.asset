@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 14
-  productGUID: 09827f52c291f484788782cb7fd62dd7
+  productGUID: 737669ed40360ef47b622df2d1985871
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   defaultScreenOrientation: 4
@@ -633,8 +633,8 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: bfe8f2bf-84b5-49ee-876a-36f954fd4655
-  projectName: WINNER OF SGA
+  cloudProjectId: 3a6d8e7c-0636-4467-a75e-cd238fc59000
+  projectName: WINNER OF SGA (1)
   organizationId: lotus-saxe
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
