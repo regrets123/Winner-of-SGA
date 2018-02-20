@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Björn Andersson*/
+
 public class PauseManager : MonoBehaviour
 {
 
