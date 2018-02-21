@@ -4,6 +4,13 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
+public interface IPausable
+{
+
+    void PauseCoroutines();
+
+}
+
 public class PauseManager : MonoBehaviour
 {
 

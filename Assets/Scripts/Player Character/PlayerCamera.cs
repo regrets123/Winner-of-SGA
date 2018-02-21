@@ -2,33 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour {
+/*By Andreas Nilsson*/
 
+public class PlayerCamera : MonoBehaviour
+{
     [SerializeField]
-    float sensitivityX = 5.0f;
+    float sensitivityX, sensitivityY, cameraSmoothing, maximumY, minimumY;
 
-    [SerializeField]
-    float sensitivityY = 5.0f;
-
-    public float minimumY = -30.0f;
-    public float maximumY = 30.0f;
-
-    float rotationY = 0.0f;
-    float rotationX = 0.0f;
-
-    float mouseX = 0.0f;
+    float rotationY, rotationX, mouseX, camDistance;
 
     [SerializeField]
     GameObject camBase, playerChar;
 
-	// Use this for initialization
-	void Start ()
+    [SerializeField]
+    LayerMask camOcclusion;
+
+    Vector3 camOffset;
+
+    private void Start()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        camDistance = Vector3.Distance(transform.position, playerChar.transform.position);
+        camOffset = playerChar.transform.position - transform.position;
+    }
+
+    //Mouse sensitivity setting
+    public void SetCamSensitivityX(char axis, float sensitivity)
+    {
+        if (axis == 'x')
+        {
+            this.sensitivityX = sensitivity;
+        }
+        else
+        {
+            this.sensitivityY = sensitivity;
+        }
+    }
+
+    void LateUpdate()
     {
         CameraMovement();
     }
@@ -40,6 +50,60 @@ public class PlayerCamera : MonoBehaviour {
         rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
         camBase.transform.localEulerAngles = new Vector3(-rotationY, 0f, 0);
-        playerChar.transform.localEulerAngles = new Vector3(0f, -rotationX, 0f);
+        playerChar.transform.localEulerAngles = new Vector3(0f, rotationX, 0f);
+
+        Vector3 targetCamPos = playerChar.transform.localPosition + camOffset;
+
+        RaycastHit wallHit = new RaycastHit();
+        /*
+                if (Physics.Raycast(playerChar.transform.position, transform.position - playerChar.transform.position, out wallHit, camDistance, camOcclusion))
+                {
+                    //transform.localPosition = new Vector3(/*wallHit.point.x + wallHit.normal.x * 0.5ftransform.position.x, transform.position.y, wallHit.point.z + wallHit.normal.z * 0.5f);
+                    //transform.localPosition = Vector3.Lerp(transform.position, playerChar.transform.position, cameraSmoothing);
+                    transform.localPosition = new Vector3(wallHit.point.x + wallHit.normal.x * 0.5f, wallHit.point.y + wallHit.normal.y * 0.5f, wallHit.point.z + wallHit.normal.z * 0.5f);
+
+                }
+                else if (Vector3.Distance(transform.position, playerChar.transform.position) < camDistance)
+                {
+                    transform.localPosition = Vector3.Lerp(transform.position, playerChar.transform.position - camOffset, cameraSmoothing);
+                    //transform.localPosition = Vector3.Lerp(transform.position, playerChar.transform.position - camOffset, cameraSmoothing);
+                }
+                /*
+
+                if (Physics.Linecast(playerChar.transform.position, transform.position, out wallHit, camOcclusion))
+                {
+                    //the x and z coordinates are pushed away from the wall by hit.normal.
+                    //the y coordinate stays the same.
+
+                }
+                else if (Vector3.Distance(transform.position, playerChar.transform.position) < camDistance)
+                {
+                    transform.position.
+                }
+                */
+
+
+
+        /*
+        if (Physics.Linecast(playerChar.transform.position, transform.position, out wallHit, camOcclusion))
+        {
+            transform.position = Vector3.Lerp(transform.position, wallHit.point, cameraSmoothing);
+        }
+        else if (Vector3.Distance(transform.position, playerChar.transform.position) < camDistance)
+        {
+
+        }
+        */
+
+
+
+        if (Physics.Raycast(playerChar.transform.position, transform.position - playerChar.transform.position, out wallHit, camDistance, camOcclusion))
+        {
+            transform.position = Vector3.Lerp(transform.position, wallHit.point, cameraSmoothing);
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, transform.position - playerChar.transform.position, cameraSmoothing);
+        }
     }
 }
