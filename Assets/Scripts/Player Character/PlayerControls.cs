@@ -5,7 +5,7 @@ using UnityEngine;
 /*By Andreas Nilsson*/
 
 
-    //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
+//Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {
     void TakeDamage(int damage);
@@ -40,13 +40,19 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     int health;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int incomingDamage)
     {
+        int damage = ModifyDamage(incomingDamage);
         health -= damage;
         if (health <= 0)
         {
             Death();
         }
+    }
+
+    int ModifyDamage(int damage)
+    {
+        return damage;
     }
 
     public void Kill()
@@ -62,6 +68,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     void Start()
     {
         charController = GetComponent<CharacterController>();
+        this.health = maxHealth;
     }
 
     private void Update()
@@ -81,6 +88,10 @@ public class PlayerControls : MonoBehaviour, IKillable
             }
         }
         PlayerMovement(sprinting);
+        if (Input.GetAxis("Interact") > 0f)
+        {
+            //interagera med vad det nu kan vara
+        }
     }
 
     public void PlayerMovement(bool sprinting)
