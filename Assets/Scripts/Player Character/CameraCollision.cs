@@ -15,7 +15,7 @@ public class CameraCollision : MonoBehaviour
     public float distance;
 
     [SerializeField]
-    LayerMask layersToMask;
+    LayerMask layerToMask;
 
 	// Use this for initialization
 	void Awake ()
@@ -31,7 +31,7 @@ public class CameraCollision : MonoBehaviour
 
         RaycastHit hit;
 
-        if(Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, layersToMask))
+        if(Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, layerToMask))
         {
             distance = Mathf.Clamp((hit.distance * 0.7f), minDistance, maxDistance);
         }
