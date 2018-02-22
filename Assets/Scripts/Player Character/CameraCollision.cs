@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class CameraCollision : MonoBehaviour
 {
 
@@ -11,6 +13,9 @@ public class CameraCollision : MonoBehaviour
     Vector3 dollyDir;
     public Vector3 dollyDirAdjusted;
     public float distance;
+
+    [SerializeField]
+    LayerMask layersToMask;
 
 	// Use this for initialization
 	void Awake ()
@@ -26,7 +31,7 @@ public class CameraCollision : MonoBehaviour
 
         RaycastHit hit;
 
-        if(Physics.Linecast(transform.parent.position, desiredCameraPos, out hit))
+        if(Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, layersToMask))
         {
             distance = Mathf.Clamp((hit.distance * 0.7f), minDistance, maxDistance);
         }
