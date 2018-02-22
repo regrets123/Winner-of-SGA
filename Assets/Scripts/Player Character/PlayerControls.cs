@@ -23,7 +23,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     float gravity = 1.0f;
 
     [SerializeField]
-    int maxHealth;
+    int maxHealth, rotspeed;
 
     [SerializeField]
     float maxStamina;
@@ -31,14 +31,15 @@ public class PlayerControls : MonoBehaviour, IKillable
     [SerializeField]
     float moveSpeed = 5.0f;
 
-    public float h;
-    public float v;
-
     float yVelocity = 0.0f;
 
-    float stamina;
+    float stamina, h, v;
 
     int health;
+
+    private Transform cam;
+
+    private Vector3 camForward;
 
     public void TakeDamage(int incomingDamage)
     {
@@ -68,6 +69,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     void Start()
     {
         charController = GetComponent<CharacterController>();
+        cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
     }
 
@@ -94,16 +96,23 @@ public class PlayerControls : MonoBehaviour, IKillable
         }
     }
 
-    public void PlayerMovement(bool sprinting)
+    void MoveMe()
     {
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(h, 0, v);
-        Vector3 velocity = direction * moveSpeed;
+        Vector3 movement = new Vector3(h, 0, v);
+        Vector3 velocity = movement * moveSpeed;
+        if (velocity != Vector3.zero)
+        {
+            Quaternion newRot = transform.rotation;
+            newRot.y = cam.transform.rotation.y;
+            transform.rotation = newRot;
+        }
 
         if (charController.isGrounded)
         {
+
             if (Input.GetButtonDown("Jump"))
             {
                 yVelocity = jumpSpeed;
@@ -115,8 +124,44 @@ public class PlayerControls : MonoBehaviour, IKillable
         }
 
         velocity.y = yVelocity;
-        velocity = transform.TransformDirection(velocity);
+        //velocity = transform.TransformDirection(velocity);
 
-        charController.Move(velocity * Time.deltaTime);
+        charController.Move(movement * moveSpeed * Time.deltaTime);
+
+
+        //transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+    }
+
+    public void PlayerMovement(bool sprinting)
+    {
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
+
+        camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1).normalized);
+
+        Vector3 move = v * camForward + h * cam.right;
+
+        if (move.magnitude > 0.0000001f)
+        {
+            move.Normalize();
+            move *= moveSpeed;
+            transform.rotation = Quaternion.LookRotation(move);
+        }
+
+
+        charController.Move(move / 8);
+
+        if (charController.isGrounded)
+        {
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                yVelocity = jumpSpeed;
+            }
+        }
+        else
+        {
+            yVelocity -= gravity;
+        }
     }
 }
