@@ -12,6 +12,11 @@ public interface IKillable
     void Kill();
 }
 
+public enum MovementType
+{
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing
+}
+
 public class PlayerControls : MonoBehaviour, IKillable
 {
     CharacterController charController;
@@ -41,6 +46,7 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     private Vector3 camForward;
 
+    //Modifierar skadan efter armor, resistance etc
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
@@ -76,9 +82,9 @@ public class PlayerControls : MonoBehaviour, IKillable
     private void Update()
     {
         bool sprinting = false;
-        if (Input.GetAxis("Sprint") > 0f)
+        if (Input.GetAxis("Sprint") > 0f && stamina > 0f)
         {
-            stamina -= 1;
+            stamina -= 1f;
             sprinting = true;
         }
         else if (stamina < maxStamina)
@@ -94,42 +100,6 @@ public class PlayerControls : MonoBehaviour, IKillable
         {
             //interagera med vad det nu kan vara
         }
-    }
-
-    void MoveMe()
-    {
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(h, 0, v);
-        Vector3 velocity = movement * moveSpeed;
-        if (velocity != Vector3.zero)
-        {
-            Quaternion newRot = transform.rotation;
-            newRot.y = cam.transform.rotation.y;
-            transform.rotation = newRot;
-        }
-
-        if (charController.isGrounded)
-        {
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                yVelocity = jumpSpeed;
-            }
-        }
-        else
-        {
-            yVelocity -= gravity;
-        }
-
-        velocity.y = yVelocity;
-        //velocity = transform.TransformDirection(velocity);
-
-        charController.Move(movement * moveSpeed * Time.deltaTime);
-
-
-        //transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
     }
 
     public void PlayerMovement(bool sprinting)
@@ -148,20 +118,24 @@ public class PlayerControls : MonoBehaviour, IKillable
             transform.rotation = Quaternion.LookRotation(move);
         }
 
-
-        charController.Move(move / 8);
-
         if (charController.isGrounded)
         {
 
             if (Input.GetButtonDown("Jump"))
             {
                 yVelocity = jumpSpeed;
+                print("jumping");
             }
         }
         else
         {
             yVelocity -= gravity;
         }
+
+        move.y += yVelocity;
+
+        charController.Move(move / 8);
+
+
     }
 }
