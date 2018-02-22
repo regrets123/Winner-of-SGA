@@ -46,6 +46,8 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     private Vector3 camForward;
 
+    MovementType currentMovementType;
+
     //Modifierar skadan efter armor, resistance etc
     public void TakeDamage(int incomingDamage)
     {
@@ -77,19 +79,20 @@ public class PlayerControls : MonoBehaviour, IKillable
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
+        currentMovementType = MovementType.Idle;
     }
 
     private void Update()
     {
         bool sprinting = false;
-        if (Input.GetAxis("Sprint") > 0f && stamina > 0f)
+        if (Input.GetAxis("Sprint") > 0f && stamina > 0.2f)
         {
-            stamina -= 1f;
+            stamina -= 0.2f;
             sprinting = true;
         }
         else if (stamina < maxStamina)
         {
-            stamina += 1;
+            stamina += 0.2f;
             if (stamina > maxStamina)
             {
                 stamina = maxStamina;
@@ -113,6 +116,7 @@ public class PlayerControls : MonoBehaviour, IKillable
 
         if (move.magnitude > 0.0000001f)
         {
+            currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
             move.Normalize();
             move *= moveSpeed;
             transform.rotation = Quaternion.LookRotation(move);
