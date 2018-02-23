@@ -79,20 +79,21 @@ public class PlayerControls : MonoBehaviour, IKillable
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
+        this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
     }
 
     private void Update()
     {
         bool sprinting = false;
-        if (Input.GetAxis("Sprint") > 0f && stamina > 0.2f)
+        if (Input.GetAxis("Sprint") > 0f && stamina > 1f)
         {
-            stamina -= 0.2f;
+            stamina -= 1f;
             sprinting = true;
         }
-        else if (stamina < maxStamina)
+        else if (stamina < maxStamina && Input.GetAxis("Sprint") <= 0f)
         {
-            stamina += 0.2f;
+            stamina += 1f;
             if (stamina > maxStamina)
             {
                 stamina = maxStamina;
@@ -117,8 +118,13 @@ public class PlayerControls : MonoBehaviour, IKillable
         if (move.magnitude > 0.0000001f)
         {
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
+            
             move.Normalize();
             move *= moveSpeed;
+            if (sprinting)
+            {
+                move *= 4;
+            }
             transform.rotation = Quaternion.LookRotation(move);
         }
 
@@ -127,8 +133,7 @@ public class PlayerControls : MonoBehaviour, IKillable
 
             if (Input.GetButtonDown("Jump"))
             {
-                yVelocity = jumpSpeed;
-                print("jumping");
+                yVelocity = jumpSpeed; 
             }
         }
         else
