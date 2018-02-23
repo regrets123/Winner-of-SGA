@@ -49,6 +49,8 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     MovementType currentMovementType;
 
+    bool jumpMomentum = false;
+
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
@@ -92,7 +94,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     private void Update()
     {
         bool sprinting = false;
-        if (Input.GetAxis("Sprint") > 0f && stamina > 1f)
+        if (charController.isGrounded && Input.GetAxis("Sprint") > 0f && stamina > 1f)
         {
             stamina -= 1f;
             sprinting = true;
@@ -124,10 +126,10 @@ public class PlayerControls : MonoBehaviour, IKillable
         if (move.magnitude > 0.0000001f)
         {
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
-            
+
             move.Normalize();
             move *= moveSpeed;
-            if (sprinting)
+            if (sprinting || jumpMomentum)
             {
                 move *= 4;
             }
@@ -139,7 +141,11 @@ public class PlayerControls : MonoBehaviour, IKillable
 
             if (Input.GetButtonDown("Jump"))
             {
-                yVelocity = jumpSpeed; 
+                if (sprinting)
+                {
+                    jumpMomentum = true;
+                }
+                yVelocity = jumpSpeed;
             }
         }
         else
@@ -150,7 +156,10 @@ public class PlayerControls : MonoBehaviour, IKillable
         move.y += yVelocity;
 
         charController.Move(move / 8);
-
-
+        if (jumpMomentum && charController.isGrounded)
+        {
+            print("landing");
+            jumpMomentum = false;
+        }
     }
 }

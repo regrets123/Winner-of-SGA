@@ -50,8 +50,7 @@ public class PauseManager : MonoBehaviour
         paused = !paused;
         pauseMenu.SetActive(paused);
         if (aM != null && aM.SoundGroups != null && aM.SoundGroups.Length > 0)
-        {
-            /*
+        {            
             foreach (List<AudioSource> soundGroup in aM.SoundGroups)
             {
                 foreach (AudioSource audio in soundGroup)
@@ -66,7 +65,6 @@ public class PauseManager : MonoBehaviour
                     }
                 }
             }
-            */
         }
         if (paused)
         {
