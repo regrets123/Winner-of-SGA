@@ -30,7 +30,7 @@ public class CameraCollision : MonoBehaviour
         Vector3 desiredCameraPos = transform.parent.TransformPoint(dollyDir * maxDistance);
 
         RaycastHit hit;
-
+        //Raycast checks for objects and camera adjust when objects are hit so it does not clip through terrain
         if(Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, layerToMask))
         {
             distance = Mathf.Clamp((hit.distance * 0.7f), minDistance, maxDistance);
