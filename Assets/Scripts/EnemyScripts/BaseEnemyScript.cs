@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class BaseEnemyScript : MonoBehaviour, IKillable {
+public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
 
     [SerializeField]
     protected float aggroRange;
@@ -17,9 +17,19 @@ public class BaseEnemyScript : MonoBehaviour, IKillable {
 
     protected int health;
 
+    MovementType currentMovement;
+
+    Collider aggroCollider;
+
     protected virtual void Start()
     {
         this.health = maxHealth;
+        this.currentMovement = MovementType.Idle;
+    }
+
+    public void PauseMe()
+    {
+
     }
 
     public void TakeDamage(int incomingDamage)
@@ -34,7 +44,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable {
 
     public void Attack(int attackMove)
     {
-
+        this.currentMovement = MovementType.Attacking;
     }
 
     protected virtual int ModifyDamage(int damage)

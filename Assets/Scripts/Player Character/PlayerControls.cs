@@ -61,7 +61,7 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     public void Attack(int attackMove)
     {
-
+        this.currentMovementType = MovementType.Attacking;
     }
 
     //Modifierar skadan efter armor, resistance etc
