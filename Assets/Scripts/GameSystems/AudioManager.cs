@@ -7,7 +7,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
     [SerializeField]
-    List<AudioSource>[] soundGroups = new List<AudioSource>[2];
+    List<AudioSource>[] soundGroups;
 
     List<AudioSource> environmentalAudio;
     List<AudioSource> soundFX;

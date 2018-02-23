@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*By Andreas Nilsson*/
+/*By Andreas Nilsson & Björn Andersson*/
 
 
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {
+    void Attack(int attackMove);
     void TakeDamage(int damage);
     void Kill();
 }
@@ -48,17 +49,56 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     MovementType currentMovementType;
 
-    //Modifierar skadan efter armor, resistance etc
+
+    [SerializeField]
+    GameObject[] weapons;
+
+    //Which moves are used depending on weapon equipped?
+    public MovementType CurrentMovementType
+    {
+        get { return this.currentMovementType; }
+    }
+
+    BaseWeaponScript currentWeapon;
+
+    [SerializeField]
+    Transform weaponPosition;
+
+    //Which weapon is equipped?
+    BaseWeaponScript CurrentWeapon
+    {
+        get { return this.currentWeapon; }
+    }
+
+    bool jumpMomentum = false;
+
+    //Damage to player
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
         health -= damage;
+        print(health);
         if (health <= 0)
         {
             Death();
         }
     }
 
+    //Code for equipping different weapons
+    public void EquipWeapon(int weaponToEquip)
+    {
+        if (currentWeapon != null)
+            Destroy(currentWeapon.gameObject);
+        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+    }
+
+    //What movetype is used for attack?
+    public void Attack(int attackMove)
+    {
+        this.currentMovementType = MovementType.Attacking;
+    }
+
+    //Modifies damage depending on armor, resistance etc
     int ModifyDamage(int damage)
     {
         return damage;
@@ -79,27 +119,37 @@ public class PlayerControls : MonoBehaviour, IKillable
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
+        this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
+        EquipWeapon(0);
     }
 
     private void Update()
     {
-        bool sprinting = false;
-        if (Input.GetAxis("Sprint") > 0f && stamina > 0.2f)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            stamina -= 0.2f;
+            EquipWeapon(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            EquipWeapon(1);
+        }
+        bool sprinting = false;
+        if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
+        {
+            stamina -= 1f;
             sprinting = true;
         }
-        else if (stamina < maxStamina)
+        else if (stamina < maxStamina && Input.GetButton("Sprint"))
         {
-            stamina += 0.2f;
+            stamina += 1f;
             if (stamina > maxStamina)
             {
                 stamina = maxStamina;
             }
         }
         PlayerMovement(sprinting);
-        if (Input.GetAxis("Interact") > 0f)
+        if (Input.GetButtonDown("Interact"))
         {
             //interagera med vad det nu kan vara
         }
@@ -117,18 +167,27 @@ public class PlayerControls : MonoBehaviour, IKillable
         if (move.magnitude > 0.0000001f)
         {
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
+
             move.Normalize();
             move *= moveSpeed;
+
+            if (sprinting || jumpMomentum)
+            {
+                move *= 4;
+            }
             transform.rotation = Quaternion.LookRotation(move);
         }
 
+        //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-
             if (Input.GetButtonDown("Jump"))
             {
+                if (sprinting)
+                {
+                    jumpMomentum = true;
+                }
                 yVelocity = jumpSpeed;
-                print("jumping");
             }
         }
         else
@@ -139,7 +198,9 @@ public class PlayerControls : MonoBehaviour, IKillable
         move.y += yVelocity;
 
         charController.Move(move / 8);
-
-
+        if (jumpMomentum && charController.isGrounded)
+        {
+            jumpMomentum = false;
+        }
     }
 }

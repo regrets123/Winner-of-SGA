@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//By Andreas Nilsson
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemy;
@@ -9,23 +9,21 @@ public class EnemySpawner : MonoBehaviour
 
     private float repeatRate = 5.0f;
 
-	// Use this for initialization
-	void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
+    //When the player character enters the collider area enemy is spawned in specific location
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            InvokeRepeating("EnemySpawner", 0.5f, repeatRate);
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+
+            Spawner();
+            Destroy(gameObject);
         }
+    }
+
+    //Spawns enemy
+    void Spawner()
+    {
+        Instantiate(enemy, enemyPos.position, enemyPos.rotation);
     }
 }
