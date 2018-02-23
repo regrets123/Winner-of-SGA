@@ -56,24 +56,25 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     GameObject[] weapons;
 
+    //Which moves are used depending on weapon equipped?
     public MovementType CurrentMovementType
     {
         get { return this.currentMovementType; }
     }
-
 
     BaseWeaponScript currentWeapon;
 
     [SerializeField]
     Transform weaponPosition;
 
+    //Which weapon is equipped?
     BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
     }
 
     bool jumpMomentum = false;
-
+    
 
     void Start()
     {
@@ -120,6 +121,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
         }
     }
+    //Damage to player
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
@@ -136,7 +138,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inputEnabled = !pausing;
     }
 
-
+    
+    //Code for equipping different weapons
     public void EquipWeapon(int weaponToEquip)
     {
         if (currentWeapon != null)
@@ -144,12 +147,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
+    //What movetype is used for attack?
     public void Attack(int attackMove)
     {
         this.currentMovementType = MovementType.Attacking;
     }
 
-    //Modifierar skadan efter armor, resistance etc
+    //Modifies damage depending on armor, resistance etc
     int ModifyDamage(int damage)
     {
         return damage;
@@ -180,6 +184,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             move.Normalize();
             move *= moveSpeed;
+
             if (sprinting || jumpMomentum)
             {
                 move *= 4;
@@ -187,9 +192,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             transform.rotation = Quaternion.LookRotation(move);
         }
 
+        //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-
             if (Input.GetButtonDown("Jump"))
             {
                 if (sprinting)
