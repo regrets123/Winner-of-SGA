@@ -36,6 +36,7 @@ public class CameraFollow : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        //Get buttons for cameramovement from character controller
         float inputX = Input.GetAxis("RightStickHorizontal");
         float inputZ = Input.GetAxis("RightStickVertical");
         mouseX = Input.GetAxis("Mouse X");
@@ -59,6 +60,7 @@ public class CameraFollow : MonoBehaviour
         CameraUpdater();
     }
 
+    //Lets the camera follow a specific object, in this case and empty object attached to the character
     void CameraUpdater()
     {
         Transform target = cameraFollowObj.transform;
