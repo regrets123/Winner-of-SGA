@@ -13,8 +13,8 @@ public class BaseTrapScript : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            Destroy(gameObject, 1);
             Instantiate(trapObj, trapObjPos.position, trapObjPos.rotation);
+            Destroy(gameObject);
         }
     }
 }
