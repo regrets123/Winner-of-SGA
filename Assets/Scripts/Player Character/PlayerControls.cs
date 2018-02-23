@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*By Andreas Nilsson*/
+/*By Andreas Nilsson & Björn Andersson*/
 
 
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt

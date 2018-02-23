@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*By Björn Andersson*/
+/*By Björn Andersson & Andreas Nilsson*/
 
 public enum DamageType
 {
