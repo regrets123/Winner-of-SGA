@@ -8,6 +8,7 @@ using UnityEngine;
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {
+    void Attack(int attackMove);
     void TakeDamage(int damage);
     void Kill();
 }
@@ -48,7 +49,6 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     MovementType currentMovementType;
 
-    //Modifierar skadan efter armor, resistance etc
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
@@ -59,6 +59,12 @@ public class PlayerControls : MonoBehaviour, IKillable
         }
     }
 
+    public void Attack(int attackMove)
+    {
+
+    }
+
+    //Modifierar skadan efter armor, resistance etc
     int ModifyDamage(int damage)
     {
         return damage;

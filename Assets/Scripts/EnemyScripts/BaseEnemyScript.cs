@@ -32,6 +32,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable {
         }
     }
 
+    public void Attack(int attackMove)
+    {
+
+    }
+
     protected virtual int ModifyDamage(int damage)
     {
         return damage;

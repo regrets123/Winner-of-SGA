@@ -20,6 +20,11 @@ public class BaseWeaponScript : MonoBehaviour {
     [SerializeField]
     protected DamageType damageType;
 
+    [SerializeField]
+    float attackSpeed;
+
+    public Animation[] attackMoves;
+
     public virtual void DealDamage(IKillable target)
     {
         target.TakeDamage(damage);
