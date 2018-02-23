@@ -39,7 +39,6 @@ public class PauseManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            print("pausing");
             PauseAndUnpause();
         }
     }

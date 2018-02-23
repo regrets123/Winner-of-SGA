@@ -9,9 +9,14 @@ public enum DamageType
     Physical, Magical
 }
 
+public enum AttackMoves
+{
+    QuickAttack, StrongAttack, Sideswipe, PiercingAttack
+}
+
+
 public class BaseWeaponScript : MonoBehaviour
 {
-
     [SerializeField]
     protected int damage;
 
@@ -27,6 +32,16 @@ public class BaseWeaponScript : MonoBehaviour
     [SerializeField]
     protected IKillable targetToHit;
 
+    [SerializeField]
+    AttackMoves[] attacks;
+
+    public AttackMoves[] Attacks
+    {
+        get { return this.attacks; }
+    }
+
+    public Animation[] attackMoves;
+
     IKillable equipper;
 
     public IKillable Equipper
@@ -34,7 +49,6 @@ public class BaseWeaponScript : MonoBehaviour
         set { if (this.equipper == null) this.equipper = value; }
     }
 
-    public Animation[] attackMoves;
 
     public virtual void DealDamage(IKillable target)
     {

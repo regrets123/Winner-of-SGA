@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23010172814173890}
   - component: {fileID: 114176899763853360}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: TestWeapon1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,8 +55,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1179896501559386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -1.392, z: 0.072}
-  m_LocalScale: {x: 0.19533047, y: 1.4318817, z: 0.18827954}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4897044907878284}
   m_Father: {fileID: 0}
@@ -197,4 +197,5 @@ MonoBehaviour:
   damageType: 0
   attackSpeed: 1
   repeatRate: 1
+  attacks: 
   attackMoves: []

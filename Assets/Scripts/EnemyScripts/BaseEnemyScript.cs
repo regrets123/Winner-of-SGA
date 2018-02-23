@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 /*By Björn Andersson*/
 
@@ -8,7 +9,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange;
+    protected float aggroRange, attackRange;
 
     [SerializeField]
     protected int maxHealth, strength;
@@ -16,31 +17,61 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     protected string unitName;
 
+    [SerializeField]
+    protected GameObject aggroCenter;
+
+    [SerializeField]
+    BaseWeaponScript weapon;
+
     protected int health;
 
-    MovementType currentMovementType;
+    protected MovementType currentMovementType;
 
     public MovementType CurrentMovementType
     {
         get { return this.currentMovementType; }
     }
-    
-    Collider aggroCollider;
 
-    PauseManager pM;
+    protected Collider aggroCollider;
 
-    PlayerControls target;
+    protected PauseManager pM;
+
+    protected PlayerControls target;
+
+    protected SphereCollider aggroBubble;
+
+    protected NavMeshAgent nav;
 
     protected virtual void Start()
     {
+        this.nav = GetComponent<NavMeshAgent>();
         this.health = maxHealth;
         this.currentMovementType = MovementType.Idle;
         this.pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
+        aggroBubble = aggroCenter.AddComponent<SphereCollider>();
+        aggroBubble.isTrigger = true;
+        aggroBubble.radius = aggroRange;
+    }
+
+    protected void Update()
+    {
+        if (target != null)
+        {
+            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange)
+            {
+                Attack(Random.Range(0, weapon.Attacks.Length - 1));
+            }
+            else
+            {
+                nav.SetDestination(target.transform.position);
+            }
+        }
     }
 
     public void PauseMe(bool pausing)
     {
+        nav.isStopped = !nav.isStopped;
         if (pausing)
         {
 
@@ -51,11 +82,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
-
             Aggro(other.gameObject.GetComponent<PlayerControls>());
         }
     }
@@ -94,6 +124,5 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected virtual void Aggro(PlayerControls newTarget)
     {
         this.target = newTarget;
-
     }
 }

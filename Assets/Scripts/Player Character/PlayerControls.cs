@@ -18,7 +18,7 @@ public enum MovementType
     Idle, Walking, Sprinting, Attacking, Dodging, Dashing
 }
 
-public class PlayerControls : MonoBehaviour, IKillable
+public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     CharacterController charController;
 
@@ -47,8 +47,11 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     private Vector3 camForward;
 
+    bool inputEnabled = true;
+
     MovementType currentMovementType;
 
+    PauseManager pM;
 
     [SerializeField]
     GameObject[] weapons;
@@ -71,6 +74,52 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     bool jumpMomentum = false;
 
+
+    void Start()
+    {
+        charController = GetComponent<CharacterController>();
+        cam = FindObjectOfType<Camera>().transform;
+        this.health = maxHealth;
+        this.stamina = maxStamina;
+        currentMovementType = MovementType.Idle;
+        EquipWeapon(0);
+        pM = FindObjectOfType<PauseManager>();
+        pM.Pausables.Add(this);
+    }
+
+    private void Update()
+    {
+        if (inputEnabled)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                EquipWeapon(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                EquipWeapon(1);
+            }
+            bool sprinting = false;
+            if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
+            {
+                stamina -= 1f;
+                sprinting = true;
+            }
+            else if (stamina < maxStamina && Input.GetButton("Sprint"))
+            {
+                stamina += 1f;
+                if (stamina > maxStamina)
+                {
+                    stamina = maxStamina;
+                }
+            }
+            PlayerMovement(sprinting);
+            if (Input.GetButtonDown("Interact"))
+            {
+                //interagera med vad det nu kan vara
+            }
+        }
+    }
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
@@ -80,6 +129,11 @@ public class PlayerControls : MonoBehaviour, IKillable
         {
             Death();
         }
+    }
+
+    public void PauseMe(bool pausing)
+    {
+        inputEnabled = !pausing;
     }
 
 
@@ -109,47 +163,6 @@ public class PlayerControls : MonoBehaviour, IKillable
     void Death()
     {
         //death animation och reload last saved state
-    }
-
-    void Start()
-    {
-        charController = GetComponent<CharacterController>();
-        cam = FindObjectOfType<Camera>().transform;
-        this.health = maxHealth;
-        this.stamina = maxStamina;
-        currentMovementType = MovementType.Idle;
-        EquipWeapon(0);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            EquipWeapon(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            EquipWeapon(1);
-        }
-        bool sprinting = false;
-        if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
-        {
-            stamina -= 1f;
-            sprinting = true;
-        }
-        else if (stamina < maxStamina && Input.GetButton("Sprint"))
-        {
-            stamina += 1f;
-            if (stamina > maxStamina)
-            {
-                stamina = maxStamina;
-            }
-        }
-        PlayerMovement(sprinting);
-        if (Input.GetButtonDown("Interact"))
-        {
-            //interagera med vad det nu kan vara
-        }
     }
 
     public void PlayerMovement(bool sprinting)
