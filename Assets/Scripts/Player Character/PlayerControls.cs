@@ -40,7 +40,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     float yVelocity = 0.0f;
 
     float stamina, h, v;
-    
+
     int health;
 
     private Transform cam;
@@ -48,6 +48,26 @@ public class PlayerControls : MonoBehaviour, IKillable
     private Vector3 camForward;
 
     MovementType currentMovementType;
+
+
+    [SerializeField]
+    GameObject[] weapons;
+
+    public MovementType CurrentMovementType
+    {
+        get { return this.currentMovementType; }
+    }
+
+
+    BaseWeaponScript currentWeapon;
+
+    [SerializeField]
+    Transform weaponPosition;
+
+    BaseWeaponScript CurrentWeapon
+    {
+        get { return this.currentWeapon; }
+    }
 
     bool jumpMomentum = false;
 
@@ -60,6 +80,14 @@ public class PlayerControls : MonoBehaviour, IKillable
         {
             Death();
         }
+    }
+
+
+    public void EquipWeapon(int weaponToEquip)
+    {
+        if (currentWeapon != null)
+            Destroy(currentWeapon.gameObject);
+        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
     public void Attack(int attackMove)
@@ -90,17 +118,26 @@ public class PlayerControls : MonoBehaviour, IKillable
         this.health = maxHealth;
         this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
+        EquipWeapon(0);
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            EquipWeapon(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            EquipWeapon(1);
+        }
         bool sprinting = false;
-        if (charController.isGrounded && Input.GetAxis("Sprint") > 0f && stamina > 1f)
+        if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
         {
             stamina -= 1f;
             sprinting = true;
         }
-        else if (stamina < maxStamina && Input.GetAxis("Sprint") <= 0f)
+        else if (stamina < maxStamina && Input.GetButton("Sprint"))
         {
             stamina += 1f;
             if (stamina > maxStamina)
@@ -109,7 +146,7 @@ public class PlayerControls : MonoBehaviour, IKillable
             }
         }
         PlayerMovement(sprinting);
-        if (Input.GetAxis("Interact") > 0f)
+        if (Input.GetButtonDown("Interact"))
         {
             //interagera med vad det nu kan vara
         }
@@ -159,7 +196,6 @@ public class PlayerControls : MonoBehaviour, IKillable
         charController.Move(move / 8);
         if (jumpMomentum && charController.isGrounded)
         {
-            print("landing");
             jumpMomentum = false;
         }
     }

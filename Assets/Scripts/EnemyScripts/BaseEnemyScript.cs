@@ -4,7 +4,8 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
+public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
+{
 
     [SerializeField]
     protected float aggroRange;
@@ -17,23 +18,46 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
 
     protected int health;
 
-    MovementType currentMovement;
+    MovementType currentMovementType;
 
+    public MovementType CurrentMovementType
+    {
+        get { return this.currentMovementType; }
+    }
+    
     Collider aggroCollider;
 
     PauseManager pM;
 
+    PlayerControls target;
+
     protected virtual void Start()
     {
         this.health = maxHealth;
-        this.currentMovement = MovementType.Idle;
+        this.currentMovementType = MovementType.Idle;
         this.pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
     }
 
     public void PauseMe(bool pausing)
     {
+        if (pausing)
+        {
 
+        }
+        else
+        {
+
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+
+            Aggro(other.gameObject.GetComponent<PlayerControls>());
+        }
     }
 
     public void TakeDamage(int incomingDamage)
@@ -48,7 +72,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
 
     public void Attack(int attackMove)
     {
-        this.currentMovement = MovementType.Attacking;
+        this.currentMovementType = MovementType.Attacking;
     }
 
     protected virtual int ModifyDamage(int damage)
@@ -67,8 +91,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
         Death();
     }
 
-    protected virtual void Aggro()
+    protected virtual void Aggro(PlayerControls newTarget)
     {
+        this.target = newTarget;
 
     }
 }
