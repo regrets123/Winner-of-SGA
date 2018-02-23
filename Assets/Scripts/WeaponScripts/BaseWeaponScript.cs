@@ -21,12 +21,35 @@ public class BaseWeaponScript : MonoBehaviour {
     protected DamageType damageType;
 
     [SerializeField]
-    float attackSpeed;
+    float attackSpeed, repeatRate = 1.0f;
+
+    [SerializeField]
+    protected IKillable targetToHit;
 
     public Animation[] attackMoves;
 
     public virtual void DealDamage(IKillable target)
     {
         target.TakeDamage(damage);
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        //targetToHit = other.gameObject.GetComponent<IKillable>();
+
+        Debug.Log("Collider triggered");
+
+        if (other.gameObject.GetComponent<IKillable>() != null)
+        {
+            //if(other.gameObject.tag == "Enemy")
+            //{
+            Debug.Log("You hit the target!");
+
+            //InvokeRepeating("BaseWeaponScript", 0.5f, repeatRate);
+            //gameObject.GetComponent<BoxCollider>().enabled = false;
+
+            DealDamage(other.gameObject.GetComponent<IKillable>());
+
+        }
     }
 }

@@ -40,7 +40,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     float yVelocity = 0.0f;
 
     float stamina, h, v;
-
+    
     int health;
 
     private Transform cam;
@@ -55,6 +55,7 @@ public class PlayerControls : MonoBehaviour, IKillable
     {
         int damage = ModifyDamage(incomingDamage);
         health -= damage;
+        print(health);
         if (health <= 0)
         {
             Death();

@@ -59,6 +59,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
     protected virtual void Death()
     {
         //play death animation, destroy
+        Destroy(gameObject);
     }
 
     public void Kill()
