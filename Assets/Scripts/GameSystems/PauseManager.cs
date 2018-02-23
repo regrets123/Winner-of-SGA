@@ -7,7 +7,7 @@ using UnityEngine;
 public interface IPausable
 {
 
-    void PauseMe();
+    void PauseMe(bool pausing);
 
 }
 
@@ -20,6 +20,13 @@ public class PauseManager : MonoBehaviour
     AudioManager aM;
 
     bool paused = false;
+
+    static List<IPausable> pausables = new List<IPausable>();
+
+    public List<IPausable> Pausables
+    {
+        get { return pausables; }
+    }
 
     private void Start()
     {
@@ -63,10 +70,6 @@ public class PauseManager : MonoBehaviour
         }
         if (paused)
         {
-            /*foreach(IPausable pauseMe in FindObjectsOfType<IPausable>())
-            {
-
-            }*/
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0f;
         }
@@ -74,6 +77,10 @@ public class PauseManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1f;
+        }
+        foreach (IPausable pauseMe in pausables)
+        {
+            pauseMe.PauseMe(paused);
         }
     }
 }

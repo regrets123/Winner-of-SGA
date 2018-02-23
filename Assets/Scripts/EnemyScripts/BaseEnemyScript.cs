@@ -21,13 +21,17 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable {
 
     Collider aggroCollider;
 
+    PauseManager pM;
+
     protected virtual void Start()
     {
         this.health = maxHealth;
         this.currentMovement = MovementType.Idle;
+        this.pM = FindObjectOfType<PauseManager>();
+        pM.Pausables.Add(this);
     }
 
-    public void PauseMe()
+    public void PauseMe(bool pausing)
     {
 
     }
