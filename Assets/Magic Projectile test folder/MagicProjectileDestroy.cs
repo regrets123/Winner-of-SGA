@@ -12,7 +12,7 @@ public class MagicProjectileDestroy : MonoBehaviour
 
     void Start()
     {
-        Destroy(transform.parent.gameObject, 10);
+        Destroy(transform.parent.gameObject, 8);
     }
 
     public virtual void DealDamage(IKillable target)
