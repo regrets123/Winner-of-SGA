@@ -37,7 +37,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     float moveSpeed = 5.0f;
 
-    float yVelocity = 0.0f;
+    public float yVelocity = 0.0f;
 
     float stamina, h, v;
 
@@ -55,6 +55,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     GameObject[] weapons;
+
+    
 
     //Which moves are used depending on weapon equipped?
     public MovementType CurrentMovementType
@@ -74,7 +76,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     bool jumpMomentum = false;
-    
+
+    public float YVelocity
+    {
+        get { return yVelocity; }
+        set { yVelocity = YVelocity; }
+    }
 
     void Start()
     {
@@ -114,7 +121,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     stamina = maxStamina;
                 }
             }
+
             PlayerMovement(sprinting);
+
             if (Input.GetButtonDown("Interact"))
             {
                 //interagera med vad det nu kan vara

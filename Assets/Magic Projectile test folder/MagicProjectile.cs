@@ -14,7 +14,7 @@ public class MagicProjectile : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire2"))
             {
             //instantiate a magic projectile
             GameObject magicProjectile = Instantiate(magicProjectilePrefab, transform.position, transform.rotation);

@@ -10,6 +10,8 @@ public class MagicForceJump : MonoBehaviour
     public GameObject playerPrefab;
     [SerializeField]
     public GameObject spawnPos;
+    [SerializeField]
+    float magicJumpSpeed;
 
     //A currently public float, 
     //so you can adjust the speed as necessary.
@@ -17,16 +19,18 @@ public class MagicForceJump : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (playerPrefab.GetComponent<CharacterController>().isGrounded)
         {
-            playerPrefab.GetComponent<Rigidbody>().AddForce(playerPrefab.transform.up * speed, ForceMode.Impulse);
+            if (Input.GetButtonDown("Fire2"))
+            {
+                //instantiate a magic jump circle
+                GameObject magicJump = Instantiate(magicJumpPrefab, spawnPos.transform.position, spawnPos.transform.rotation);
 
-            //instantiate a magic jump circle
-            GameObject magicJump = Instantiate(magicJumpPrefab, spawnPos.transform.position, spawnPos.transform.rotation);
+                //Add a force to the player going up form your current position.
+                playerPrefab.GetComponent<PlayerControls>().yVelocity = magicJumpSpeed;
 
-            //Add a force to the player going up form your current position.
-
-            Destroy(magicJump, 1.5f);
+                Destroy(magicJump, 1.5f);
+            }
         }
     }
 }

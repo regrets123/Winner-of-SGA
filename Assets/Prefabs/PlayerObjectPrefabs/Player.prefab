@@ -487,13 +487,13 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1509162310700322}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 0.2
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!65 &65427830020613308
 BoxCollider:
@@ -535,6 +535,7 @@ MonoBehaviour:
   damageType: 0
   attackSpeed: 1
   repeatRate: 1
+  attacks: 
   attackMoves: []
 --- !u!114 &114095563715678176
 MonoBehaviour:
@@ -553,6 +554,9 @@ MonoBehaviour:
   rotspeed: 3
   maxStamina: 10
   moveSpeed: 0.8
+  yVelocity: 0
+  weapons: []
+  weaponPosition: {fileID: 0}
 --- !u!135 &135089108878513768
 SphereCollider:
   m_ObjectHideFlags: 1
