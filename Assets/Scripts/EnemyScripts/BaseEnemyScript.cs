@@ -21,7 +21,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected GameObject aggroCenter;
 
     [SerializeField]
-    BaseWeaponScript weapon;
+    protected BaseWeaponScript weapon;
 
     protected int health;
 

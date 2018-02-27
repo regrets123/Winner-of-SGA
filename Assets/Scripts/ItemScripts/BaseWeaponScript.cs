@@ -27,13 +27,13 @@ public class BaseWeaponScript : BaseEquippableScript
     protected DamageType damageType;
 
     [SerializeField]
-    float attackSpeed, repeatRate = 1.0f;
+    protected float attackSpeed, repeatRate = 1.0f;
 
     [SerializeField]
     protected IKillable targetToHit;
 
     [SerializeField]
-    AttackMoves[] attacks;
+    protected AttackMoves[] attacks;
 
     public AttackMoves[] Attacks
     {
@@ -42,7 +42,7 @@ public class BaseWeaponScript : BaseEquippableScript
 
     public Animation[] attackMoves;
 
-    IKillable equipper;
+    protected IKillable equipper;
 
     //Script for switching between weapons
     public IKillable Equipper

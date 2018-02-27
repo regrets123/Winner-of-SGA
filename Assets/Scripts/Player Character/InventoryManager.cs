@@ -102,15 +102,15 @@ public class InventoryManager : MonoBehaviour
 
 
     //Lägger till nya föremål i spelarens inventory
-    public void AddEquippable(BaseEquippableScript equippable)
+    public void NewEquippable(BaseEquippableScript equippable)
     {
         if (equippable is BaseWeaponScript)
         {
-            inventory[0].Add(equippable);
+            AddEquippable(equippable, 0);
         }
         else if (equippable is BaseAbilityScript)
         {
-            inventory[1].Add(equippable);
+            AddEquippable(equippable, 1);
         }
         else
         {
@@ -119,4 +119,10 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    //Lägger till equippablen i rätt collection och dess sprite på inventorymenyn
+    void AddEquippable(BaseEquippableScript equippable, int collection)
+    {
+        inventory[collection].Add(equippable);
+        //
+    }
 }
