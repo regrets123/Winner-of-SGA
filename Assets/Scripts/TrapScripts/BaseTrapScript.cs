@@ -5,9 +5,10 @@ using UnityEngine;
 /*By Andreas Nilsson*/
 
 public class BaseTrapScript : MonoBehaviour {
-
-    public GameObject trapObj;
-    public Transform trapObjPos;
+    [SerializeField]
+    GameObject trapObj;
+    [SerializeField]
+    Transform trapObjPos;
 
     //Trigger when player character enter specific collider area
     void OnTriggerEnter(Collider other)

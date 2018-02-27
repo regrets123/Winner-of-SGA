@@ -6,26 +6,26 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour, IPausable
 {
+    [SerializeField]
+    float cameraMoveSpeed, clampAngle, inputSensitivity, smoothX, smoothY;
 
-    public float cameraMoveSpeed = 120.0f;
-    public GameObject cameraFollowObj;
-    Vector3 followPOS;
-    public float clampAngle = 60.0f;
-    public float inputSensitivity = 150.0f;
-    public GameObject cameraObj;
-    public GameObject playerObj;
-    public float camDistanceXToPlayer;
-    public float camDistanceYToPlayer;
-    public float camDistanceZToPlayer;
-    public float mouseX;
-    public float mouseY;
-    public float finalInputX;
-    public float finalInputZ;
-    public float smoothX;
-    public float smoothY;
-    public float rotX = 0.0f;
-    public float rotY = 0.0f;
+    [SerializeField]
+    GameObject cameraFollowObj, cameraObj, playerObj;
+
     PauseManager pM;
+
+    Vector3 followPOS;
+
+    float camDistanceXToPlayer;
+    float camDistanceYToPlayer;
+    float camDistanceZToPlayer;
+    float mouseX;
+    float mouseY;
+    float finalInputX;
+    float finalInputZ;
+    float rotX = 0.0f;
+    float rotY = 0.0f;
+
     bool paused = false;
 
     // Use this for initialization
@@ -59,6 +59,7 @@ public class CameraFollow : MonoBehaviour, IPausable
             rotY += finalInputX * inputSensitivity * Time.deltaTime;
             rotX += finalInputZ * inputSensitivity * Time.deltaTime;
 
+            //clamps the x rotation so camera isn't able to spin around under the character
             rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
 
             Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
@@ -75,6 +76,7 @@ public class CameraFollow : MonoBehaviour, IPausable
     //Lets the camera follow a specific object, in this case and empty object attached to the character
     void CameraUpdater()
     {
+        //Object for camera to follow, in this case the player character
         Transform target = cameraFollowObj.transform;
 
         float step = cameraMoveSpeed * Time.deltaTime;
