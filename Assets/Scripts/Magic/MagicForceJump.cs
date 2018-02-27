@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagicForceJump : MonoBehaviour
+public class MagicForceJump : BaseAbilityScript
 {
     [SerializeField]
     public GameObject magicJumpPrefab;

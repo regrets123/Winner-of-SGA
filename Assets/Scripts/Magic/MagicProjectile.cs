@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagicProjectile : MonoBehaviour
+public class MagicProjectile : BaseAbilityScript
 {
 
     public GameObject magicProjectilePrefab;

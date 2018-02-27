@@ -82,6 +82,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+
+    //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -90,6 +92,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+
+    //
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
