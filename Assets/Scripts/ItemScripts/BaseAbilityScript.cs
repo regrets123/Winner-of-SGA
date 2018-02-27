@@ -5,7 +5,11 @@ using UnityEngine;
 /*By Björn Andersson*/
 
 public class BaseAbilityScript : BaseEquippableObject {
-    
+
+
+    [SerializeField]
+    protected float staminaCost;
+
     public virtual void UseAbility()
     {
 
@@ -13,7 +17,10 @@ public class BaseAbilityScript : BaseEquippableObject {
 
     protected virtual void Update()
     {
-        if (Input.GetButtonDown("Ability"))
+        if ((player.CurrentMovementType == MovementType.Idle
+            || player.CurrentMovementType == MovementType.Sprinting //Låter spelaren använda abilities när den inte attackerar, dodgar eller liknande
+            || player.CurrentMovementType == MovementType.Walking)
+            && Input.GetButtonDown("Ability"))
         {
             UseAbility();
         }
@@ -21,6 +28,7 @@ public class BaseAbilityScript : BaseEquippableObject {
 
     public override void Equip()
     {
+        base.Equip();
         player.CurrentAbility = this;
     }
 

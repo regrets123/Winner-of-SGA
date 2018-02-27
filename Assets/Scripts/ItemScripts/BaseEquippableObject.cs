@@ -14,14 +14,17 @@ public class BaseEquippableObject : MonoBehaviour {
 
     protected PlayerControls player;
 
+    protected bool equipped = false;
+
     public Sprite InventoryIcon
     {
         get { return this.inventoryIcon; }
     }
 
+    //Equippar ett föremål
     public virtual void Equip()
     {
-
+        this.equipped = true;
     }
 
     protected void Start()
@@ -29,4 +32,9 @@ public class BaseEquippableObject : MonoBehaviour {
         this.player = FindObjectOfType<PlayerControls>();
     }
 
+    //Unequippar ett föremål
+    public void UnEquip()
+    {
+        this.equipped = false;
+    }
 }

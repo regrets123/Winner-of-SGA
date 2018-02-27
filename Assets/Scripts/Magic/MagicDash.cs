@@ -7,9 +7,14 @@ using UnityEngine;
 public class MagicDash : BaseAbilityScript
 {
     MovementType previousMovementType;
+
     public override void UseAbility()
     {
-        StartCoroutine("Dash");
+        if (player.Stamina >= staminaCost)
+        {
+            StartCoroutine("Dash");
+            player.Stamina -= staminaCost;
+        }
     }
 
     //Enumerator smooths out the dash so it doesn't happen instantaneously

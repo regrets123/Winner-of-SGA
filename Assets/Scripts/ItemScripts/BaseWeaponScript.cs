@@ -53,6 +53,7 @@ public class BaseWeaponScript : BaseEquippableObject
 
     public override void Equip()
     {
+        base.Equip();
         player.CurrentWeapon = this;
     }
 

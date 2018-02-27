@@ -65,12 +65,7 @@ public class PauseManager : MonoBehaviour
                 pauseMe.PauseMe(paused);
         }
     }
-
-    public void SaveGame()
-    {
-
-    }
-
+    
     public void QuitToMenu()
     {
 
@@ -79,5 +74,15 @@ public class PauseManager : MonoBehaviour
     public void QuitGame()
     {
 
+    }
+
+    public void ViewOptions()
+    {
+
+    }
+
+    public void ToggleMenu(GameObject menu)
+    {
+        menu.SetActive(!menu.activeSelf);
     }
 }

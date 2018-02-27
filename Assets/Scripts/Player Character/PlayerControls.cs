@@ -15,7 +15,7 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
@@ -57,6 +57,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     InventoryManager inventory;
 
     InputManager iM;
+
+    public float Stamina
+    {
+        get { return this.stamina; }
+        set { this.stamina = value; }
+    }
     
     //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
