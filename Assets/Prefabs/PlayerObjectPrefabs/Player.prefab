@@ -487,13 +487,13 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1509162310700322}
   serializedVersion: 2
-  m_Mass: 0.2
+  m_Mass: 0.0000001
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &65427830020613308
 BoxCollider:
@@ -530,6 +530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a01e09829485654d957431f032ac8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryIcon: {fileID: 0}
   damage: 5
   weaponName: 
   damageType: 0
@@ -548,15 +549,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee44ae33297a6704eb37b5498ea50e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 4
-  gravity: 0.3
-  maxHealth: 100
-  rotspeed: 3
+  jumpSpeed: 2
+  gravity: 0.5
   maxStamina: 10
   moveSpeed: 0.8
-  yVelocity: 0
+  maxHealth: 100
+  rotspeed: 3
   weapons: []
   weaponPosition: {fileID: 0}
+  yVelocity: 0
 --- !u!135 &135089108878513768
 SphereCollider:
   m_ObjectHideFlags: 1

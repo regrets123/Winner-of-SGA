@@ -132,6 +132,9 @@ MonoBehaviour:
   smooth: 10
   dollyDirAdjusted: {x: 0, y: 0, z: 0}
   distance: 0
+  layerToMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &114951520643432290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,22 +147,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMoveSpeed: 120
-  cameraFollowObj: {fileID: 0}
   clampAngle: 60
   inputSensitivity: 150
-  cameraObj: {fileID: 0}
-  playerObj: {fileID: 0}
-  camDistanceXToPlayer: 0
-  camDistanceYToPlayer: 0
-  camDistanceZToPlayer: 0
-  mouseX: 0
-  mouseY: 0
-  finalInputX: 0
-  finalInputZ: 0
   smoothX: 0
   smoothY: 0
-  rotX: 0
-  rotY: 0
+  cameraFollowObj: {fileID: 1915198808848154, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
+    type: 2}
+  cameraObj: {fileID: 1732705421200960}
+  playerObj: {fileID: 1509162310700322, guid: 62d1bc2f50fb3054bbfed3bd4be46262, type: 2}
 --- !u!124 &124450230847382950
 Behaviour:
   m_ObjectHideFlags: 1

@@ -6,23 +6,18 @@ using UnityEngine;
 
 public class MagicDash : BaseAbilityScript
 {
-    //Vector3 dashVelocity;
-    //Vector3 move;
-
-    //bool dashing = false;
-
     MovementType previousMovementType;
-
     public override void UseAbility()
     {
         StartCoroutine("Dash");
     }
 
+    //Enumerator smooths out the dash so it doesn't happen instantaneously
     IEnumerator Dash()
     {
         previousMovementType = player.CurrentMovementType;
         player.CurrentMovementType = MovementType.Dashing;
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.3f);
         player.CurrentMovementType = previousMovementType;
     }
 }

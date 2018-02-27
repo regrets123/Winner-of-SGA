@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6279f0dfc8b7b4f8ad8356cf7dc8ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryIcon: {fileID: 0}
   magicJumpPrefab: {fileID: 1595970825089016, guid: ec92052cbd4ec284ca00e5bfa4159a63,
     type: 2}
   playerPrefab: {fileID: 1509162310700322, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
