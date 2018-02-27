@@ -19,9 +19,13 @@ public class PauseManager : MonoBehaviour
 
     AudioManager aM;
 
+    InputManager iM;
+
     bool paused = false;
 
     static List<IPausable> pausables = new List<IPausable>();
+
+    InputMode previousInputMode = InputMode.None;
 
     public List<IPausable> Pausables
     {
@@ -31,8 +35,7 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
         aM = GetComponent<AudioManager>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        iM = GetComponent<InputManager>();
     }
 
     private void Update()
@@ -45,11 +48,19 @@ public class PauseManager : MonoBehaviour
 
     public void PauseAndUnpause()
     {
-        Cursor.visible = !Cursor.visible;
         paused = !paused;
+        if (paused)
+        {
+            previousInputMode = iM.CurrentInputMode;
+            iM.SetInputMode(InputMode.Paused);
+        }
+        else
+        {
+            iM.SetInputMode(previousInputMode);
+        }
         pauseMenu.SetActive(paused);
         if (aM != null && aM.SoundGroups != null && aM.SoundGroups.Length > 0)
-        {            
+        {
             foreach (List<AudioSource> soundGroup in aM.SoundGroups)
             {
                 foreach (AudioSource audio in soundGroup)
@@ -65,19 +76,10 @@ public class PauseManager : MonoBehaviour
                 }
             }
         }
-        if (paused)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1f;
-        }
         foreach (IPausable pauseMe in pausables)
         {
-            pauseMe.PauseMe(paused);
+            if (pauseMe != null)
+                pauseMe.PauseMe(paused);
         }
     }
 }

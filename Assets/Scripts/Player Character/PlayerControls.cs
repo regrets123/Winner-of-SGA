@@ -53,9 +53,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     PauseManager pM;
 
+    InventoryManager inventory = new InventoryManager();
+
+    InputManager iM;
+
     [SerializeField]
     GameObject[] weapons;
-
     
 
     //Which moves are used depending on weapon equipped?
@@ -85,6 +88,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void Start()
     {
+        iM = FindObjectOfType<InputManager>();
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
