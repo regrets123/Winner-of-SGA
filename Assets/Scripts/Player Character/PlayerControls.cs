@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*By Andreas Nilsson & Björn Andersson*/
+/*By Andreas Nilsson && Björn Andersson*/
 
 
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
@@ -53,13 +53,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     PauseManager pM;
 
-    InventoryManager inventory = new InventoryManager();
+    InventoryManager inventory;
 
     InputManager iM;
 
     [SerializeField]
     GameObject[] weapons;
-    
+
 
     //Which moves are used depending on weapon equipped?
     public MovementType CurrentMovementType
@@ -97,20 +97,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         EquipWeapon(0);
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
+        inventory = new InventoryManager(this);
     }
 
     private void Update()
     {
         if (inputEnabled)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                EquipWeapon(0);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                EquipWeapon(1);
-            }
             bool sprinting = false;
             if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
             {
@@ -151,7 +144,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inputEnabled = !pausing;
     }
 
-    
+
     //Code for equipping different weapons
     public void EquipWeapon(int weaponToEquip)
     {
