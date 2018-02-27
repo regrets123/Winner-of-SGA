@@ -14,33 +14,34 @@ public enum AttackMoves
     QuickAttack, StrongAttack, Sideswipe, PiercingAttack
 }
 
+public enum AttackMoveSets
+{
+    LightWeapon, HeavyWeapon
+}
 
-public class BaseWeaponScript : BaseEquippableScript
+public class BaseWeaponScript : BaseEquippableObject
 {
     [SerializeField]
     protected int damage;
 
-    [SerializeField]
-    protected string weaponName;
-
+    /*
     [SerializeField]
     protected DamageType damageType;
+    */
 
     [SerializeField]
     protected float attackSpeed, repeatRate = 1.0f;
-
-    [SerializeField]
-    protected IKillable targetToHit;
-
+    
     [SerializeField]
     protected AttackMoves[] attacks;
+
+    [SerializeField]
+    AudioClip[] attackSounds, impactSounds;
 
     public AttackMoves[] Attacks
     {
         get { return this.attacks; }
     }
-
-    public Animation[] attackMoves;
 
     protected IKillable equipper;
 
@@ -48,6 +49,12 @@ public class BaseWeaponScript : BaseEquippableScript
     public IKillable Equipper
     {
         set { if (this.equipper == null) this.equipper = value; }
+    }
+
+    public override void Equip()
+    {
+        base.Equip();
+        player.CurrentWeapon = this;
     }
 
 
@@ -59,9 +66,15 @@ public class BaseWeaponScript : BaseEquippableScript
     //When a weapon hits a killable target the script triggers and deals damage to target
     public void OnTriggerEnter(Collider other)
     {
-        if (equipper is BaseEnemyScript && (equipper as BaseEnemyScript).CurrentMovementType == MovementType.Attacking)
+        if ((equipper is BaseEnemyScript && (equipper as BaseEnemyScript).CurrentMovementType == MovementType.Attacking)
+            || (equipper is PlayerControls && (equipper as PlayerControls).CurrentMovementType == MovementType.Attacking))
         {
-            targetToHit = other.gameObject.GetComponent<IKillable>();
+            IKillable targetToHit = other.gameObject.GetComponent<IKillable>();
+
+            if(equipper is BaseEnemyScript && targetToHit is BaseEnemyScript)
+            {
+                return;
+            }
 
             if (targetToHit != null)
             {

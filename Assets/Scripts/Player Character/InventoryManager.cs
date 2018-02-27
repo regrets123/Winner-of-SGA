@@ -10,21 +10,21 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     GameObject inventoryMenu;
 
-    List<BaseEquippableScript> equippableWeapons, equippableAbilities, equippableItems;
+    List<BaseEquippableObject> equippableWeapons, equippableAbilities, equippableItems;
 
-    List<BaseEquippableScript>[] inventory = new List<BaseEquippableScript>[2];
+    List<BaseEquippableObject>[] inventory = new List<BaseEquippableObject>[2];
 
     PlayerControls player;
 
     int displayCollection = 0, collectionIndex = 0;
 
-    BaseEquippableScript currentChoice;
+    BaseEquippableObject currentChoice;
 
     public InventoryManager(PlayerControls player)
     {
         this.player = player;
-        inventory[0] = new List<BaseEquippableScript>();
-        inventory[1] = new List<BaseEquippableScript>();
+        inventory[0] = new List<BaseEquippableObject>();
+        inventory[1] = new List<BaseEquippableObject>();
         //inventory[2] = new List<BaseEquippableScript>();
         equippableWeapons = inventory[0];
         equippableAbilities = inventory[1];
@@ -102,7 +102,7 @@ public class InventoryManager : MonoBehaviour
 
 
     //Lägger till nya föremål i spelarens inventory
-    public void NewEquippable(BaseEquippableScript equippable)
+    public void NewEquippable(BaseEquippableObject equippable)
     {
         if (equippable is BaseWeaponScript)
         {
@@ -120,7 +120,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     //Lägger till equippablen i rätt collection och dess sprite på inventorymenyn
-    void AddEquippable(BaseEquippableScript equippable, int collection)
+    void AddEquippable(BaseEquippableObject equippable, int collection)
     {
         inventory[collection].Add(equippable);
         //

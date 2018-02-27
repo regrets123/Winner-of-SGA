@@ -15,7 +15,7 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
@@ -58,6 +58,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     InputManager iM;
 
+    public float Stamina
+    {
+        get { return this.stamina; }
+        set { this.stamina = value; }
+    }
+    
+    //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
 
     Animator anim;
@@ -73,10 +80,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentMovementType = value; }
     }
 
+    BaseAbilityScript currentAbility;
+
+    public BaseAbilityScript CurrentAbility
+    {
+        get { return this.currentAbility; }
+        set { this.currentAbility = value; }
+    }
+    
     //Gets the current weapon
-    BaseWeaponScript CurrentWeapon
+    public BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
+        set { this.currentWeapon = value; }
     }
 
     void Start()
@@ -178,7 +194,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         //death animation och reload last saved state
     }
-
+    
     public void PlayerMovement(bool sprinting)
     {
         // Gets the movement axis' for character controller and assigns them to variables

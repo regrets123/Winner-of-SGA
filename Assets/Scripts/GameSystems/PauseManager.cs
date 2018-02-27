@@ -4,25 +4,23 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
+
+    //Interface som implementeras av allt som ska kunna pausas
 public interface IPausable
 {
-
     void PauseMe(bool pausing);
-
 }
 
 public class PauseManager : MonoBehaviour
 {
-
     [SerializeField]
     GameObject pauseMenu;
-
-    AudioManager aM;
 
     InputManager iM;
 
     bool paused = false;
 
+    //Lista av allt som kan pausas
     static List<IPausable> pausables = new List<IPausable>();
 
     InputMode previousInputMode = InputMode.None;
@@ -34,7 +32,6 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        aM = GetComponent<AudioManager>();
         iM = GetComponent<InputManager>();
     }
 
@@ -46,40 +43,46 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    //Pausar/unpausar spelet och tar fram/döljer pausmenyn
     public void PauseAndUnpause()
     {
         paused = !paused;
         if (paused)
         {
+            Time.timeScale = 0f;
             previousInputMode = iM.CurrentInputMode;
             iM.SetInputMode(InputMode.Paused);
         }
         else
         {
+            Time.timeScale = 1f;
             iM.SetInputMode(previousInputMode);
         }
         pauseMenu.SetActive(paused);
-        if (aM != null && aM.SoundGroups != null && aM.SoundGroups.Length > 0)
-        {
-            foreach (List<AudioSource> soundGroup in aM.SoundGroups)
-            {
-                foreach (AudioSource audio in soundGroup)
-                {
-                    if (paused)
-                    {
-                        audio.Pause();
-                    }
-                    else
-                    {
-                        audio.UnPause();
-                    }
-                }
-            }
-        }
         foreach (IPausable pauseMe in pausables)
         {
             if (pauseMe != null)
                 pauseMe.PauseMe(paused);
         }
+    }
+    
+    public void QuitToMenu()
+    {
+
+    }
+
+    public void QuitGame()
+    {
+
+    }
+
+    public void ViewOptions()
+    {
+
+    }
+
+    public void ToggleMenu(GameObject menu)
+    {
+        menu.SetActive(!menu.activeSelf);
     }
 }

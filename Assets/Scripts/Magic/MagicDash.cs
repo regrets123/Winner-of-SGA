@@ -8,12 +8,12 @@ public class MagicDash : BaseAbilityScript
 {
     MovementType previousMovementType;
 
-    //If dash button is pressed the coroutine will start
-    void Update()
+    public override void UseAbility()
     {
-        if (Input.GetButtonDown("Dash"))
+        if (player.Stamina >= staminaCost)
         {
             StartCoroutine("Dash");
+            player.Stamina -= staminaCost;
         }
     }
 
