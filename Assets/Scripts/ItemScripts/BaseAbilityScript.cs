@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class BaseAbilityScript : BaseEquippableScript {
     
+    public virtual void UseAbility()
+    {
 
+    }
 
 }
