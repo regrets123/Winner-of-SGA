@@ -61,10 +61,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     InputManager iM;
 
-    [SerializeField]
-    GameObject[] weapons;
-
-
     //Which moves are used depending on weapon equipped?
     public MovementType CurrentMovementType
     {
@@ -74,13 +70,22 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     BaseWeaponScript currentWeapon;
 
+    BaseAbilityScript currentAbility;
+
+    public BaseAbilityScript CurrentAbility
+    {
+        get { return this.currentAbility; }
+        set { this.currentAbility = value; }
+    }
+
     [SerializeField]
     Transform weaponPosition;
 
     //Which weapon is equipped?
-    BaseWeaponScript CurrentWeapon
+    public BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
+        set { this.currentWeapon = value; }
     }
 
     bool jumpMomentum = false;
@@ -173,7 +178,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         //death animation och reload last saved state
     }
-
+    
     public void PlayerMovement(bool sprinting)
     {
         h = Input.GetAxis("Horizontal");

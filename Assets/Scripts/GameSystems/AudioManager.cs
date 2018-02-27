@@ -4,14 +4,14 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class AudioManager : MonoBehaviour {
+public class AudioManager : MonoBehaviour, IPausable {
 
     [SerializeField]
     List<AudioSource>[] soundGroups;
 
-    List<AudioSource> environmentalAudio;
-    List<AudioSource> soundFX;
+    List<AudioSource> environmentalAudio, soundFX;
     AudioSource music;
+    PauseManager pM;
 
     public void ChangeVolume(int soundGroup, float volume)
     {
@@ -29,6 +29,30 @@ public class AudioManager : MonoBehaviour {
     public AudioSource Music
     {
         get { return this.music; }
+    }
+
+    void Start()
+    {
+        pM = FindObjectOfType<PauseManager>();
+        pM.Pausables.Add(this);
+    }
+
+    public void PauseMe(bool pausing)
+    {       
+        foreach (List<AudioSource> soundGroup in SoundGroups)
+        {
+            foreach (AudioSource audio in soundGroup)
+            {
+                if (pausing)
+                {
+                    audio.Pause();
+                }
+                else
+                {
+                    audio.UnPause();
+                }
+            }
+        }
     }
 
 //    [SerializeField]

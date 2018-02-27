@@ -4,10 +4,13 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class BaseEquippableScript : MonoBehaviour {
+public class BaseEquippableObject : MonoBehaviour {
 
     [SerializeField]
     protected Sprite inventoryIcon;
+
+    [SerializeField]
+    protected string objectName;
 
     protected PlayerControls player;
 

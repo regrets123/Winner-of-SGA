@@ -13,20 +13,11 @@ public class MagicDash : BaseAbilityScript
 
     MovementType previousMovementType;
 
-    void Update()
+    public override void UseAbility()
     {
-        if (Input.GetButtonDown("Dash"))
-        {
-            StartCoroutine("Dash");
-        }
-
-        /*
-        if (dashing)
-        {
-            print("nugårefort");
-        }
-        */
+        StartCoroutine("Dash");
     }
+
     IEnumerator Dash()
     {
         previousMovementType = player.CurrentMovementType;
