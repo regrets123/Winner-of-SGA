@@ -8,21 +8,16 @@ public class MagicDash : MonoBehaviour
     GameObject playerPrefab;
 
     Vector3 dashVelocity;
-    Vector3 move;
+    //Vector3 move;
 
     bool dashing = false;
 
     void Start()
     {
-        move = playerPrefab.GetComponent<PlayerControls>().move;
+        //move = playerPrefab.GetComponent<PlayerControls>().move;
     }
 
     void Update()
-    {
-        DashMove();
-    }
-
-    void DashMove()
     {
         if (Input.GetButtonDown("Dash"))
         {
@@ -31,12 +26,12 @@ public class MagicDash : MonoBehaviour
 
         if (dashing)
         {
-            dashVelocity = move * 2;
+            dashVelocity = playerPrefab.GetComponent<PlayerControls>().move * 2;
 
-            move += dashVelocity;
+            playerPrefab.GetComponent<PlayerControls>().move += dashVelocity;
+            print("nugårefort");
         }
     }
-
     IEnumerator Dash()
     {
         dashing = true;
