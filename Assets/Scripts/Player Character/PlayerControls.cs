@@ -37,7 +37,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     float moveSpeed = 5.0f;
 
+    public Vector3 move;
+
     public float yVelocity = 0.0f;
+
+    Vector3 dashReset = new Vector3(0, 0, 0);
 
     float stamina, h, v;
 
@@ -59,7 +63,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     GameObject[] weapons;
-    
+
 
     //Which moves are used depending on weapon equipped?
     public MovementType CurrentMovementType
@@ -79,12 +83,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     bool jumpMomentum = false;
-
-    public float YVelocity
-    {
-        get { return yVelocity; }
-        set { yVelocity = YVelocity; }
-    }
 
     void Start()
     {
@@ -151,7 +149,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inputEnabled = !pausing;
     }
 
-    
+
     //Code for equipping different weapons
     public void EquipWeapon(int weaponToEquip)
     {
@@ -189,7 +187,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1).normalized);
 
-        Vector3 move = v * camForward + h * cam.right;
+        move = v * camForward + h * cam.right;
 
         if (move.magnitude > 0.0000001f)
         {
@@ -230,4 +228,5 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             jumpMomentum = false;
         }
     }
+
 }
