@@ -142,7 +142,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (Input.GetButtonDown("Fire1"))
             {
-                //attackAnim.Play();
+                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
                 anim.SetTrigger("Attack");
             }
         }

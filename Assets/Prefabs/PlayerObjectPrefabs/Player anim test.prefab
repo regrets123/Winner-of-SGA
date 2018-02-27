@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 54940756582389748}
   - component: {fileID: 95676913782884666}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Player anim test
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -725,13 +725,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryIcon: {fileID: 0}
+  objectName: 
   damage: 5
-  weaponName: 
-  damageType: 0
   attackSpeed: 1
   repeatRate: 1
   attacks: 
-  attackMoves: []
+  attackSounds: []
+  impactSounds: []
 --- !u!114 &114292338793434676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -765,6 +765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryIcon: {fileID: 0}
+  objectName: 
+  staminaCost: 0
 --- !u!135 &135429995034212576
 SphereCollider:
   m_ObjectHideFlags: 1
