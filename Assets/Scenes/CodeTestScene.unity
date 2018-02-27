@@ -562,6 +562,7 @@ MonoBehaviour:
   maxStamina: 10
   moveSpeed: 0.8
   move: {x: 0, y: 0, z: 0}
+  dashVelocity: {x: 0, y: 0, z: 0}
   yVelocity: 0
   weapons:
   - {fileID: 1179896501559386, guid: aa0a4c170bc96e54fbfd0a66e18dca2f, type: 2}
@@ -1160,3 +1161,19 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 853430079}
   m_Script: {fileID: 11500000, guid: 5a01e09829485654d957431f032ac8af, type: 3}
+--- !u!1 &2067416764 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1030292128368146, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+    type: 2}
+  m_PrefabInternal: {fileID: 666871694}
+--- !u!114 &2067416769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2067416764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0156c152d57f9e246a57c6105a05ee11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

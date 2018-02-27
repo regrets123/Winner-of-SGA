@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*By Andreas Nilsson*/
-public class CameraFollow : MonoBehaviour
+
+public class CameraFollow : MonoBehaviour, IPausable
 {
 
     public float cameraMoveSpeed = 120.0f;
@@ -24,35 +25,46 @@ public class CameraFollow : MonoBehaviour
     public float smoothY;
     public float rotX = 0.0f;
     public float rotY = 0.0f;
+    PauseManager pM;
+    bool paused = false;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
+        pM = FindObjectOfType<PauseManager>();
+        pM.Pausables.Add(this);
         Vector3 rot = transform.localRotation.eulerAngles;
         rotX = rot.x;
         rotY = rot.y;
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    public void PauseMe(bool pausing)
     {
-        //Get buttons for cameramovement from character controller
-        float inputX = Input.GetAxis("RightStickHorizontal");
-        float inputZ = Input.GetAxis("RightStickVertical");
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
-        finalInputX = inputX + mouseX;
-        finalInputZ = inputZ + mouseY;
+        paused = pausing;
+    }
 
-        rotY += finalInputX * inputSensitivity * Time.deltaTime;
-        rotX += finalInputZ * inputSensitivity * Time.deltaTime;
+    // Update is called once per frame
+    void Update()
+    {
+        if (!paused)
+        {
+            //Get buttons for cameramovement from character controller
+            float inputX = Input.GetAxis("RightStickHorizontal");
+            float inputZ = Input.GetAxis("RightStickVertical");
+            mouseX = Input.GetAxis("Mouse X");
+            mouseY = Input.GetAxis("Mouse Y");
+            finalInputX = inputX + mouseX;
+            finalInputZ = inputZ + mouseY;
 
-        rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+            rotY += finalInputX * inputSensitivity * Time.deltaTime;
+            rotX += finalInputZ * inputSensitivity * Time.deltaTime;
 
-        Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
+            rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
 
-        transform.rotation = localRotation;
-        //cameraFollowObj.transform.Rotate(cameraFollowObj.transform.rotation.x, transform.rotation.y, cameraFollowObj.transform.rotation.z);
+            Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
+
+            transform.rotation = localRotation;
+        }
     }
 
     void LateUpdate()
