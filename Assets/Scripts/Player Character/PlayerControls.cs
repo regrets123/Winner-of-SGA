@@ -37,7 +37,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     float moveSpeed = 5.0f;
 
-    public Vector3 move;
+    public Vector3 move, dashVelocity;
 
     public float yVelocity = 0.0f;
 
@@ -69,6 +69,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public MovementType CurrentMovementType
     {
         get { return this.currentMovementType; }
+        set { this.currentMovementType = value; }
     }
 
     BaseWeaponScript currentWeapon;
@@ -148,7 +149,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         if (currentWeapon != null)
             Destroy(currentWeapon.gameObject);
-        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        //this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
     //What movetype is used for attack?
@@ -182,7 +183,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move = v * camForward + h * cam.right;
 
-        if (move.magnitude > 0.0000001f)
+        if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing)
         {
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
@@ -214,6 +215,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
 
         move.y += yVelocity;
+
+        if (currentMovementType == MovementType.Dashing)
+        {
+            /*
+            dashVelocity = move * 2;
+            move += dashVelocity;
+            */
+
+        }
 
         charController.Move(move / 8);
         if (jumpMomentum && charController.isGrounded)

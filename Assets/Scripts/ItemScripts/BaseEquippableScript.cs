@@ -9,6 +9,8 @@ public class BaseEquippableScript : MonoBehaviour {
     [SerializeField]
     protected Sprite inventoryIcon;
 
+    protected PlayerControls player;
+
     public Sprite InventoryIcon
     {
         get { return this.inventoryIcon; }
@@ -17,6 +19,11 @@ public class BaseEquippableScript : MonoBehaviour {
     public virtual void Equip()
     {
 
+    }
+
+    protected void Start()
+    {
+        this.player = FindObjectOfType<PlayerControls>();
     }
 
 }

@@ -808,6 +808,10 @@ Prefab:
       propertyPath: magicJumpSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1156753218034796, guid: d17e7e6801b3dc0479a8fda1a00da84d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d17e7e6801b3dc0479a8fda1a00da84d, type: 2}
   m_IsPrefabParent: 0
