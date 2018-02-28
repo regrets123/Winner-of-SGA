@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
@@ -20,6 +21,9 @@ public class InventoryManager : MonoBehaviour
 
     BaseEquippableObject currentChoice;
 
+    [SerializeField]
+    Image[] inventoryImages = new Image[3];
+
     public InventoryManager(PlayerControls player)
     {
         this.player = player;
@@ -32,8 +36,16 @@ public class InventoryManager : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (inventoryMenu.activeSelf)
+        {
+            //se till att rätt saker händer när rätt knappar trycks på
+        }
+    }
+
     //Indikerar vilken equippable spelaren överväger att equippa
-    public void HighlightNextEquippable(bool next)
+    void HighlightNextEquippable(bool next)
     {
         if (next)
         {
@@ -57,10 +69,11 @@ public class InventoryManager : MonoBehaviour
                 collectionIndex--;
             }
         }
+        UpdateButtons();
     }
 
     //Väljer vilka equippables som ska visas i inventorymenyn
-    public void DisplayNextCollection(bool next)
+    void DisplayNextCollection(bool next)
     {
         if (next)
         {
@@ -85,12 +98,36 @@ public class InventoryManager : MonoBehaviour
             }
         }
         //Byt meny
+        collectionIndex = 0;
+        UpdateButtons();
     }
 
 
+    //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
+    void UpdateButtons()
+    {
+        inventoryImages[1].sprite = inventory[displayCollection][collectionIndex].InventoryIcon;
+        if (collectionIndex == 0)
+        {
+            inventoryImages[0].sprite = inventory[displayCollection][inventory[displayCollection].Count - 1].InventoryIcon;
+        }
+        else
+        {
+            inventoryImages[0].sprite = inventory[displayCollection][collectionIndex - 1].InventoryIcon;
+        }
+        if (collectionIndex + 1 == inventory[displayCollection].Count)
+        {
+            inventoryImages[2].sprite = inventory[displayCollection][0].InventoryIcon;
+        }
+        else
+        {
+            inventoryImages[2].sprite = inventory[displayCollection][collectionIndex + 1].InventoryIcon;
+        }
+    }
+
 
     //Equippar ett föremål som finns i spelarens inventory
-    public void Equip()
+    void Equip()
     {
         if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count + 1 || inventory[displayCollection][collectionIndex] == null)
         {
@@ -98,6 +135,13 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         inventory[displayCollection][collectionIndex].Equip();
+    }
+
+
+    //Gömmer inventoryt
+    void HideInventory()
+    {
+        inventoryMenu.SetActive(false);
     }
 
 
@@ -119,10 +163,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    //Lägger till equippablen i rätt collection och dess sprite på inventorymenyn
+    //Lägger till equippablen i rätt collection
     void AddEquippable(BaseEquippableObject equippable, int collection)
     {
         inventory[collection].Add(equippable);
-        //
     }
 }

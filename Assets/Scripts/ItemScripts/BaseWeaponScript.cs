@@ -80,7 +80,6 @@ public class BaseWeaponScript : BaseEquippableObject
             {
                 DealDamage(targetToHit);
             }
-
         }
     }
 }
