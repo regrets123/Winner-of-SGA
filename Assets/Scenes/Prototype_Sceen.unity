@@ -152,14 +152,31 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4408344746563012, guid: 62d1bc2f50fb3054bbfed3bd4be46262, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 212.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408344746563012, guid: 62d1bc2f50fb3054bbfed3bd4be46262, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 214.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408344746563012, guid: 62d1bc2f50fb3054bbfed3bd4be46262, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 195.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114095563715678176, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
+        type: 2}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114095563715678176, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
+        type: 2}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 62d1bc2f50fb3054bbfed3bd4be46262, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &257187140 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1121894877406154, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
-    type: 2}
-  m_PrefabInternal: {fileID: 257187139}
 --- !u!1001 &697950597
 Prefab:
   m_ObjectHideFlags: 0
@@ -310,7 +327,7 @@ Prefab:
         type: 2}
       propertyPath: cameraFollowObj
       value: 
-      objectReference: {fileID: 257187140}
+      objectReference: {fileID: 1830191391}
     - target: {fileID: 114490637282228810, guid: 40c96716f362dd948a43916c702e22e0,
         type: 2}
       propertyPath: layerToMask.m_Bits
@@ -390,3 +407,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1830191391 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1915198808848154, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
+    type: 2}
+  m_PrefabInternal: {fileID: 257187139}

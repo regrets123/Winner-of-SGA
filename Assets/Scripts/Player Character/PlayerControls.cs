@@ -67,6 +67,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
 
+    Animator anim;
+
+    //Only test not final product
+    [SerializeField]
+    Animation attackAnim;
+
     //Describes which kind of movement that is currently being used
     public MovementType CurrentMovementType
     {
@@ -102,6 +108,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
         inventory = new InventoryManager(this);
+
+        anim = GetComponent<Animator>();
+        //attackAnim.playAutomatically = false;
     }
 
     private void Update()
@@ -129,6 +138,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (Input.GetButtonDown("Interact"))
             {
                 //interagera med vad det nu kan vara
+            }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+                anim.SetTrigger("Attack");
             }
         }
     }
