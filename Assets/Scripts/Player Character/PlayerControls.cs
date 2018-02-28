@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*By Andreas Nilsson & Björn Andersson*/
+/*By Andreas Nilsson && Björn Andersson*/
 
 
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
@@ -15,29 +15,30 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping
 }
 
-public class PlayerControls : MonoBehaviour, IKillable
+public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
-    CharacterController charController;
-
     [SerializeField]
-    float jumpSpeed = 20.0f;
-
-    [SerializeField]
-    float gravity = 1.0f;
+    float jumpSpeed, gravity, maxStamina, moveSpeed;
 
     [SerializeField]
     int maxHealth, rotspeed;
 
     [SerializeField]
-    float maxStamina;
+    GameObject[] weapons;
 
     [SerializeField]
-    float moveSpeed = 5.0f;
+    Transform weaponPosition;
 
-    float yVelocity = 0.0f;
+    CharacterController charController;
+
+    Vector3 move, dashVelocity, dashReset = new Vector3(0, 0, 0);
+
+    Vector3? dashDir;
+
+    public float yVelocity;
 
     float stamina, h, v;
 
@@ -47,30 +48,105 @@ public class PlayerControls : MonoBehaviour, IKillable
 
     private Vector3 camForward;
 
+    bool inputEnabled = true, jumpMomentum = false;
+
     MovementType currentMovementType;
 
+    PauseManager pM;
 
-    [SerializeField]
-    GameObject[] weapons;
+    InventoryManager inventory;
 
+    InputManager iM;
+
+    public float Stamina
+    {
+        get { return this.stamina; }
+        set { this.stamina = value; }
+    }
+    
     //Which moves are used depending on weapon equipped?
+    BaseWeaponScript currentWeapon;
+
+    Animator anim;
+
+    //Only test not final product
+    [SerializeField]
+    Animation attackAnim;
+
+    //Describes which kind of movement that is currently being used
     public MovementType CurrentMovementType
     {
         get { return this.currentMovementType; }
+        set { this.currentMovementType = value; }
     }
 
-    BaseWeaponScript currentWeapon;
+    BaseAbilityScript currentAbility;
 
-    [SerializeField]
-    Transform weaponPosition;
-
-    //Which weapon is equipped?
-    BaseWeaponScript CurrentWeapon
+    public BaseAbilityScript CurrentAbility
+    {
+        get { return this.currentAbility; }
+        set { this.currentAbility = value; }
+    }
+    
+    //Gets the current weapon
+    public BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
+        set { this.currentWeapon = value; }
     }
 
-    bool jumpMomentum = false;
+    void Start()
+    {
+        //Just setting all the variables needed
+        iM = FindObjectOfType<InputManager>();
+        charController = GetComponent<CharacterController>();
+        cam = FindObjectOfType<Camera>().transform;
+        this.health = maxHealth;
+        this.stamina = maxStamina;
+        currentMovementType = MovementType.Idle;
+        EquipWeapon(0);
+        pM = FindObjectOfType<PauseManager>();
+        pM.Pausables.Add(this);
+        inventory = new InventoryManager(this);
+
+        anim = GetComponent<Animator>();
+        //attackAnim.playAutomatically = false;
+    }
+
+    private void Update()
+    {
+        if (inputEnabled)
+        {
+            //A sprint function which drains the stamina float upon activation
+            bool sprinting = false;
+            if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
+            {
+                stamina -= 1f;
+                sprinting = true;
+            }
+            else if (stamina < maxStamina && Input.GetButton("Sprint"))
+            {
+                stamina += 1f;
+                if (stamina > maxStamina)
+                {
+                    stamina = maxStamina;
+                }
+            }
+
+            PlayerMovement(sprinting);
+
+            if (Input.GetButtonDown("Interact"))
+            {
+                //interagera med vad det nu kan vara
+            }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+                anim.SetTrigger("Attack");
+            }
+        }
+    }
 
     //Damage to player
     public void TakeDamage(int incomingDamage)
@@ -84,15 +160,20 @@ public class PlayerControls : MonoBehaviour, IKillable
         }
     }
 
+    public void PauseMe(bool pausing)
+    {
+        inputEnabled = !pausing;
+    }
+
     //Code for equipping different weapons
     public void EquipWeapon(int weaponToEquip)
     {
         if (currentWeapon != null)
             Destroy(currentWeapon.gameObject);
-        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        //this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
-    //What movetype is used for attack?
+    //Sets the current movement type as attacking and which attack move thats used
     public void Attack(int attackMove)
     {
         this.currentMovementType = MovementType.Attacking;
@@ -113,59 +194,21 @@ public class PlayerControls : MonoBehaviour, IKillable
     {
         //death animation och reload last saved state
     }
-
-    void Start()
-    {
-        charController = GetComponent<CharacterController>();
-        cam = FindObjectOfType<Camera>().transform;
-        this.health = maxHealth;
-        this.stamina = maxStamina;
-        currentMovementType = MovementType.Idle;
-        EquipWeapon(0);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            EquipWeapon(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            EquipWeapon(1);
-        }
-        bool sprinting = false;
-        if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
-        {
-            stamina -= 1f;
-            sprinting = true;
-        }
-        else if (stamina < maxStamina && Input.GetButton("Sprint"))
-        {
-            stamina += 1f;
-            if (stamina > maxStamina)
-            {
-                stamina = maxStamina;
-            }
-        }
-        PlayerMovement(sprinting);
-        if (Input.GetButtonDown("Interact"))
-        {
-            //interagera med vad det nu kan vara
-        }
-    }
-
+    
     public void PlayerMovement(bool sprinting)
     {
+        // Gets the movement axis' for character controller and assigns them to variables
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
+        //Creates a vector3 to change the character controllers forward to the direction of the camera
         camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1).normalized);
 
-        Vector3 move = v * camForward + h * cam.right;
+        move = v * camForward + h * cam.right;
 
-        if (move.magnitude > 0.0000001f)
+        if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing)
         {
+            dashDir = null;
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
             move.Normalize();
@@ -175,6 +218,7 @@ public class PlayerControls : MonoBehaviour, IKillable
             {
                 move *= 4;
             }
+            //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
 
@@ -197,10 +241,28 @@ public class PlayerControls : MonoBehaviour, IKillable
 
         move.y += yVelocity;
 
+        //Using the character transforms' forward direction to assign which direction to dash and then moves the character in the direction with high velocity
+        if (currentMovementType == MovementType.Dashing)
+        {
+            if (dashDir == null)
+            {
+                dashVelocity = transform.forward * 2;
+                move += dashVelocity;
+                dashDir = move;
+            }
+            else
+            {
+                move = (Vector3)dashDir;
+            }
+        }
+
+        //Lets the character move with the character controller
         charController.Move(move / 8);
+
         if (jumpMomentum && charController.isGrounded)
         {
             jumpMomentum = false;
         }
     }
+
 }

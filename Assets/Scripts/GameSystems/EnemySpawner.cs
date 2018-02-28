@@ -4,8 +4,10 @@ using UnityEngine;
 //By Andreas Nilsson
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemy;
-    public Transform enemyPos;
+    [SerializeField]
+    GameObject enemy;
+    [SerializeField]
+    Transform enemyPos;
 
     private float repeatRate = 5.0f;
 

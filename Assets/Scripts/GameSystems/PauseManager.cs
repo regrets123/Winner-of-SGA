@@ -4,24 +4,26 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
+
+    //Interface som implementeras av allt som ska kunna pausas
 public interface IPausable
 {
-
     void PauseMe(bool pausing);
-
 }
 
 public class PauseManager : MonoBehaviour
 {
-
     [SerializeField]
     GameObject pauseMenu;
 
-    AudioManager aM;
+    InputManager iM;
 
     bool paused = false;
 
+    //Lista av allt som kan pausas
     static List<IPausable> pausables = new List<IPausable>();
+
+    InputMode previousInputMode = InputMode.None;
 
     public List<IPausable> Pausables
     {
@@ -30,55 +32,57 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        aM = GetComponent<AudioManager>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        iM = GetComponent<InputManager>();
     }
 
     private void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            print("pausing");
             PauseAndUnpause();
         }
     }
 
+    //Pausar/unpausar spelet och tar fram/döljer pausmenyn
     public void PauseAndUnpause()
     {
-        Cursor.visible = !Cursor.visible;
         paused = !paused;
-        pauseMenu.SetActive(paused);
-        if (aM != null && aM.SoundGroups != null && aM.SoundGroups.Length > 0)
-        {            
-            foreach (List<AudioSource> soundGroup in aM.SoundGroups)
-            {
-                foreach (AudioSource audio in soundGroup)
-                {
-                    if (paused)
-                    {
-                        audio.Pause();
-                    }
-                    else
-                    {
-                        audio.UnPause();
-                    }
-                }
-            }
-        }
         if (paused)
         {
-            Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0f;
+            previousInputMode = iM.CurrentInputMode;
+            iM.SetInputMode(InputMode.Paused);
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1f;
+            iM.SetInputMode(previousInputMode);
         }
+        pauseMenu.SetActive(paused);
         foreach (IPausable pauseMe in pausables)
         {
-            pauseMe.PauseMe(paused);
+            if (pauseMe != null)
+                pauseMe.PauseMe(paused);
         }
+    }
+    
+    public void QuitToMenu()
+    {
+
+    }
+
+    public void QuitGame()
+    {
+
+    }
+
+    public void ViewOptions()
+    {
+
+    }
+
+    public void ToggleMenu(GameObject menu)
+    {
+        menu.SetActive(!menu.activeSelf);
     }
 }
