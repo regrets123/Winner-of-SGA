@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -34,7 +34,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     CharacterController charController;
 
-    Vector3 move, dashVelocity, dashReset = new Vector3(0, 0, 0);
+    Vector3 move, dashVelocity, hitNormal, dashReset = new Vector3(0, 0, 0);
 
     Vector3? dashDir;
 
@@ -48,7 +48,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false;
+    bool inputEnabled = true, jumpMomentum = false, grounded;
 
     MovementType currentMovementType;
 
@@ -142,7 +142,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (Input.GetButtonDown("Fire1"))
             {
-                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
                 anim.SetTrigger("Attack");
             }
         }
@@ -194,7 +193,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         //death animation och reload last saved state
     }
-    
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        hitNormal = hit.normal;
+    }
+
     public void PlayerMovement(bool sprinting)
     {
         // Gets the movement axis' for character controller and assigns them to variables
@@ -225,7 +229,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && grounded)
             {
                 if (sprinting)
                 {
@@ -256,8 +260,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
         }
 
+        if (!grounded)
+        {
+            move.x += Mathf.Clamp((1f - hitNormal.y) * hitNormal.x * (1f - slideFriction), -1800f, 0f);
+            move.z += Mathf.Clamp((1f - hitNormal.y) * hitNormal.z * (1f - slideFriction), -1800f, 0f);
+        }
+
         //Lets the character move with the character controller
         charController.Move(move / 8);
+
+        grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
         if (jumpMomentum && charController.isGrounded)
         {
