@@ -57,6 +57,10 @@ public class BaseWeaponScript : BaseEquippableObject
         player.CurrentWeapon = this;
     }
 
+    public float AttackSpeed
+    {
+        get { return this.attackSpeed; }
+    }
 
     public virtual void DealDamage(IKillable target)
     {
