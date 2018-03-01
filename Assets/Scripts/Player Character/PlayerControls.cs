@@ -264,11 +264,24 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             print(hitNormal);
 
-            if (hitNormal.y >= 0f)
+            //float zValue = Mathf.Abs(hitNormal.z);
+
+            //if (hitNormal.z >= 0f)
+            //{
+            //    move.x += Mathf.Clamp(-Mathf.Abs((hitNormal.y) * (hitNormal.x) * (slideFriction)), -180.0f, 0f);
+            //    move.z += Mathf.Clamp((Mathf.Abs(-hitNormal.y) * hitNormal.z * slideFriction), -180.0f, 0f);
+            //}
+
+            //move.x += Mathf.Clamp((-(1f - hitNormal.y) * hitNormal.x) * slideFriction, -90f, 90f);
+            //move.z += Mathf.Clamp((-(1f - hitNormal.y) * hitNormal.z) * slideFriction, -90f, 90f);
+
+
+            /*
+            if (hitNormal.z <= 0)
             {
-                move.x += Mathf.Clamp((-Mathf.Abs(hitNormal.y) * (hitNormal.x)) * (slideFriction), -180.0f, 0f);
-                move.z += Mathf.Clamp((-Mathf.Abs(hitNormal.y) * (hitNormal.z)) * (slideFriction), -180.0f, 0f);
+                move.z *= -0.1f;
             }
+            */
         }
 
         //Lets the character move with the character controller
