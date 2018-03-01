@@ -42,6 +42,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected NavMeshAgent nav;
 
+    protected float lastAttack = 0f;
+
     protected virtual void Start()
     {
         this.nav = GetComponent<NavMeshAgent>();
@@ -58,7 +60,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (target != null)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange)
+            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && Time.time > lastAttack + weapon.AttackSpeed)
             {
                 Attack(Random.Range(0, weapon.Attacks.Length - 1));
             }
@@ -93,7 +95,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
 
-    //
+    //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)
     {
         int damage = ModifyDamage(incomingDamage);
@@ -104,11 +106,15 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    //Låter fienden attackera
     public void Attack(int attackMove)
     {
+        lastAttack = Time.time;
         this.currentMovementType = MovementType.Attacking;
+        //trigga rätt attackanimation
     }
 
+    //Modifierar skadan fienden tar efter armor, resistance och liknande
     protected virtual int ModifyDamage(int damage)
     {
         return damage;
