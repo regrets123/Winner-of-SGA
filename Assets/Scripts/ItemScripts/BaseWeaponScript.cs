@@ -79,9 +79,7 @@ public class BaseWeaponScript : BaseEquippableObject
             if (targetToHit != null)
             {
                 DealDamage(targetToHit);
-
             }
-
         }
     }
 }
