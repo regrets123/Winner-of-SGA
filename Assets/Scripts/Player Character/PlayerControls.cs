@@ -108,7 +108,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
         inventory = new InventoryManager(this);
-
+        slopeLimit = charController.slopeLimit;
         anim = GetComponent<Animator>();
         //attackAnim.playAutomatically = false;
     }
@@ -262,8 +262,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (!grounded)
         {
-            move.x += Mathf.Clamp((1f - hitNormal.y) * hitNormal.x * (1f - slideFriction), -1800f, 0f);
-            move.z += Mathf.Clamp((1f - hitNormal.y) * hitNormal.z * (1f - slideFriction), -1800f, 0f);
+            print(hitNormal);
+
+            if (hitNormal.y >= 0f)
+            {
+                move.x += Mathf.Clamp((-Mathf.Abs(hitNormal.y) * (hitNormal.x)) * (slideFriction), -180.0f, 0f);
+                move.z += Mathf.Clamp((-Mathf.Abs(hitNormal.y) * (hitNormal.z)) * (slideFriction), -180.0f, 0f);
+            }
         }
 
         //Lets the character move with the character controller

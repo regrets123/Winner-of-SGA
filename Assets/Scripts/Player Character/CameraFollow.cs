@@ -42,9 +42,8 @@ public class CameraFollow : MonoBehaviour, IPausable
     {
         paused = pausing;
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    void LateUpdate()
     {
         if (!paused)
         {
@@ -66,10 +65,6 @@ public class CameraFollow : MonoBehaviour, IPausable
 
             transform.rotation = localRotation;
         }
-    }
-
-    void LateUpdate()
-    {
         CameraUpdater();
     }
 

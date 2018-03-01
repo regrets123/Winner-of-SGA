@@ -11,7 +11,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     GameObject inventoryMenu;
 
-    List<BaseEquippableObject> equippableWeapons, equippableAbilities, equippableItems;
+    List<BaseEquippableObject> equippableWeapons, equippableAbilities/*, equippableItems*/;
 
     List<BaseEquippableObject>[] inventory = new List<BaseEquippableObject>[2];
 
