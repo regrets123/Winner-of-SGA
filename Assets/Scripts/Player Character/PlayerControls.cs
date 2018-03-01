@@ -63,7 +63,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.stamina; }
         set { this.stamina = value; }
     }
-    
+
     //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
 
@@ -87,7 +87,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.currentAbility; }
         set { this.currentAbility = value; }
     }
-    
+
     //Gets the current weapon
     public BaseWeaponScript CurrentWeapon
     {
@@ -260,28 +260,22 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
         }
 
-        if (!grounded)
+        if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
-            print(hitNormal);
-
-            //float zValue = Mathf.Abs(hitNormal.z);
-
-            //if (hitNormal.z >= 0f)
-            //{
-            //    move.x += Mathf.Clamp(-Mathf.Abs((hitNormal.y) * (hitNormal.x) * (slideFriction)), -180.0f, 0f);
-            //    move.z += Mathf.Clamp((Mathf.Abs(-hitNormal.y) * hitNormal.z * slideFriction), -180.0f, 0f);
-            //}
-
-            //move.x += Mathf.Clamp((-(1f - hitNormal.y) * hitNormal.x) * slideFriction, -90f, 90f);
-            //move.z += Mathf.Clamp((-(1f - hitNormal.y) * hitNormal.z) * slideFriction, -90f, 90f);
-
-
-            /*
-            if (hitNormal.z <= 0)
+            float xVal = -Mathf.Abs(hitNormal.y * hitNormal.x * slideFriction);
+            float zVal = -Mathf.Abs(hitNormal.y * hitNormal.z * slideFriction);
+            move.x += xVal;
+            move.z += zVal;
+        
+            if (hitNormal.z >= 0f)
             {
-                move.z *= -0.1f;
+                move.z *= -0.2f;
             }
-            */
+
+            if (hitNormal.x >= 0f)
+            {
+                move.x *= -0.2f;
+            }
         }
 
         //Lets the character move with the character controller
