@@ -259,23 +259,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move = (Vector3)dashDir;
             }
         }
+        print(hitNormal);
 
         if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
-            float xVal = -Mathf.Abs(hitNormal.y * hitNormal.x * slideFriction);
-            float zVal = -Mathf.Abs(hitNormal.y * hitNormal.z * slideFriction);
+            float xVal = -hitNormal.y * hitNormal.x * slideFriction;
+            float zVal = -hitNormal.y * hitNormal.z * slideFriction;
             move.x += xVal;
             move.z += zVal;
-        
-            if (hitNormal.z >= 0f)
-            {
-                move.z *= -0.2f;
-            }
-
-            if (hitNormal.x >= 0f)
-            {
-                move.x *= -0.2f;
-            }
         }
 
         //Lets the character move with the character controller
