@@ -25,21 +25,18 @@ public class EnemySpawner : MonoBehaviour
     //Spawns enemy
     void Spawner()
     {
-        foreach (GameObject enemy in enemiesToSpawn)
+        for (int i = 0; i < enemiesToSpawn.Count; i++)
         {
-            foreach (Transform enemyPos in spawnPositions)
-            {
-                Instantiate(enemy, enemyPos.position, enemyPos.rotation);
-            }
+            Instantiate(enemiesToSpawn[i], spawnPositions[i].position, spawnPositions[i].rotation);
         }
     }
 
     private IEnumerator Respawn()
     {
-        gameObject.GetComponent<Collider>().enabled = !gameObject.GetComponent<Collider>().enabled;
+        GetComponent<Collider>().enabled = false;
 
         yield return new WaitForSeconds(respawnTime);
 
-        gameObject.GetComponent<Collider>().enabled = gameObject.GetComponent<Collider>().enabled = true;
+        GetComponent<Collider>().enabled = true;
     }
 }
