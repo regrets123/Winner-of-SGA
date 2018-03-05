@@ -15,14 +15,13 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction;
-
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime;
     [SerializeField]
     int maxHealth, rotspeed;
 
@@ -34,9 +33,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     CharacterController charController;
 
-    Vector3 move, dashVelocity, hitNormal, dashReset = new Vector3(0, 0, 0);
+    Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
 
-    Vector3? dashDir;
+    Vector3? dashDir, dodgeDir;
 
     public float yVelocity;
 
@@ -48,9 +47,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false;
 
-    MovementType currentMovementType;
+    MovementType currentMovementType, previousMovementType;
 
     PauseManager pM;
 
@@ -110,7 +109,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = new InventoryManager(this);
         slopeLimit = charController.slopeLimit;
         anim = GetComponent<Animator>();
-        //attackAnim.playAutomatically = false;
     }
 
     private void Update()
@@ -150,18 +148,30 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Damage to player
     public void TakeDamage(int incomingDamage)
     {
-        int damage = ModifyDamage(incomingDamage);
-        health -= damage;
+        if (invulnerable)
+            return;
+        health -= ModifyDamage(incomingDamage);
         print(health);
         if (health <= 0)
         {
             Death();
+        }
+        else
+        {
+            StartCoroutine("Invulnerability");
         }
     }
 
     public void PauseMe(bool pausing)
     {
         inputEnabled = !pausing;
+    }
+
+    IEnumerator Invulerability()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerablityTime);
+        invulnerable = false;
     }
 
     //Code for equipping different weapons
@@ -210,10 +220,27 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move = v * camForward + h * cam.right;
 
-        if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing)
+        if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging)
         {
             dashDir = null;
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
+
+            if (currentMovementType == MovementType.Sprinting)
+            {
+                //sprint anim
+            }
+            else if (currentMovementType == MovementType.Idle)
+            {
+                //idle anim
+            }
+            else if (currentMovementType == MovementType.Walking)
+            {
+                //walking anim
+            }
+            else if (currentMovementType == MovementType.Running)
+            {
+                //running anim
+            }
 
             move.Normalize();
             move *= moveSpeed;
@@ -231,6 +258,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Jump") && grounded)
             {
+                anim.SetTrigger("Jump");
                 if (sprinting)
                 {
                     jumpMomentum = true;
@@ -245,21 +273,48 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move.y += yVelocity;
 
+        if (charController.isGrounded)
+        {
+            if (Input.GetButtonDown("Dash"))
+            {
+                if (stamina >= dodgeCost)
+                {
+                    StartCoroutine("Dodge");
+                    stamina -= dodgeCost;
+                }
+            }
+        }
+
+        if (currentMovementType == MovementType.Dodging)
+        {
+            if (dodgeDir == null)
+            {
+                dodgeVelocity = transform.forward * 10;
+                move += dodgeVelocity;
+                dodgeDir = move;
+            }
+            else
+            {
+                move = (Vector3)dodgeDir;
+            }
+        }
+
         //Using the character transforms' forward direction to assign which direction to dash and then moves the character in the direction with high velocity
         if (currentMovementType == MovementType.Dashing)
         {
             if (dashDir == null)
             {
-                dashVelocity = transform.forward * 2;
+                dashVelocity = transform.forward * 3;
                 move += dashVelocity;
                 dashDir = move;
             }
             else
             {
+                //anim.speed = 
                 move = (Vector3)dashDir;
             }
         }
-        print(hitNormal);
+        //print(hitNormal);
 
         if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
@@ -279,5 +334,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             jumpMomentum = false;
         }
     }
-
+    
+    //Enumerator smooths out the dash so it doesn't happen instantaneously
+    IEnumerator Dodge()
+    {
+        previousMovementType = currentMovementType;
+        currentMovementType = MovementType.Dodging;
+        yield return new WaitForSeconds(0.3f);
+        currentMovementType = previousMovementType;
+        dodgeDir = null;
+    }
 }

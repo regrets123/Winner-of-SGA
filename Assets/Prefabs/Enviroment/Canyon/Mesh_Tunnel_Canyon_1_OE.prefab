@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 33045347095940588}
   - component: {fileID: 23609433702815220}
   - component: {fileID: 95434093872330534}
-  m_Layer: 0
+  - component: {fileID: 64921238354979224}
+  m_Layer: 8
   m_Name: Mesh_Tunnel_Canyon_1_OE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,6 +83,20 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1764364455662976}
+  m_Mesh: {fileID: 4300000, guid: ebe6028bc4cf8ca4dbeebe8ccb6fb624, type: 3}
+--- !u!64 &64921238354979224
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1764364455662976}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: ebe6028bc4cf8ca4dbeebe8ccb6fb624, type: 3}
 --- !u!95 &95434093872330534
 Animator:
