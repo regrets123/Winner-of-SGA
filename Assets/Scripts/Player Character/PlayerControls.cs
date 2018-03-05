@@ -63,7 +63,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.stamina; }
         set { this.stamina = value; }
     }
-    
+
     //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
 
@@ -87,7 +87,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.currentAbility; }
         set { this.currentAbility = value; }
     }
-    
+
     //Gets the current weapon
     public BaseWeaponScript CurrentWeapon
     {
@@ -259,16 +259,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move = (Vector3)dashDir;
             }
         }
+        print(hitNormal);
 
-        if (!grounded)
+        if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
-            print(hitNormal);
-
-            if (hitNormal.y >= 0f)
-            {
-                move.x += Mathf.Clamp((-Mathf.Abs(hitNormal.y) * (hitNormal.x)) * (slideFriction), -180.0f, 0f);
-                move.z += Mathf.Clamp((-Mathf.Abs(hitNormal.y) * (hitNormal.z)) * (slideFriction), -180.0f, 0f);
-            }
+            float xVal = -hitNormal.y * hitNormal.x * slideFriction;
+            float zVal = -hitNormal.y * hitNormal.z * slideFriction;
+            move.x += xVal;
+            move.z += zVal;
         }
 
         //Lets the character move with the character controller

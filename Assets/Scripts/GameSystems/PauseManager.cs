@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /*By Björn Andersson*/
 
-
-    //Interface som implementeras av allt som ska kunna pausas
+//Interface som implementeras av allt som ska kunna pausas
 public interface IPausable
 {
     void PauseMe(bool pausing);
@@ -68,17 +68,17 @@ public class PauseManager : MonoBehaviour
     
     public void QuitToMenu()
     {
-
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
     {
-
+        Application.Quit();
     }
 
     public void ViewOptions()
     {
-
+        //Toggle options menu
     }
 
     public void ToggleMenu(GameObject menu)
