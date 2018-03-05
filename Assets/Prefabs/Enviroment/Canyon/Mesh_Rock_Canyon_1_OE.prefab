@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23495180791444494}
   - component: {fileID: 95343725925125868}
   - component: {fileID: 64251834955590404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Rock_Canyon_1_OE
   m_TagString: Untagged
   m_Icon: {fileID: 0}

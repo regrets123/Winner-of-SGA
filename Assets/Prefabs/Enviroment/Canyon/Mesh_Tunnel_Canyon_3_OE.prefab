@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23473875786591120}
   - component: {fileID: 95419996630602944}
   - component: {fileID: 64859470929281034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Tunnel_Canyon_3_OE
   m_TagString: Untagged
   m_Icon: {fileID: 0}

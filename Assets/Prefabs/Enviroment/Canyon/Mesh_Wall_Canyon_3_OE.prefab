@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23172153584960518}
   - component: {fileID: 95889620531314624}
   - component: {fileID: 64510164948968158}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Wall_Canyon_3_OE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
