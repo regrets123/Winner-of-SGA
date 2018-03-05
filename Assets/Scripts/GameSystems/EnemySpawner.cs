@@ -5,27 +5,41 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
-    GameObject enemy;
+    List<GameObject> enemiesToSpawn;
     [SerializeField]
-    Transform enemyPos;
-
-    private float repeatRate = 5.0f;
+    List<Transform> spawnPositions;
+    [SerializeField]
+    float respawnTime;
 
     //When the player character enters the collider area enemy is spawned in specific location
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            gameObject.GetComponent<BoxCollider>().enabled = false;
-
             Spawner();
-            Destroy(gameObject);
+
+            StartCoroutine("Respawn");
         }
     }
 
     //Spawns enemy
     void Spawner()
     {
-        Instantiate(enemy, enemyPos.position, enemyPos.rotation);
+        foreach (GameObject enemy in enemiesToSpawn)
+        {
+            foreach (Transform enemyPos in spawnPositions)
+            {
+                Instantiate(enemy, enemyPos.position, enemyPos.rotation);
+            }
+        }
+    }
+
+    private IEnumerator Respawn()
+    {
+        gameObject.GetComponent<Collider>().enabled = !gameObject.GetComponent<Collider>().enabled;
+
+        yield return new WaitForSeconds(respawnTime);
+
+        gameObject.GetComponent<Collider>().enabled = gameObject.GetComponent<Collider>().enabled = true;
     }
 }
