@@ -15,14 +15,13 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, staminaCost;
-
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime;
     [SerializeField]
     int maxHealth, rotspeed;
 
@@ -34,7 +33,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     CharacterController charController;
 
-    Vector3 move, dashVelocity, dodgeVelocity, hitNormal, dashReset = new Vector3(0, 0, 0);
+    Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
 
     Vector3? dashDir, dodgeDir;
 
@@ -48,7 +47,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -149,18 +148,30 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Damage to player
     public void TakeDamage(int incomingDamage)
     {
-        int damage = ModifyDamage(incomingDamage);
-        health -= damage;
+        if (invulnerable)
+            return;
+        health -= ModifyDamage(incomingDamage);
         print(health);
         if (health <= 0)
         {
             Death();
+        }
+        else
+        {
+            StartCoroutine("Invulnerability");
         }
     }
 
     public void PauseMe(bool pausing)
     {
         inputEnabled = !pausing;
+    }
+
+    IEnumerator Invulerability()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerablityTime);
+        invulnerable = false;
     }
 
     //Code for equipping different weapons
@@ -214,6 +225,23 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             dashDir = null;
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
+            if (currentMovementType == MovementType.Sprinting)
+            {
+                //sprint anim
+            }
+            else if (currentMovementType == MovementType.Idle)
+            {
+                //idle anim
+            }
+            else if (currentMovementType == MovementType.Walking)
+            {
+                //walking anim
+            }
+            else if (currentMovementType == MovementType.Running)
+            {
+                //running anim
+            }
+
             move.Normalize();
             move *= moveSpeed;
 
@@ -230,6 +258,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Jump") && grounded)
             {
+                anim.SetTrigger("Jump");
                 if (sprinting)
                 {
                     jumpMomentum = true;
@@ -248,10 +277,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Dash"))
             {
-                if (stamina >= staminaCost)
+                if (stamina >= dodgeCost)
                 {
                     StartCoroutine("Dodge");
-                    stamina -= staminaCost;
+                    stamina -= dodgeCost;
                 }
             }
         }
@@ -281,6 +310,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else
             {
+                //anim.speed = 
                 move = (Vector3)dashDir;
             }
         }
