@@ -314,6 +314,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move = (Vector3)dashDir;
             }
         }
+        //print(hitNormal);
 
         if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
