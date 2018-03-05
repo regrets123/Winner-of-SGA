@@ -24,6 +24,11 @@ public class InventoryManager
     [SerializeField]
     Image[] inventoryImages = new Image[3];
 
+    public List<BaseEquippableObject> EquippableAbilities
+    {
+        get { return this.equippableAbilities; }
+    }
+
     public InventoryManager(PlayerControls player)
     {
         this.player = player;

@@ -19,7 +19,8 @@ public class BaseAbilityScript : BaseEquippableObject {
     {
         if ((player.CurrentMovementType == MovementType.Idle
             || player.CurrentMovementType == MovementType.Sprinting //Låter spelaren använda abilities när den inte attackerar, dodgar eller liknande
-            || player.CurrentMovementType == MovementType.Walking)
+            || player.CurrentMovementType == MovementType.Walking
+            || player.CurrentMovementType == MovementType.Jumping)
             && Input.GetButtonDown("Ability"))
         {
             UseAbility();

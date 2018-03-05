@@ -21,7 +21,8 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce;
+
     [SerializeField]
     int maxHealth, rotspeed;
 
@@ -37,11 +38,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    public float yVelocity;
+    float yVelocity;
 
     float stamina, h, v;
 
-    int health;
+    int health, lifeForce = 0;
 
     private Transform cam;
 
@@ -79,6 +80,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentMovementType = value; }
     }
 
+    public InventoryManager Inventory
+    {
+        get { return this.inventory; }
+    }
+
     BaseAbilityScript currentAbility;
 
     public BaseAbilityScript CurrentAbility
@@ -92,6 +98,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         get { return this.currentWeapon; }
         set { this.currentWeapon = value; }
+    }
+
+    public int LifeForce
+    {
+        get { return this.lifeForce; }
+    }
+
+    public float YVelocity
+    {
+        set { this.yVelocity = value; }
     }
 
     void Start()
@@ -109,6 +125,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = new InventoryManager(this);
         slopeLimit = charController.slopeLimit;
         anim = GetComponent<Animator>();
+    }
+
+    public void RestoreHealth(int amount)
+    {
+        this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
     }
 
     private void Update()
@@ -143,6 +164,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 anim.SetTrigger("Attack");
             }
         }
+    }
+
+    public void ReceiveLifeForce(int value)
+    {
+        this.lifeForce = Mathf.Clamp(this.lifeForce + value, 0, 100);
     }
 
     //Damage to player
@@ -310,7 +336,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else
             {
-                //anim.speed = 
                 move = (Vector3)dashDir;
             }
         }
@@ -334,7 +359,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             jumpMomentum = false;
         }
     }
-    
+
     //Enumerator smooths out the dash so it doesn't happen instantaneously
     IEnumerator Dodge()
     {

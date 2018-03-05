@@ -7,9 +7,8 @@ using UnityEngine;
 public class MagicForceJump : BaseAbilityScript
 {
     [SerializeField]
-    public GameObject effectsPrefab;
-    [SerializeField]
-    public GameObject spawnPos;
+    GameObject effectsPrefab, spawnPos;
+
     [SerializeField]
     float magicJumpSpeed;
     
@@ -21,7 +20,7 @@ public class MagicForceJump : BaseAbilityScript
                 GameObject jumpParticles = Instantiate(effectsPrefab, spawnPos.transform.position, spawnPos.transform.rotation);
 
                 //Add a force to the player going up form your current position.
-                player.GetComponent<PlayerControls>().yVelocity = magicJumpSpeed;
+                player.YVelocity = magicJumpSpeed;
 
                 Destroy(jumpParticles, 1.5f);
         }

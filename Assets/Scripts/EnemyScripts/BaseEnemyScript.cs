@@ -12,13 +12,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected float aggroRange, attackRange, invulnerabilityTime;
 
     [SerializeField]
-    protected int maxHealth, strength;
+    protected int maxHealth, strength, lifeForce;
 
     [SerializeField]
     protected string unitName;
 
     [SerializeField]
-    protected GameObject aggroCenter;
+    protected GameObject aggroCenter, soul;
 
     [SerializeField]
     protected BaseWeaponScript weapon;
@@ -110,7 +110,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
         else
         {
-
+            StartCoroutine("Invulnerability");
         }
     }
 
@@ -138,6 +138,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected virtual void Death()
     {
         //play death animation, destroy
+        PlayerControls player = FindObjectOfType<PlayerControls>();
+        if (player.Inventory.EquippableAbilities != null && player.Inventory.EquippableAbilities.Count > 0)
+        {
+            Instantiate(soul).GetComponent<LifeForceTransmitterScript>().StartMe(player, lifeForce);
+        }
         Destroy(gameObject);
     }
 
