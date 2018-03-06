@@ -12,16 +12,14 @@ public class MagicProjectile : BaseAbilityScript
     //so you can adjust the speed as necessary.
     public float speed = 20.0f;
 
-    void Update()
+    public override void UseAbility()
     {
-        if (Input.GetButtonDown("Fire2"))
-            {
-            //instantiate a magic projectile
-            GameObject magicProjectile = Instantiate(magicProjectilePrefab, transform.position, transform.rotation);
-            
+        base.UseAbility();
+        //instantiate a magic projectile
+        GameObject magicProjectile = Instantiate(magicProjectilePrefab, transform.position, transform.rotation);
 
-            //Add a force to the magic going forward form your current position.
-            magicProjectile.GetComponent<Rigidbody>().AddForce(magicProjectile.transform.forward * speed, ForceMode.Impulse);
-        }
+
+        //Add a force to the magic going forward form your current position.
+        magicProjectile.GetComponent<Rigidbody>().AddForce(magicProjectile.transform.forward * speed, ForceMode.Impulse);
     }
 }

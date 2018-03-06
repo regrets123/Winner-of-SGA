@@ -127,7 +127,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         pM.Pausables.Add(this);
         inventory = new InventoryManager(this);
         slopeLimit = charController.slopeLimit;
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     public void RestoreHealth(int amount)
@@ -272,17 +272,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Jump") && grounded)
             {
-                anim.SetTrigger("Jump");
-                anim.SetBool("Falling", true);
                 if (sprinting)
                 {
                     jumpMomentum = true;
                 }
                 yVelocity = jumpSpeed;
+                anim.SetTrigger("Jump");
             }
         }
         else
         {
+            anim.SetBool("Falling", true);
             yVelocity -= gravity;
         }
 
@@ -343,7 +343,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
-        if (grounded)
+        if (charController.isGrounded)
         {
             anim.SetBool("Falling", false);
         }
