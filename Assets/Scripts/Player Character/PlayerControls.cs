@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -48,7 +48,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -293,9 +293,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Dash"))
             {
-                if (stamina >= dodgeCost)
+                if (stamina >= dodgeCost && canDodge)
                 {
                     StartCoroutine("Dodge");
+                    StartCoroutine("DodgeCooldown");
                     stamina -= dodgeCost;
                 }
             }
@@ -365,6 +366,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
+    }
+
+    IEnumerator DodgeCooldown()
+    {
+        canDodge = false;
+        yield return new WaitForSeconds(dodgeCooldown);
+        canDodge = true;
     }
 
     //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
