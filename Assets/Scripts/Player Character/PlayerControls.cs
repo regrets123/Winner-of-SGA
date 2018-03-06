@@ -288,6 +288,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move.y += yVelocity;
 
+        //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
             if (Input.GetButtonDown("Dash"))
@@ -300,6 +301,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
         }
 
+        //Using the character transforms' forward direction to assign which direction to dash and then moves the character in the direction with higher velocity than normal
         if (currentMovementType == MovementType.Dodging)
         {
             if (dodgeDir == null)
@@ -328,7 +330,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move = (Vector3)dashDir;
             }
         }
-        //print(hitNormal);
 
         if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
@@ -341,6 +342,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //Lets the character move with the character controller
         charController.Move(move / 8);
 
+        //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
         if (charController.isGrounded)
@@ -365,7 +367,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         return newVelocity.magnitude;
     }
 
-    //Enumerator smooths out the dash so it doesn't happen instantaneously
+    //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
     IEnumerator Dodge()
     {
         previousMovementType = currentMovementType;
