@@ -8,6 +8,7 @@ public class MagicDash : BaseAbilityScript
 {
     MovementType previousMovementType;
 
+    //Activated from the BaseAbility script. If the player have enough stamina the ability will activate and drain the staminaCost
     public override void UseAbility()
     {
         if (player.Stamina >= staminaCost)

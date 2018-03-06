@@ -21,6 +21,7 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
+        //Locks cursor in the middle of the screen and hides it out of the way when game starts
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -29,6 +30,7 @@ public class InputManager : MonoBehaviour
     {
         if (newMode != currentInputMode)
         {
+            //If a menu of sorts is brought up like pause screen or inventory the cursor is visable and unlocked again. It's locked and becomes invisable if its the other way around
             currentInputMode = newMode;
             if (currentInputMode == InputMode.None || currentInputMode == InputMode.Paused)
             {

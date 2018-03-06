@@ -21,7 +21,7 @@ public class CameraCollision : MonoBehaviour
 
     Vector3 dollyDir;
 
-	// Use this for initialization
+	
 	void Awake ()
     {
         dollyDir = transform.localPosition.normalized;
@@ -34,6 +34,7 @@ public class CameraCollision : MonoBehaviour
         Vector3 desiredCameraPos = transform.parent.TransformPoint(dollyDir * maxDistance);
 
         RaycastHit hit;
+
         //Raycast checks for objects and camera adjust when objects are hit so it does not clip through terrain
         if(Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, layerToMask))
         {
@@ -44,6 +45,8 @@ public class CameraCollision : MonoBehaviour
         {
             distance = maxDistance;
         }
+
+        //Lerps the cameras local position and smooths it out
         transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * distance, Time.deltaTime * smooth);
 	}
 }

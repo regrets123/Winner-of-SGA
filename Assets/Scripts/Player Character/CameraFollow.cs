@@ -16,15 +16,13 @@ public class CameraFollow : MonoBehaviour, IPausable
 
     Vector3 followPOS;
 
-    float camDistanceXToPlayer;
-    float camDistanceYToPlayer;
-    float camDistanceZToPlayer;
-    float mouseX;
-    float mouseY;
-    float finalInputX;
-    float finalInputZ;
-    float rotX = 0.0f;
-    float rotY = 0.0f;
+    float camDistanceXToPlayer, camDistanceYToPlayer, camDistanceZToPlayer;
+
+    float mouseX, mouseY;
+
+    float finalInputX, finalInputZ;
+
+    float rotX = 0.0f, rotY = 0.0f;
 
     bool paused = false;
 
@@ -47,7 +45,7 @@ public class CameraFollow : MonoBehaviour, IPausable
     {
         if (!paused)
         {
-            //Get buttons for cameramovement from character controller
+            //Get buttons for cameramovement from character controller, both for a console controller and PC controls
             float inputX = Input.GetAxis("RightStickHorizontal");
             float inputZ = Input.GetAxis("RightStickVertical");
             mouseX = Input.GetAxis("Mouse X");
