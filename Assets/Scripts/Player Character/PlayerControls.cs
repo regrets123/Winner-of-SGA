@@ -363,7 +363,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     float CalculateSpeed(Vector3 velocity)
     {
-        Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.y);
+        Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
     }
 
