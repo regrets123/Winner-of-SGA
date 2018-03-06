@@ -45,12 +45,12 @@ public class BaseWeaponScript : BaseEquippableObject
 
     protected IKillable equipper;
 
-    //Script for switching between weapons
     public IKillable Equipper
     {
         set { if (this.equipper == null) this.equipper = value; }
     }
 
+    //Change the players current weapon
     public override void Equip()
     {
         base.Equip();
@@ -62,6 +62,7 @@ public class BaseWeaponScript : BaseEquippableObject
         get { return this.attackSpeed; }
     }
 
+    //Deals damage to an object with IKillable on it.
     public virtual void DealDamage(IKillable target)
     {
         target.TakeDamage(damage);

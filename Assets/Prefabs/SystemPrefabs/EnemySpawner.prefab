@@ -9,20 +9,35 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1501337995480632}
+  m_RootGameObject: {fileID: 1221417511133596}
   m_IsPrefabParent: 1
---- !u!1 &1501337995480632
+--- !u!1 &1184145279072908
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4948292040462622}
-  - component: {fileID: 33809665838222596}
-  - component: {fileID: 65600745296609538}
-  - component: {fileID: 23730840015127338}
-  - component: {fileID: 114662959706416330}
+  - component: {fileID: 4515800619704528}
+  m_Layer: 0
+  m_Name: Spawn point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1221417511133596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4423140606771856}
+  - component: {fileID: 33784793173152114}
+  - component: {fileID: 65949524614935554}
+  - component: {fileID: 23224897394975686}
+  - component: {fileID: 114878016996417594}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -30,25 +45,39 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4948292040462622
+--- !u!4 &4423140606771856
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1501337995480632}
+  m_GameObject: {fileID: 1221417511133596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.32, y: 2.06, z: 4.85}
+  m_LocalPosition: {x: -5.28, y: 0.82, z: 33.6}
   m_LocalScale: {x: 7.580612, y: 2.2230053, z: 2.569502}
-  m_Children: []
+  m_Children:
+  - {fileID: 4515800619704528}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23730840015127338
+--- !u!4 &4515800619704528
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1184145279072908}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4423140606771856}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23224897394975686
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1501337995480632}
+  m_GameObject: {fileID: 1221417511133596}
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -77,41 +106,38 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33809665838222596
+--- !u!33 &33784793173152114
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1501337995480632}
+  m_GameObject: {fileID: 1221417511133596}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65600745296609538
+--- !u!65 &65949524614935554
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1501337995480632}
+  m_GameObject: {fileID: 1221417511133596}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114662959706416330
+--- !u!114 &114878016996417594
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1501337995480632}
+  m_GameObject: {fileID: 1221417511133596}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f24204231155c048bc4dce36ba182da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy1: {fileID: 1547052070675886, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
-  enemy2: {fileID: 1547052070675886, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
-  enemy3: {fileID: 1547052070675886, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
-  enemyPos1: {fileID: 0}
-  enemyPos2: {fileID: 0}
-  enemyPos3: {fileID: 0}
-  enemyPos4: {fileID: 0}
-  enemyPos5: {fileID: 0}
+  enemiesToSpawn:
+  - {fileID: 1565690803762050, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
+  spawnPositions:
+  - {fileID: 4515800619704528}
+  respawnTime: 10

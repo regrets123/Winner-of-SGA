@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager
 {
 
     [SerializeField]
@@ -23,6 +23,11 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField]
     Image[] inventoryImages = new Image[3];
+
+    public List<BaseEquippableObject> EquippableAbilities
+    {
+        get { return this.equippableAbilities; }
+    }
 
     public InventoryManager(PlayerControls player)
     {
@@ -131,7 +136,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count + 1 || inventory[displayCollection][collectionIndex] == null)
         {
-            print("problem med inventory");
+            Debug.Log("problem med inventory");
             return;
         }
         inventory[displayCollection][collectionIndex].Equip();
@@ -158,7 +163,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            print("trying to add nonspecified equippable, gör om gör rätt");
+            Debug.Log("trying to add nonspecified equippable, gör om gör rätt");
             return;
         }
     }

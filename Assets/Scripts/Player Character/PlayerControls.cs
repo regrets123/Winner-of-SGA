@@ -15,13 +15,13 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -34,29 +34,31 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     CharacterController charController;
 
-    Vector3 move, dashVelocity, hitNormal, dashReset = new Vector3(0, 0, 0);
+    Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
 
-    Vector3? dashDir;
+    Vector3? dashDir, dodgeDir;
 
-    public float yVelocity;
+    float yVelocity;
 
     float stamina, h, v;
 
-    int health;
+    int health, lifeForce = 0;
 
     private Transform cam;
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false;
 
-    MovementType currentMovementType;
+    MovementType currentMovementType, previousMovementType;
 
     PauseManager pM;
 
     InventoryManager inventory;
 
     InputManager iM;
+
+    Rigidbody rB;
 
     public float Stamina
     {
@@ -80,6 +82,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentMovementType = value; }
     }
 
+    public InventoryManager Inventory
+    {
+        get { return this.inventory; }
+    }
+
     BaseAbilityScript currentAbility;
 
     public BaseAbilityScript CurrentAbility
@@ -95,9 +102,20 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentWeapon = value; }
     }
 
+    public int LifeForce
+    {
+        get { return this.lifeForce; }
+    }
+
+    public float YVelocity
+    {
+        set { this.yVelocity = value; }
+    }
+
     void Start()
     {
         //Just setting all the variables needed
+        rB = GetComponent<Rigidbody>();
         iM = FindObjectOfType<InputManager>();
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
@@ -110,7 +128,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = new InventoryManager(this);
         slopeLimit = charController.slopeLimit;
         anim = GetComponent<Animator>();
-        //attackAnim.playAutomatically = false;
+    }
+
+    public void RestoreHealth(int amount)
+    {
+        this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
     }
 
     private void Update()
@@ -124,7 +146,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 stamina -= 1f;
                 sprinting = true;
             }
-            else if (stamina < maxStamina && Input.GetButton("Sprint"))
+            else if (charController.isGrounded && stamina < maxStamina && Input.GetButton("Sprint"))
             {
                 stamina += 1f;
                 if (stamina > maxStamina)
@@ -147,21 +169,38 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    public void ReceiveLifeForce(int value)
+    {
+        this.lifeForce = Mathf.Clamp(this.lifeForce + value, 0, 100);
+    }
+
     //Damage to player
     public void TakeDamage(int incomingDamage)
     {
-        int damage = ModifyDamage(incomingDamage);
-        health -= damage;
+        if (invulnerable)
+            return;
+        health -= ModifyDamage(incomingDamage);
         print(health);
         if (health <= 0)
         {
             Death();
+        }
+        else
+        {
+            StartCoroutine("Invulnerability");
         }
     }
 
     public void PauseMe(bool pausing)
     {
         inputEnabled = !pausing;
+    }
+
+    IEnumerator Invulerability()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerablityTime);
+        invulnerable = false;
     }
 
     //Code for equipping different weapons
@@ -210,13 +249,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move = v * camForward + h * cam.right;
 
-        if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing)
+        if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging)
         {
             dashDir = null;
             currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
             move.Normalize();
             move *= moveSpeed;
+
 
             if (sprinting || jumpMomentum)
             {
@@ -225,12 +265,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
+        anim.SetFloat("Speed", CalculateSpeed(charController.velocity));
 
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
             if (Input.GetButtonDown("Jump") && grounded)
             {
+                anim.SetTrigger("Jump");
+                anim.SetBool("Falling", true);
                 if (sprinting)
                 {
                     jumpMomentum = true;
@@ -245,12 +288,40 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move.y += yVelocity;
 
+        //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
+        if (charController.isGrounded)
+        {
+            if (Input.GetButtonDown("Dash"))
+            {
+                if (stamina >= dodgeCost)
+                {
+                    StartCoroutine("Dodge");
+                    stamina -= dodgeCost;
+                }
+            }
+        }
+
+        //Using the character transforms' forward direction to assign which direction to dash and then moves the character in the direction with higher velocity than normal
+        if (currentMovementType == MovementType.Dodging)
+        {
+            if (dodgeDir == null)
+            {
+                dodgeVelocity = transform.forward * 10;
+                move += dodgeVelocity;
+                dodgeDir = move;
+            }
+            else
+            {
+                move = (Vector3)dodgeDir;
+            }
+        }
+
         //Using the character transforms' forward direction to assign which direction to dash and then moves the character in the direction with high velocity
         if (currentMovementType == MovementType.Dashing)
         {
             if (dashDir == null)
             {
-                dashVelocity = transform.forward * 2;
+                dashVelocity = transform.forward * 3;
                 move += dashVelocity;
                 dashDir = move;
             }
@@ -259,7 +330,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move = (Vector3)dashDir;
             }
         }
-        print(hitNormal);
 
         if (!grounded && hitNormal.y >= 0f) //Får spelaren att glida ned för branta ytor
         {
@@ -272,12 +342,38 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //Lets the character move with the character controller
         charController.Move(move / 8);
 
+        //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
+
+        if (grounded)
+        {
+            anim.SetBool("Falling", false);
+        }
 
         if (jumpMomentum && charController.isGrounded)
         {
             jumpMomentum = false;
         }
+
+        if (sprinting)
+        {
+            anim.SetFloat("Speed", 20);
+        }
     }
 
+    float CalculateSpeed(Vector3 velocity)
+    {
+        Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.y);
+        return newVelocity.magnitude;
+    }
+
+    //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
+    IEnumerator Dodge()
+    {
+        previousMovementType = currentMovementType;
+        currentMovementType = MovementType.Dodging;
+        yield return new WaitForSeconds(0.3f);
+        currentMovementType = previousMovementType;
+        dodgeDir = null;
+    }
 }

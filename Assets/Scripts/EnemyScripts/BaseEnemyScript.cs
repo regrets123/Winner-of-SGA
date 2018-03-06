@@ -9,16 +9,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange, attackRange;
+    protected float aggroRange, attackRange, invulnerabilityTime;
 
     [SerializeField]
-    protected int maxHealth, strength;
+    protected int maxHealth, strength, lifeForce;
 
     [SerializeField]
     protected string unitName;
 
     [SerializeField]
-    protected GameObject aggroCenter;
+    protected GameObject aggroCenter, soul;
 
     [SerializeField]
     protected BaseWeaponScript weapon;
@@ -43,6 +43,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected NavMeshAgent nav;
 
     protected float lastAttack = 0f;
+
+    bool invulnerable = false;
 
     protected virtual void Start()
     {
@@ -98,12 +100,25 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)
     {
+        if (invulnerable)
+            return;
         int damage = ModifyDamage(incomingDamage);
         this.health -= damage;
         if (this.health <= 0)
         {
             Death();
         }
+        else
+        {
+            StartCoroutine("Invulnerability");
+        }
+    }
+
+    IEnumerator Invulnerability()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityTime);
+        invulnerable = false;
     }
 
     //Låter fienden attackera
@@ -123,6 +138,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected virtual void Death()
     {
         //play death animation, destroy
+        PlayerControls player = FindObjectOfType<PlayerControls>();
+        if (player.Inventory.EquippableAbilities != null && player.Inventory.EquippableAbilities.Count > 0)
+        {
+            Instantiate(soul).GetComponent<LifeForceTransmitterScript>().StartMe(player, lifeForce);
+        }
         Destroy(gameObject);
     }
 
