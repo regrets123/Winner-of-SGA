@@ -13,6 +13,7 @@ public class MagicDash : BaseAbilityScript
     {
         if (player.Stamina >= staminaCost)
         {
+            base.UseAbility();
             StartCoroutine("Dash");
             player.Stamina -= staminaCost;
         }

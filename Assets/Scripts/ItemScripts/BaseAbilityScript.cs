@@ -8,11 +8,13 @@ public class BaseAbilityScript : BaseEquippableObject {
 
 
     [SerializeField]
-    protected float staminaCost;
+    protected float staminaCost, cooldownTime;
+
+    bool coolingDown = false;
 
     public virtual void UseAbility()
     {
-
+        StartCoroutine("Cooldown");
     }
 
     protected virtual void Update()
@@ -21,7 +23,8 @@ public class BaseAbilityScript : BaseEquippableObject {
             || player.CurrentMovementType == MovementType.Sprinting //Låter spelaren använda abilities när den inte attackerar, dodgar eller liknande
             || player.CurrentMovementType == MovementType.Walking
             || player.CurrentMovementType == MovementType.Jumping)
-            && Input.GetButtonDown("Ability"))
+            && Input.GetButtonDown("Ability")
+            && !coolingDown)
         {
             UseAbility();
         }
@@ -31,6 +34,13 @@ public class BaseAbilityScript : BaseEquippableObject {
     {
         base.Equip();
         player.CurrentAbility = this;
+    }
+
+    protected IEnumerator Cooldown()
+    {
+        coolingDown = true;
+        yield return new WaitForSeconds(cooldownTime);
+        coolingDown = false;
     }
 
 }

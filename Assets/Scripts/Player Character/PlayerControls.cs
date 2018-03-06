@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -48,7 +48,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -127,7 +127,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         pM.Pausables.Add(this);
         inventory = new InventoryManager(this);
         slopeLimit = charController.slopeLimit;
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     public void RestoreHealth(int amount)
@@ -272,17 +272,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Jump") && grounded)
             {
-                anim.SetTrigger("Jump");
-                anim.SetBool("Falling", true);
                 if (sprinting)
                 {
                     jumpMomentum = true;
                 }
                 yVelocity = jumpSpeed;
+                anim.SetTrigger("Jump");
             }
         }
         else
         {
+            anim.SetBool("Falling", true);
             yVelocity -= gravity;
         }
 
@@ -293,9 +293,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (Input.GetButtonDown("Dash"))
             {
-                if (stamina >= dodgeCost)
+                if (stamina >= dodgeCost && canDodge)
                 {
                     StartCoroutine("Dodge");
+                    StartCoroutine("DodgeCooldown");
                     stamina -= dodgeCost;
                 }
             }
@@ -345,7 +346,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
-        if (grounded)
+        if (charController.isGrounded)
         {
             anim.SetBool("Falling", false);
         }
@@ -363,8 +364,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     float CalculateSpeed(Vector3 velocity)
     {
-        Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.y);
+        Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
+    }
+
+    IEnumerator DodgeCooldown()
+    {
+        canDodge = false;
+        yield return new WaitForSeconds(dodgeCooldown);
+        canDodge = true;
     }
 
     //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously

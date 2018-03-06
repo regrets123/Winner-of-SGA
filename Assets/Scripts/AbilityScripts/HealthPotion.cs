@@ -12,6 +12,7 @@ public class HealthPotion : BaseAbilityScript
     //Restore health to the player based on the amount the potion will give
     public override void UseAbility()
     {
+        base.UseAbility();
         player.RestoreHealth(amount);
     }
 }

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 7bf011e2622b1884daed69e770e2b4b3
-timeCreated: 1520339384
+guid: daad5fe0d2fbacc4f8618891666aaf26
+timeCreated: 1520330561
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -79,7 +79,9 @@ ModelImporter:
     400068: spine_1_JNT
     400070: spine_2_JNT
     400072: spine_3_JNT
-    7400000: Idle
+    7400000: Jump
+    7400002: Falling
+    7400004: Landing
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -109,17 +111,17 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle
-      takeName: IdleAnimation
-      firstFrame: 1
-      lastFrame: 30
+      name: Jump
+      takeName: Jump
+      firstFrame: 3
+      lastFrame: 11
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -135,7 +137,35 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Landing
+      takeName: Jump
+      firstFrame: 27
+      lastFrame: 31
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -165,7 +195,7 @@ ModelImporter:
     tangentImportMode: 3
     normalCalculationMode: 4
   importAnimation: 1
-  copyAvatar: 0
+  copyAvatar: 1
   humanDescription:
     serializedVersion: 2
     human: []
@@ -182,7 +212,8 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: b72c7761aace93b4b9d684fd0b9bc4a9,
+    type: 3}
   animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
