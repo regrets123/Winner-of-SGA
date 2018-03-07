@@ -50,13 +50,6 @@ public class BaseWeaponScript : BaseEquippableObject
         set { if (this.equipper == null) this.equipper = value; }
     }
 
-    //Change the players current weapon
-    public override void Equip()
-    {
-        base.Equip();
-        player.CurrentWeapon = this;
-    }
-
     public float AttackSpeed
     {
         get { return this.attackSpeed; }
