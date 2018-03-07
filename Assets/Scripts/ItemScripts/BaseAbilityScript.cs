@@ -30,12 +30,6 @@ public class BaseAbilityScript : BaseEquippableObject {
         }
     }
 
-    public override void Equip()
-    {
-        base.Equip();
-        player.CurrentAbility = this;
-    }
-
     protected IEnumerator Cooldown()
     {
         coolingDown = true;

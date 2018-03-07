@@ -20,21 +20,10 @@ public class BaseEquippableObject : MonoBehaviour {
     {
         get { return this.inventoryIcon; }
     }
-
-    //Equippar ett föremål
-    public virtual void Equip()
-    {
-        this.equipped = true;
-    }
+    
 
     protected void Start()
     {
         this.player = FindObjectOfType<PlayerControls>();
-    }
-
-    //Unequippar ett föremål
-    public void UnEquip()
-    {
-        this.equipped = false;
     }
 }
