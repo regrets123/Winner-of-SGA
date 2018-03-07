@@ -8,7 +8,7 @@ using UnityEngine;
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {
-    void Attack(int attackMove);
+    void Attack();
     void TakeDamage(int damage);
     void Kill();
 }
@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -95,7 +95,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentAbility = value; }
     }
 
-    //Gets the current weapon
+    //Gets and sets the current weapon
     public BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
@@ -135,6 +135,27 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
     }
 
+    public void Equip(GameObject equipment)
+    {
+        BaseEquippableObject equippable = Instantiate(equipment, weaponPosition).GetComponent<BaseEquippableObject>();
+        if (equippable is BaseWeaponScript && currentWeapon != null)
+        {
+            Destroy(currentWeapon);
+            currentWeapon = equippable as BaseWeaponScript;
+        }
+        else if (equippable is BaseAbilityScript && currentAbility != null)
+        {
+            Destroy(currentAbility);
+            currentAbility = equippable as BaseAbilityScript;
+        }
+    }
+
+    public void UnEquipWeapon()
+    {
+        Destroy(this.currentWeapon);
+        this.currentWeapon = null;
+    }
+
     private void Update()
     {
         if (inputEnabled)
@@ -164,7 +185,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (Input.GetButtonDown("Fire1"))
             {
-                anim.SetTrigger("Attack");
+                Attack();
             }
         }
     }
@@ -212,9 +233,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     //Sets the current movement type as attacking and which attack move thats used
-    public void Attack(int attackMove)
+    public void Attack()
     {
         this.currentMovementType = MovementType.Attacking;
+
+        anim.SetTrigger("Attack");
     }
 
     //Modifies damage depending on armor, resistance etc
@@ -291,7 +314,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Dash"))
+            if (Input.GetButtonDown("Dodge"))
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
@@ -307,7 +330,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             if (dodgeDir == null)
             {
-                dodgeVelocity = transform.forward * 10;
+                dodgeVelocity = transform.forward * dodgeSpeed;
                 move += dodgeVelocity;
                 dodgeDir = move;
             }
@@ -356,7 +379,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             jumpMomentum = false;
         }
 
-        if (sprinting)
+        if (sprinting && charController.velocity.magnitude > 0f)
         {
             anim.SetFloat("Speed", 20);
         }
@@ -380,7 +403,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         previousMovementType = currentMovementType;
         currentMovementType = MovementType.Dodging;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(dodgeDuration);
         currentMovementType = previousMovementType;
         dodgeDir = null;
     }

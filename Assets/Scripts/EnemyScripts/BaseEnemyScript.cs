@@ -64,7 +64,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && Time.time > lastAttack + weapon.AttackSpeed)
             {
-                Attack(Random.Range(0, weapon.Attacks.Length - 1));
+                Attack(/*Random.Range(0, weapon.Attacks.Length - 1)*/);
             }
             else
             {
@@ -122,7 +122,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     //Låter fienden attackera
-    public void Attack(int attackMove)
+    public void Attack()
     {
         lastAttack = Time.time;
         this.currentMovementType = MovementType.Attacking;
