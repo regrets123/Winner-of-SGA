@@ -97,8 +97,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryIcon: {fileID: 0}
   objectName: 
+  myType: 0
   staminaCost: 0
-  cooldownTime: 0
+  cooldownTime: 1
   duration: 0.7
 --- !u!135 &135363889508241840
 SphereCollider:
