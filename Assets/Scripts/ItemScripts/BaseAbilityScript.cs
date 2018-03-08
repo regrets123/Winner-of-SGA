@@ -4,7 +4,8 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class BaseAbilityScript : BaseEquippableObject {
+public class BaseAbilityScript : BaseEquippableObject
+{
 
 
     [SerializeField]

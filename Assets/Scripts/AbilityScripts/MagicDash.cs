@@ -8,12 +8,16 @@ public class MagicDash : BaseAbilityScript
 {
     MovementType previousMovementType;
 
+    [SerializeField]
+    float duration;
+
     //Activated from the BaseAbility script. If the player have enough stamina the ability will activate and drain the staminaCost
     public override void UseAbility()
     {
         if (player.Stamina >= staminaCost)
         {
             base.UseAbility();
+            player.Anim.SetTrigger("Dash");
             StartCoroutine("Dash");
             player.Stamina -= staminaCost;
         }
@@ -24,7 +28,7 @@ public class MagicDash : BaseAbilityScript
     {
         previousMovementType = player.CurrentMovementType;
         player.CurrentMovementType = MovementType.Dashing;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(duration);
         player.CurrentMovementType = previousMovementType;
     }
 }

@@ -60,6 +60,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Rigidbody rB;
 
+
     public float Stamina
     {
         get { return this.stamina; }
@@ -112,6 +113,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.yVelocity = value; }
     }
 
+    public Animator Anim
+    {
+        get { return this.anim; }
+    }
+
+    [SerializeField]
+    GameObject dashTest;
+
     void Start()
     {
         //Just setting all the variables needed
@@ -128,6 +137,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = new InventoryManager(this);
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
+        this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
     }
 
     public void RestoreHealth(int amount)
