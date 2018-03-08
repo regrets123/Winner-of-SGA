@@ -147,7 +147,7 @@ public class CameraFollow : MonoBehaviour, IPausable
 
         if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f && lockOn)
         {
-            visibleEnemies = new List<BaseEnemyScript>();
+            visibleEnemies.Clear();/* = new List<BaseEnemyScript>();*/
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
             {
