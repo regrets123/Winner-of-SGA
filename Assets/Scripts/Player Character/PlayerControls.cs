@@ -242,14 +242,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            PlayerMovement(sprinting);
+            if (currentMovementType != MovementType.Attacking)
+                PlayerMovement(sprinting);
 
             if (Input.GetButtonDown("Interact"))
             {
                 //interagera med vad det nu kan vara
             }
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
+                && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking))
             {
                 Attack();
             }
@@ -293,8 +295,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Sets the current movement type as attacking and which attack move thats used
     public void Attack()
     {
-        this.currentMovementType = MovementType.Attacking;
-
+        this.currentWeapon.StartCoroutine("AttackCooldown");
         anim.SetTrigger("Attack");
     }
 
@@ -333,11 +334,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging)
         {
             dashDir = null;
-            currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
             move.Normalize();
             move *= moveSpeed;
-
 
             if (sprinting || jumpMomentum)
             {
@@ -346,7 +345,20 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
-        anim.SetFloat("Speed", CalculateSpeed(charController.velocity));
+        float charSpeed = CalculateSpeed(charController.velocity);
+        anim.SetFloat("Speed", charSpeed);
+        if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+        {
+            currentMovementType = MovementType.Idle;
+        }
+        else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
+        {
+            currentMovementType = MovementType.Walking;
+        }
+        else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
+        {
+            currentMovementType = MovementType.Running;
+        }
 
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
@@ -359,6 +371,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
                 yVelocity = jumpSpeed;
                 anim.SetTrigger("Jump");
+                currentMovementType = MovementType.Jumping;
             }
         }
         else
@@ -430,16 +443,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (charController.isGrounded)
         {
             anim.SetBool("Falling", false);
-        }
-
-        if (jumpMomentum && charController.isGrounded)
-        {
             jumpMomentum = false;
+            currentMovementType = MovementType.Idle;
         }
 
-        if (sprinting && charController.velocity.magnitude > 0f)
+        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping)
         {
             anim.SetFloat("Speed", 20);
+            currentMovementType = MovementType.Sprinting;
         }
     }
 

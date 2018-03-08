@@ -38,6 +38,25 @@ public class BaseWeaponScript : BaseEquippableObject
     [SerializeField]
     AudioClip[] attackSounds, impactSounds;
 
+    bool canAttack = true;
+
+    MovementType previousMovement;
+
+    public bool CanAttack
+    {
+        get { return this.canAttack; }
+    }
+
+    public IEnumerator AttackCooldown()
+    {
+        previousMovement = player.CurrentMovementType;
+        player.CurrentMovementType = MovementType.Attacking;
+        this.canAttack = false;
+        yield return new WaitForSeconds(attackSpeed);
+        this.canAttack = true;
+        player.CurrentMovementType = previousMovement;
+    }
+
     public AttackMoves[] Attacks
     {
         get { return this.attacks; }

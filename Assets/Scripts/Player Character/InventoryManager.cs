@@ -36,7 +36,6 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("hallåååå");
         this.player = FindObjectOfType<PlayerControls>();
         inventory[0] = new List<GameObject>();
         inventory[1] = new List<GameObject>();
@@ -54,7 +53,6 @@ public class InventoryManager : MonoBehaviour
         //se till att rätt saker händer när rätt knappar trycks på
         if (Input.GetKeyDown("r"))
         {
-            Debug.Log("hej?");
             Equip();
         }
         //}
@@ -164,7 +162,6 @@ public class InventoryManager : MonoBehaviour
     //Lägger till nya föremål i spelarens inventory
     public void NewEquippable(GameObject equippable)
     {
-        Debug.Log("lol");
         if (equippable.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
         {
             AddEquippable(equippable, 0);

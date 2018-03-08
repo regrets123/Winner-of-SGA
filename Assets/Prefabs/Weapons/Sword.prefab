@@ -114,8 +114,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryIcon: {fileID: 0}
   objectName: Sword00
+  myType: 0
   damage: 10
-  attackSpeed: 2
+  attackSpeed: 0.3
   repeatRate: 1
   attacks: 
   attackSounds: []
