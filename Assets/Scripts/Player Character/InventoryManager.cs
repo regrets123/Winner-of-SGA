@@ -11,9 +11,9 @@ public class InventoryManager
     [SerializeField]
     GameObject inventoryMenu;
 
-    List<BaseEquippableObject> equippableWeapons, equippableAbilities/*, equippableItems*/;
+    List<GameObject> equippableWeapons, equippableAbilities/*, equippableItems*/;
 
-    List<BaseEquippableObject>[] inventory = new List<BaseEquippableObject>[2];
+    List<GameObject>[] inventory = new List<GameObject>[2];
 
     PlayerControls player;
 
@@ -24,7 +24,7 @@ public class InventoryManager
     [SerializeField]
     Image[] inventoryImages = new Image[3];
 
-    public List<BaseEquippableObject> EquippableAbilities
+    public List<GameObject> EquippableAbilities
     {
         get { return this.equippableAbilities; }
     }
@@ -32,8 +32,8 @@ public class InventoryManager
     public InventoryManager(PlayerControls player)
     {
         this.player = player;
-        inventory[0] = new List<BaseEquippableObject>();
-        inventory[1] = new List<BaseEquippableObject>();
+        inventory[0] = new List<GameObject>();
+        inventory[1] = new List<GameObject>();
         //inventory[2] = new List<BaseEquippableScript>();
         equippableWeapons = inventory[0];
         equippableAbilities = inventory[1];
@@ -111,22 +111,22 @@ public class InventoryManager
     //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
     void UpdateButtons()
     {
-        inventoryImages[1].sprite = inventory[displayCollection][collectionIndex].InventoryIcon;
+        inventoryImages[1].sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
         if (collectionIndex == 0)
         {
-            inventoryImages[0].sprite = inventory[displayCollection][inventory[displayCollection].Count - 1].InventoryIcon;
+            inventoryImages[0].sprite = inventory[displayCollection][inventory[displayCollection].Count - 1].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         else
         {
-            inventoryImages[0].sprite = inventory[displayCollection][collectionIndex - 1].InventoryIcon;
+            inventoryImages[0].sprite = inventory[displayCollection][collectionIndex - 1].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         if (collectionIndex + 1 == inventory[displayCollection].Count)
         {
-            inventoryImages[2].sprite = inventory[displayCollection][0].InventoryIcon;
+            inventoryImages[2].sprite = inventory[displayCollection][0].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         else
         {
-            inventoryImages[2].sprite = inventory[displayCollection][collectionIndex + 1].InventoryIcon;
+            inventoryImages[2].sprite = inventory[displayCollection][collectionIndex + 1].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
     }
 
@@ -139,7 +139,7 @@ public class InventoryManager
             Debug.Log("problem med inventory");
             return;
         }
-        inventory[displayCollection][collectionIndex].Equip();
+        player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
 
@@ -151,13 +151,13 @@ public class InventoryManager
 
 
     //Lägger till nya föremål i spelarens inventory
-    public void NewEquippable(BaseEquippableObject equippable)
+    public void NewEquippable(GameObject equippable)
     {
-        if (equippable is BaseWeaponScript)
+        if (equippable.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
         {
             AddEquippable(equippable, 0);
         }
-        else if (equippable is BaseAbilityScript)
+        else if (equippable.GetComponent<BaseEquippableObject>() is BaseAbilityScript)
         {
             AddEquippable(equippable, 1);
         }
@@ -169,7 +169,7 @@ public class InventoryManager
     }
 
     //Lägger till equippablen i rätt collection
-    void AddEquippable(BaseEquippableObject equippable, int collection)
+    void AddEquippable(GameObject equippable, int collection)
     {
         inventory[collection].Add(equippable);
     }
