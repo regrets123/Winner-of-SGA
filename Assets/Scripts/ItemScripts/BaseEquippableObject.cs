@@ -16,6 +16,14 @@ public class BaseEquippableObject : MonoBehaviour {
 
     protected bool equipped = false;
 
+    [SerializeField]
+    protected EquipableType myType;
+
+    public EquipableType MyType
+    {
+        get { return this.myType; }
+    }
+
     public Sprite InventoryIcon
     {
         get { return this.inventoryIcon; }

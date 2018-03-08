@@ -96,6 +96,15 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    protected void OnTriggerStay(Collider other)
+    {
+        if (target == null && other.gameObject.tag == "Player")
+        {
+            if (Physics.Linecast(transform.position, other.transform.position, 2))
+                Aggro(other.gameObject.GetComponent<PlayerControls>());
+        }
+    }
+
 
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)

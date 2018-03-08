@@ -121,6 +121,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     GameObject dashTest;
 
+    bool canSheathe = true;
+
     void Start()
     {
         //Just setting all the variables needed
@@ -131,13 +133,40 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.health = maxHealth;
         this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
-        EquipWeapon(0);
+        //EquipWeapon(0);
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
-        inventory = new InventoryManager(this);
+        inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
         this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
+        this.inventory.NewEquippable(weapons[0]);
+    }
+
+    void SheatheAndUnsheathe()
+    {
+        if (canSheathe)
+        {
+            anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
+            anim.SetTrigger("SheatheAndUnsheathe");
+            StartCoroutine("SheathingTimer");
+        }
+    }
+
+    IEnumerator SheathingTimer()
+    {
+        canSheathe = false;
+        yield return new WaitForSeconds(0.4f);
+        if (currentWeapon != null)
+        {
+            UnEquipWeapon();
+        }
+        else
+        {
+            //Equip(weapons[0]);
+            EquipWeapon(0);
+        }
+        canSheathe = true;
     }
 
     public void RestoreHealth(int amount)
@@ -147,22 +176,49 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
+        /*
         BaseEquippableObject equippable = Instantiate(equipment, weaponPosition).GetComponent<BaseEquippableObject>();
         if (equippable is BaseWeaponScript && currentWeapon != null)
         {
-            Destroy(currentWeapon);
+            Destroy(currentWeapon.gameObject);
             currentWeapon = equippable as BaseWeaponScript;
         }
         else if (equippable is BaseAbilityScript && currentAbility != null)
         {
-            Destroy(currentAbility);
-            currentAbility = equippable as BaseAbilityScript;
+            
         }
+        */
+        switch (equipment.GetComponent<BaseEquippableObject>().MyType)
+        {
+            case EquipableType.Ability:
+                Destroy(currentAbility.gameObject);
+                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                break;
+
+            case EquipableType.Weapon:
+                SheatheAndUnsheathe();
+                break;
+
+            default:
+                print("unspecified object type, gör om gör rätt");
+                break;
+        }
+    }
+
+    //Code for equipping different weapons
+    public void EquipWeapon(int weaponToEquip)
+    {
+        if (currentWeapon != null)
+        {
+            print("destroying");
+            Destroy(currentWeapon.gameObject);
+        }
+        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
     public void UnEquipWeapon()
     {
-        Destroy(this.currentWeapon);
+        Destroy(this.currentWeapon.gameObject);
         this.currentWeapon = null;
     }
 
@@ -232,14 +288,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         invulnerable = true;
         yield return new WaitForSeconds(invulnerablityTime);
         invulnerable = false;
-    }
-
-    //Code for equipping different weapons
-    public void EquipWeapon(int weaponToEquip)
-    {
-        if (currentWeapon != null)
-            Destroy(currentWeapon.gameObject);
-        //this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
     //Sets the current movement type as attacking and which attack move thats used

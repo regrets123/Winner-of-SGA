@@ -1061,6 +1061,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: weapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4957631059493478, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1104,6 +1109,12 @@ Prefab:
       propertyPath: dashTest
       value: 
       objectReference: {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133,
+        type: 2}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
