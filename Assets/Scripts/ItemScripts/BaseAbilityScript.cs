@@ -12,6 +12,7 @@ public class BaseAbilityScript : BaseEquippableObject
     protected float staminaCost, cooldownTime;
 
     bool coolingDown = false;
+    
 
     public virtual void UseAbility()
     {

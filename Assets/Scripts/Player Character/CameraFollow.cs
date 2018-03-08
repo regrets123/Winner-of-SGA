@@ -73,7 +73,7 @@ public class CameraFollow : MonoBehaviour, IPausable
 
             transform.rotation = localRotation;
         }
-        else if(lockOn && !paused)
+        else if (lockOn && !paused)
         {
         }
 
@@ -103,9 +103,21 @@ public class CameraFollow : MonoBehaviour, IPausable
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
             {
-                if (!Physics.Linecast(transform.position, enemy.transform.position, 8))
+                RaycastHit hit;
+
+                //Physics.Raycast(transform.position, enemy.transform.position, out hit, 8);
+
+                if (!Physics.Linecast(transform.position, enemy.transform.position, out hit, -(1 << 8)))
                 {
                     visibleEnemies.Add(enemy);
+                    //Debug.DrawLine(transform.position, enemy.transform.position, Color.red);
+                    //if (hit.transform != null && hit.transform.gameObject.layer != LayerMask.NameToLayer("Environment"))
+                    //{
+                    //}
+                    //else if(hit.transform != null && hit.transform.gameObject.layer == LayerMask.NameToLayer("Environment"))
+                    //{
+                    //    visibleEnemies.Remove(enemy);
+                    //}
                 }
                 //else
                 //{
@@ -113,7 +125,7 @@ public class CameraFollow : MonoBehaviour, IPausable
                 //}
             }
 
-            closestDistance = targetsLockOnAble.Min(e => (e.transform.position - cameraFollowObj.transform.position).magnitude);
+            closestDistance = visibleEnemies.Min(e => (e.transform.position - cameraFollowObj.transform.position).magnitude);
 
             foreach (BaseEnemyScript target in visibleEnemies)
             {
@@ -135,12 +147,11 @@ public class CameraFollow : MonoBehaviour, IPausable
 
         if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f && lockOn)
         {
-            visibleEnemies = new List<BaseEnemyScript>();
-
+            visibleEnemies.Clear();/* = new List<BaseEnemyScript>();*/
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
             {
-                if (!Physics.Linecast(transform.position, enemy.transform.position, 8))
+                if (!Physics.Linecast(transform.position, enemy.transform.position, -(1 << 8)))
                 {
                     visibleEnemies.Add(enemy);
                 }
@@ -149,7 +160,7 @@ public class CameraFollow : MonoBehaviour, IPausable
                 //    visibleEnemies.Remove(enemy);
                 //}
             }
-            
+
             for (int i = 0; i < visibleEnemies.Count; i++)
             {
 
@@ -188,7 +199,7 @@ public class CameraFollow : MonoBehaviour, IPausable
         {
             toRotate = Quaternion.LookRotation(lookAtMe.transform.position - transform.position);
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth*Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth * Time.deltaTime);
         }
     }
 

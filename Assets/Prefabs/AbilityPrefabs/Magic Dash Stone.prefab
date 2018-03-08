@@ -95,7 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3c80dcdb416f04bae5933f3d6ebf69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
+  inventoryIcon: {fileID: 0}
+  objectName: 
+  staminaCost: 0
+  cooldownTime: 0
+  duration: 0.7
 --- !u!135 &135363889508241840
 SphereCollider:
   m_ObjectHideFlags: 1

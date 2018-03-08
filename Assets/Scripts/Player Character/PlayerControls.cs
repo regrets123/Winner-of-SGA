@@ -121,6 +121,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     GameObject dashTest;
 
+    bool canSheathe = true;
+
     void Start()
     {
         //Just setting all the variables needed
@@ -131,13 +133,40 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.health = maxHealth;
         this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
-        EquipWeapon(0);
+        //EquipWeapon(0);
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
-        inventory = new InventoryManager(this);
+        inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
         this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
+        this.inventory.NewEquippable(weapons[0]);
+    }
+
+    void SheatheAndUnsheathe()
+    {
+        if (canSheathe)
+        {
+            anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
+            anim.SetTrigger("SheatheAndUnsheathe");
+            StartCoroutine("SheathingTimer");
+        }
+    }
+
+    IEnumerator SheathingTimer()
+    {
+        canSheathe = false;
+        yield return new WaitForSeconds(0.4f);
+        if (currentWeapon != null)
+        {
+            UnEquipWeapon();
+        }
+        else
+        {
+            //Equip(weapons[0]);
+            EquipWeapon(0);
+        }
+        canSheathe = true;
     }
 
     public void RestoreHealth(int amount)
@@ -147,22 +176,49 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
+        /*
         BaseEquippableObject equippable = Instantiate(equipment, weaponPosition).GetComponent<BaseEquippableObject>();
         if (equippable is BaseWeaponScript && currentWeapon != null)
         {
-            Destroy(currentWeapon);
+            Destroy(currentWeapon.gameObject);
             currentWeapon = equippable as BaseWeaponScript;
         }
         else if (equippable is BaseAbilityScript && currentAbility != null)
         {
-            Destroy(currentAbility);
-            currentAbility = equippable as BaseAbilityScript;
+            
         }
+        */
+        switch (equipment.GetComponent<BaseEquippableObject>().MyType)
+        {
+            case EquipableType.Ability:
+                Destroy(currentAbility.gameObject);
+                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                break;
+
+            case EquipableType.Weapon:
+                SheatheAndUnsheathe();
+                break;
+
+            default:
+                print("unspecified object type, gör om gör rätt");
+                break;
+        }
+    }
+
+    //Code for equipping different weapons
+    public void EquipWeapon(int weaponToEquip)
+    {
+        if (currentWeapon != null)
+        {
+            print("destroying");
+            Destroy(currentWeapon.gameObject);
+        }
+        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
     }
 
     public void UnEquipWeapon()
     {
-        Destroy(this.currentWeapon);
+        Destroy(this.currentWeapon.gameObject);
         this.currentWeapon = null;
     }
 
@@ -186,14 +242,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            PlayerMovement(sprinting);
+            if (currentMovementType != MovementType.Attacking)
+                PlayerMovement(sprinting);
 
             if (Input.GetButtonDown("Interact"))
             {
                 //interagera med vad det nu kan vara
             }
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
+                && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking))
             {
                 Attack();
             }
@@ -234,19 +292,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         invulnerable = false;
     }
 
-    //Code for equipping different weapons
-    public void EquipWeapon(int weaponToEquip)
-    {
-        if (currentWeapon != null)
-            Destroy(currentWeapon.gameObject);
-        //this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
-    }
-
     //Sets the current movement type as attacking and which attack move thats used
     public void Attack()
     {
-        this.currentMovementType = MovementType.Attacking;
-
+        this.currentWeapon.StartCoroutine("AttackCooldown");
         anim.SetTrigger("Attack");
     }
 
@@ -285,11 +334,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging)
         {
             dashDir = null;
-            currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
             move.Normalize();
             move *= moveSpeed;
-
 
             if (sprinting || jumpMomentum)
             {
@@ -298,7 +345,20 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
-        anim.SetFloat("Speed", CalculateSpeed(charController.velocity));
+        float charSpeed = CalculateSpeed(charController.velocity);
+        anim.SetFloat("Speed", charSpeed);
+        if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+        {
+            currentMovementType = MovementType.Idle;
+        }
+        else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
+        {
+            currentMovementType = MovementType.Walking;
+        }
+        else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
+        {
+            currentMovementType = MovementType.Running;
+        }
 
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
@@ -311,6 +371,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
                 yVelocity = jumpSpeed;
                 anim.SetTrigger("Jump");
+                currentMovementType = MovementType.Jumping;
             }
         }
         else
@@ -382,16 +443,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (charController.isGrounded)
         {
             anim.SetBool("Falling", false);
-        }
-
-        if (jumpMomentum && charController.isGrounded)
-        {
             jumpMomentum = false;
+            currentMovementType = MovementType.Idle;
         }
 
-        if (sprinting && charController.velocity.magnitude > 0f)
+        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping)
         {
             anim.SetFloat("Speed", 20);
+            currentMovementType = MovementType.Sprinting;
         }
     }
 

@@ -5,7 +5,12 @@ using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
-public class InventoryManager
+public enum EquipableType
+{
+    Weapon, Ability
+}
+
+public class InventoryManager : MonoBehaviour
 {
 
     [SerializeField]
@@ -29,9 +34,9 @@ public class InventoryManager
         get { return this.equippableAbilities; }
     }
 
-    public InventoryManager(PlayerControls player)
+    private void Awake()
     {
-        this.player = player;
+        this.player = FindObjectOfType<PlayerControls>();
         inventory[0] = new List<GameObject>();
         inventory[1] = new List<GameObject>();
         //inventory[2] = new List<BaseEquippableScript>();
@@ -41,12 +46,16 @@ public class InventoryManager
 
     }
 
-    private void Update()
+    void Update()
     {
-        if (inventoryMenu.activeSelf)
+        //if (inventoryMenu.activeSelf)
+        //{
+        //se till att rätt saker händer när rätt knappar trycks på
+        if (Input.GetKeyDown("r"))
         {
-            //se till att rätt saker händer när rätt knappar trycks på
+            Equip();
         }
+        //}
     }
 
     //Indikerar vilken equippable spelaren överväger att equippa

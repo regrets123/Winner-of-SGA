@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4456647354218700}
   - component: {fileID: 114951520643432290}
+  - component: {fileID: 135274471682224554}
   m_Layer: 0
   m_Name: CamBase
   m_TagString: Untagged
@@ -151,6 +152,7 @@ MonoBehaviour:
   inputSensitivity: 150
   smoothX: 0
   smoothY: 0
+  lockOnSmooth: 3
   cameraFollowObj: {fileID: 1915198808848154, guid: 62d1bc2f50fb3054bbfed3bd4be46262,
     type: 2}
   cameraObj: {fileID: 1732705421200960}
@@ -162,3 +164,15 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1732705421200960}
   m_Enabled: 1
+--- !u!135 &135274471682224554
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1269810134394004}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 10}
