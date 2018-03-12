@@ -38,9 +38,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity;
-
-    float stamina, h, v;
+    float yVelocity, stamina, h, v;
 
     int health, lifeForce = 0;
 
@@ -48,7 +46,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -116,6 +114,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public Animator Anim
     {
         get { return this.anim; }
+    }
+
+    public bool Dead
+    {
+        get { return dead; }
+        set { Dead = dead; }
     }
 
     [SerializeField]
@@ -225,7 +229,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private void Update()
     {
-        if (inputEnabled)
+        if (inputEnabled && !dead)
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
@@ -273,11 +277,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void TakeDamage(int incomingDamage)
     {
         if (invulnerable)
+        {
             return;
-        health -= ModifyDamage(incomingDamage);
+        }
+        else
+        {
+            health -= ModifyDamage(incomingDamage);
+            print("You will die");
+        }
+
 
         if (health <= 0)
         {
+            print("You should die");
             Death();
         }
         else
@@ -309,6 +321,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         move += transform.forward*attackMoveLength;
 
+        TakeDamage(1);
     }
 
     //Modifies damage depending on armor, resistance etc
@@ -324,7 +337,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void Death()
     {
-        //death animation och reload last saved state
+        if (hitNormal.y > 0)
+        {
+            //death animation och reload last saved state
+            anim.SetTrigger("RightDead");
+            dead = true;
+        }
+        else if(hitNormal.y < 0)
+        {
+            anim.SetTrigger("LeftDead");
+            dead = true;
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)

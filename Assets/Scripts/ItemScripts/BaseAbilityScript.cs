@@ -12,7 +12,6 @@ public class BaseAbilityScript : BaseEquippableObject
     protected float staminaCost, cooldownTime;
 
     bool coolingDown = false;
-    
 
     public virtual void UseAbility()
     {
@@ -26,7 +25,7 @@ public class BaseAbilityScript : BaseEquippableObject
             || player.CurrentMovementType == MovementType.Walking
             || player.CurrentMovementType == MovementType.Jumping)
             && Input.GetButtonDown("Ability")
-            && !coolingDown)
+            && !coolingDown && !player.Dead)
         {
             UseAbility();
         }

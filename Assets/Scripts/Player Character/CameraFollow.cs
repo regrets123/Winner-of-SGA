@@ -54,21 +54,24 @@ public class CameraFollow : MonoBehaviour, IPausable
     }
 
     void LateUpdate()
-    {        
-        if (!paused && !lockOn)
+    {
+        if (!playerObj.GetComponent<PlayerControls>().Dead)
         {
-            CameraRotation();
+            if (!paused && !lockOn)
+            {
+                CameraRotation();
 
-            transform.rotation = localRotation;
+                transform.rotation = localRotation;
+            }
+            else if (lockOn && !paused)
+            {
+                lockOnSprite.transform.rotation = transform.rotation;
+            }
+
+            CameraUpdater();
+
+            CameraLockOn();
         }
-        else if (lockOn && !paused)
-        {
-            lockOnSprite.transform.rotation = transform.rotation;
-        }
-
-        CameraUpdater();
-
-        CameraLockOn();
     }
 
     void CameraRotation()
