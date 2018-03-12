@@ -347,17 +347,20 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
         float charSpeed = CalculateSpeed(charController.velocity);
         anim.SetFloat("Speed", charSpeed);
-        if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+        if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
-            currentMovementType = MovementType.Idle;
-        }
-        else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
-        {
-            currentMovementType = MovementType.Walking;
-        }
-        else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
-        {
-            currentMovementType = MovementType.Running;
+            if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Idle;
+            }
+            else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Walking;
+            }
+            else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Running;
+            }
         }
 
         //If the player character is on the ground you can jump
@@ -440,14 +443,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
-        if (charController.isGrounded)
+        if (charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
             anim.SetBool("Falling", false);
             jumpMomentum = false;
             currentMovementType = MovementType.Idle;
         }
 
-        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping)
+        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
             anim.SetFloat("Speed", 20);
             currentMovementType = MovementType.Sprinting;
