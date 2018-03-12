@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -214,6 +214,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             Destroy(currentWeapon.gameObject);
         }
         this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon.Equipper = this;
     }
 
     public void UnEquipWeapon()
@@ -243,7 +244,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
 
             if (currentMovementType != MovementType.Attacking)
+            {
                 PlayerMovement(sprinting);
+            }
+
+            //Lets the character move with the character controller
+            charController.Move(move / 8);
 
             if (Input.GetButtonDown("Interact"))
             {
@@ -269,7 +275,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (invulnerable)
             return;
         health -= ModifyDamage(incomingDamage);
-        print(health);
+
         if (health <= 0)
         {
             Death();
@@ -297,6 +303,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         this.currentWeapon.StartCoroutine("AttackCooldown");
         anim.SetTrigger("Attack");
+        //transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward*2, Time.deltaTime*0.5f);
+
+        //transform.position = Vector3.MoveTowards(transform.position, transform.forward, Time.deltaTime * 2);
+
+        move += transform.forward*attackMoveLength;
+
     }
 
     //Modifies damage depending on armor, resistance etc
@@ -345,7 +357,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
+
         float charSpeed = CalculateSpeed(charController.velocity);
+
         anim.SetFloat("Speed", charSpeed);
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
@@ -420,6 +434,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (dashDir == null)
             {
                 dashVelocity = transform.forward * 3;
+                move.y = 0;
                 move += dashVelocity;
                 dashDir = move;
             }
@@ -437,8 +452,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move.z += zVal;
         }
 
-        //Lets the character move with the character controller
-        charController.Move(move / 8);
+        
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);

@@ -221,6 +221,14 @@ public class CameraFollow : MonoBehaviour, IPausable
 
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth * Time.deltaTime);
         }
+        else if(lookAtMe == null && lockOn)
+        {
+            Destroy(lockOnSprite.gameObject);
+            Vector3 rot = transform.localRotation.eulerAngles;
+            rotX = rot.x;
+            rotY = rot.y;
+            lockOn = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)

@@ -1254,17 +1254,18 @@ MonoBehaviour:
   slopeLimit: 40
   slideFriction: -4
   dodgeCost: 0
-  invulnerablityTime: 0
+  invulnerablityTime: 1
   maxLifeForce: 0
   dodgeCooldown: 1
   dodgeDuration: 0.6
   dodgeSpeed: 5
+  attackMoveLength: 0
   maxHealth: 100
   rotspeed: 3
   weapons: []
   weaponPosition: {fileID: 4385959190690106}
   attackAnim: {fileID: 0}
-  dashTest: {fileID: 0}
+  dashTest: {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133, type: 2}
 --- !u!137 &137535728816752232
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
