@@ -88,7 +88,7 @@ public class BaseWeaponScript : BaseEquippableObject
         {
             IKillable targetToHit = other.gameObject.GetComponent<IKillable>();
 
-            if(equipper is BaseEnemyScript && targetToHit is BaseEnemyScript)
+            if((equipper is BaseEnemyScript && targetToHit is BaseEnemyScript) || (equipper is PlayerControls && targetToHit is PlayerControls))
             {
                 return;
             }

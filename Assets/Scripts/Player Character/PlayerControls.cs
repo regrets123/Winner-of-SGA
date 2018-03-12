@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -38,9 +38,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity;
-
-    float stamina, h, v;
+    float yVelocity, stamina, h, v;
 
     int health, lifeForce = 0;
 
@@ -48,7 +46,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -116,6 +114,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public Animator Anim
     {
         get { return this.anim; }
+    }
+
+    public bool Dead
+    {
+        get { return dead; }
+        set { Dead = dead; }
     }
 
     [SerializeField]
@@ -214,6 +218,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             Destroy(currentWeapon.gameObject);
         }
         this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon.Equipper = this;
     }
 
     public void UnEquipWeapon()
@@ -224,7 +229,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     private void Update()
     {
-        if (inputEnabled)
+        if (inputEnabled && !dead)
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
@@ -243,7 +248,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
 
             if (currentMovementType != MovementType.Attacking)
+            {
                 PlayerMovement(sprinting);
+            }
+
+            //Lets the character move with the character controller
+            charController.Move(move / 8);
 
             if (Input.GetButtonDown("Interact"))
             {
@@ -267,11 +277,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void TakeDamage(int incomingDamage)
     {
         if (invulnerable)
+        {
             return;
-        health -= ModifyDamage(incomingDamage);
-        print(health);
+        }
+        else
+        {
+            health -= ModifyDamage(incomingDamage);
+            print("You will die");
+        }
+
+
         if (health <= 0)
         {
+            print("You should die");
             Death();
         }
         else
@@ -297,6 +315,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         this.currentWeapon.StartCoroutine("AttackCooldown");
         anim.SetTrigger("Attack");
+        //transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward*2, Time.deltaTime*0.5f);
+
+        //transform.position = Vector3.MoveTowards(transform.position, transform.forward, Time.deltaTime * 2);
+
+        move += transform.forward*attackMoveLength;
+
+        TakeDamage(1);
     }
 
     //Modifies damage depending on armor, resistance etc
@@ -312,7 +337,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void Death()
     {
-        //death animation och reload last saved state
+        if (hitNormal.y > 0)
+        {
+            //death animation och reload last saved state
+            anim.SetTrigger("RightDead");
+            dead = true;
+        }
+        else if(hitNormal.y < 0)
+        {
+            anim.SetTrigger("LeftDead");
+            dead = true;
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -345,19 +380,24 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
+
         float charSpeed = CalculateSpeed(charController.velocity);
+
         anim.SetFloat("Speed", charSpeed);
-        if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+        if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
-            currentMovementType = MovementType.Idle;
-        }
-        else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
-        {
-            currentMovementType = MovementType.Walking;
-        }
-        else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
-        {
-            currentMovementType = MovementType.Running;
+            if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Idle;
+            }
+            else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Walking;
+            }
+            else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Running;
+            }
         }
 
         //If the player character is on the ground you can jump
@@ -417,6 +457,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (dashDir == null)
             {
                 dashVelocity = transform.forward * 3;
+                move.y = 0;
                 move += dashVelocity;
                 dashDir = move;
             }
@@ -434,20 +475,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move.z += zVal;
         }
 
-        //Lets the character move with the character controller
-        charController.Move(move / 8);
+        
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
-        if (charController.isGrounded)
+        if (charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
             anim.SetBool("Falling", false);
             jumpMomentum = false;
             currentMovementType = MovementType.Idle;
         }
 
-        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping)
+        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
             anim.SetFloat("Speed", 20);
             currentMovementType = MovementType.Sprinting;

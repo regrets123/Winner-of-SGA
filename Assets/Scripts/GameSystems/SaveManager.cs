@@ -47,7 +47,7 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            
+
         }
     }
 
@@ -55,7 +55,7 @@ public class SaveManager : MonoBehaviour
     {
         string spritePath = Screenshot();
         string savePath = "";
-        GetInfoToSave();
+        GetInfoToSave();   //Matar in all info som ska sparas i den virtuella XML-filen
         if (currentSave == null)
         {
             int saveNumber = 0;
@@ -84,7 +84,7 @@ public class SaveManager : MonoBehaviour
     void GetInfoToSave()
     {
         //lagra all relevant info i currentGame
-
+        
     }
 
     string Screenshot()

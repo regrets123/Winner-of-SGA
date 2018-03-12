@@ -54,21 +54,24 @@ public class CameraFollow : MonoBehaviour, IPausable
     }
 
     void LateUpdate()
-    {        
-        if (!paused && !lockOn)
+    {
+        if (!playerObj.GetComponent<PlayerControls>().Dead)
         {
-            CameraRotation();
+            if (!paused && !lockOn)
+            {
+                CameraRotation();
 
-            transform.rotation = localRotation;
+                transform.rotation = localRotation;
+            }
+            else if (lockOn && !paused)
+            {
+                lockOnSprite.transform.rotation = transform.rotation;
+            }
+
+            CameraUpdater();
+
+            CameraLockOn();
         }
-        else if (lockOn && !paused)
-        {
-            lockOnSprite.transform.rotation = transform.rotation;
-        }
-
-        CameraUpdater();
-
-        CameraLockOn();
     }
 
     void CameraRotation()
@@ -220,6 +223,14 @@ public class CameraFollow : MonoBehaviour, IPausable
             toRotate = Quaternion.LookRotation(lookAtMe.transform.position - transform.position);
 
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth * Time.deltaTime);
+        }
+        else if(lookAtMe == null && lockOn)
+        {
+            Destroy(lockOnSprite.gameObject);
+            Vector3 rot = transform.localRotation.eulerAngles;
+            rotX = rot.x;
+            rotY = rot.y;
+            lockOn = false;
         }
     }
 
