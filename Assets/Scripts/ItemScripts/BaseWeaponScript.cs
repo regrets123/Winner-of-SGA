@@ -30,17 +30,25 @@ public class BaseWeaponScript : BaseEquippableObject
     */
 
     [SerializeField]
-    protected float attackSpeed, repeatRate = 1.0f;
+    protected float attackSpeed;
     
     [SerializeField]
     protected AttackMoves[] attacks;
 
     [SerializeField]
-    AudioClip[] attackSounds, impactSounds;
+    AudioClip enemyHit1, enemyHit2, enemyHit3, swing1, swing2, thrust;
 
     bool canAttack = true;
 
     MovementType previousMovement;
+
+    protected float currentSpeed;
+
+    public float CurrentSpeed
+    {
+        get { return this.currentSpeed; }
+        set { this.currentSpeed = value; StartCoroutine("ResetSpeed"); }
+    }
 
     public bool CanAttack
     {
@@ -52,7 +60,7 @@ public class BaseWeaponScript : BaseEquippableObject
         previousMovement = player.CurrentMovementType;
         player.CurrentMovementType = MovementType.Attacking;
         this.canAttack = false;
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(currentSpeed);
         this.canAttack = true;
         player.CurrentMovementType = previousMovement;
     }
@@ -72,12 +80,25 @@ public class BaseWeaponScript : BaseEquippableObject
     public float AttackSpeed
     {
         get { return this.attackSpeed; }
+        //set { attackSpeed = AttackSpeed; }
     }
 
     //Deals damage to an object with IKillable on it.
     public virtual void DealDamage(IKillable target)
     {
         target.TakeDamage(damage);
+    }
+
+    protected IEnumerator ResetSpeed()
+    {
+        yield return new WaitForSeconds(1f);
+        this.currentSpeed = attackSpeed;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        this.currentSpeed = attackSpeed;
     }
 
     //When a weapon hits a killable target the script triggers and deals damage to target
@@ -96,6 +117,7 @@ public class BaseWeaponScript : BaseEquippableObject
             if (targetToHit != null)
             {
                 DealDamage(targetToHit);
+                SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
             }
         }
     }

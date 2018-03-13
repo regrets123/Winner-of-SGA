@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SavedState>
+	<PlayerInfo>
+		<Transform>
+			<Position X="" Y="" Z=""/>
+			<Rotation X="" Y="" Z="" W=""/>
+		</Transform>
+		<Inventory>
+		</Inventory>
+		<Resources HP ="" Stamina="" LifeForce=""/>
+	</PlayerInfo>
+	<SpawnsToRemove>
+	</SpawnsToRemove>
+	<TrapsToRemove>
+	</TrapsToRemove>
+</SavedState>

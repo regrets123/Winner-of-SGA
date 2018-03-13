@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23452190807797682}
   - component: {fileID: 95849819833640374}
   - component: {fileID: 114602125415674390}
-  - component: {fileID: 64689758508214098}
+  - component: {fileID: 65766064350491570}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -85,8 +85,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1782538271173224}
   m_Mesh: {fileID: 4300000, guid: be625f149d142504dbf99332952f2c36, type: 3}
---- !u!64 &64689758508214098
-MeshCollider:
+--- !u!65 &65766064350491570
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -94,11 +94,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: be625f149d142504dbf99332952f2c36, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.1786946, y: 1.5355405, z: 0.06307675}
+  m_Center: {x: 0, y: 0.2770217, z: -0.0000000018626451}
 --- !u!95 &95849819833640374
 Animator:
   serializedVersion: 3
@@ -131,8 +129,11 @@ MonoBehaviour:
   objectName: Sword00
   myType: 0
   damage: 10
-  attackSpeed: 0.3
-  repeatRate: 1
+  attackSpeed: 0.5
   attacks: 
-  attackSounds: []
-  impactSounds: []
+  enemyHit1: {fileID: 8300000, guid: 92c9b589850e8e0458a953409dca501d, type: 3}
+  enemyHit2: {fileID: 8300000, guid: c942ce7e72b4f3c498517e0cbeb53d71, type: 3}
+  enemyHit3: {fileID: 8300000, guid: f83b6fe95feb58647832ab5f93b4528d, type: 3}
+  swing1: {fileID: 0}
+  swing2: {fileID: 0}
+  thrust: {fileID: 0}

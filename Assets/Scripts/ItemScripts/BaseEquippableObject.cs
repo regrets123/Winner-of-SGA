@@ -12,12 +12,17 @@ public class BaseEquippableObject : MonoBehaviour {
     [SerializeField]
     protected string objectName;
 
+    [SerializeField]
+    protected EquipableType myType;
+
     protected PlayerControls player;
 
     protected bool equipped = false;
 
-    [SerializeField]
-    protected EquipableType myType;
+    public string ObjectName
+    {
+        get { return this.objectName; }
+    }
 
     public EquipableType MyType
     {
@@ -30,7 +35,7 @@ public class BaseEquippableObject : MonoBehaviour {
     }
     
 
-    protected void Start()
+    protected virtual void Start()
     {
         this.player = FindObjectOfType<PlayerControls>();
     }

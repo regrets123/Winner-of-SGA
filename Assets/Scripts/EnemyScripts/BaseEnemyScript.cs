@@ -117,6 +117,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         int damage = ModifyDamage(incomingDamage);
         this.health -= damage;
 
+        print(health);
+
         if (this.health <= 0)
         {
             Death();

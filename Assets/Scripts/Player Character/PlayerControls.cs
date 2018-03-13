@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -32,15 +32,18 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     Transform weaponPosition;
 
+    [SerializeField]
+    AudioClip swordSheathe, swordUnsheathe;
+
     CharacterController charController;
 
     Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity, stamina, h, v;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f;
 
-    int health, lifeForce = 0;
+    int health, lifeForce = 0, nuOfClicks = 0;
 
     private Transform cam;
 
@@ -57,7 +60,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     InputManager iM;
 
     Rigidbody rB;
-
 
     public float Stamina
     {
@@ -99,6 +101,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         get { return this.currentWeapon; }
         set { this.currentWeapon = value; }
+    }
+
+    public int Health
+    {
+        get { return this.health; }
     }
 
     public int LifeForce
@@ -153,6 +160,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
             anim.SetTrigger("SheatheAndUnsheathe");
+            if (!anim.GetBool("WeaponDrawn"))
+            {
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+            }
             StartCoroutine("SheathingTimer");
         }
     }
@@ -169,6 +180,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             //Equip(weapons[0]);
             EquipWeapon(0);
+            SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
         }
         canSheathe = true;
     }
@@ -265,6 +277,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 Attack();
             }
+
+            if (secondsUntilResetClick > 0)
+            {
+                secondsUntilResetClick -= Time.deltaTime;
+            }
+            if(attackCountdown > 0)
+            {
+                attackCountdown -= Time.deltaTime;
+            }
         }
     }
 
@@ -283,13 +304,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         else
         {
             health -= ModifyDamage(incomingDamage);
-            print("You will die");
         }
-
 
         if (health <= 0)
         {
-            print("You should die");
             Death();
         }
         else
@@ -313,15 +331,47 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Sets the current movement type as attacking and which attack move thats used
     public void Attack()
     {
-        this.currentWeapon.StartCoroutine("AttackCooldown");
-        anim.SetTrigger("Attack");
-        //transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward*2, Time.deltaTime*0.5f);
+        if (charController.isGrounded && grounded && attackCountdown <= 0f)
+        {
+            this.currentWeapon.StartCoroutine("AttackCooldown");
 
-        //transform.position = Vector3.MoveTowards(transform.position, transform.forward, Time.deltaTime * 2);
+            attackCooldown = 0.5f;
 
-        move += transform.forward*attackMoveLength;
+            currentWeapon.CurrentSpeed = 0.5f;
 
-        TakeDamage(1);
+            if (secondsUntilResetClick <= 0)
+            {
+                nuOfClicks = 0;
+            }
+
+            Mathf.Clamp(nuOfClicks, 0, 3);
+
+            nuOfClicks++;
+
+            if (nuOfClicks == 1)
+            {
+                anim.SetTrigger("LightAttack1");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 2)
+            {
+                anim.SetTrigger("LightAttack2");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 3)
+            {
+                anim.SetTrigger("LightAttack3");
+                nuOfClicks = 0;
+                attackCooldown = 1f;
+                currentWeapon.CurrentSpeed = 1f;
+            }
+
+            move = Vector3.zero;
+            move += transform.forward * attackMoveLength;
+            attackCountdown = attackCooldown;
+        }
     }
 
     //Modifies damage depending on armor, resistance etc
