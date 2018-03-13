@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -38,7 +38,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f;
 
     int health, lifeForce = 0, nuOfClicks = 0;
 
@@ -275,6 +275,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 secondsUntilResetClick -= Time.deltaTime;
             }
+            if(attackCountdown > 0)
+            {
+                attackCountdown -= Time.deltaTime;
+            }
         }
     }
 
@@ -320,10 +324,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Sets the current movement type as attacking and which attack move thats used
     public void Attack()
     {
-        if (charController.isGrounded && grounded && currentWeapon.CanAttack)
+        if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
             this.currentWeapon.StartCoroutine("AttackCooldown");
 
+            attackCooldown = 0.5f;
+
+            currentWeapon.CurrentSpeed = 0.5f;
 
             if (secondsUntilResetClick <= 0)
             {
@@ -350,8 +357,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 anim.SetTrigger("LightAttack3");
                 nuOfClicks = 0;
+                attackCooldown = 1f;
+                currentWeapon.CurrentSpeed = 1f;
             }
+
+            move = Vector3.zero;
             move += transform.forward * attackMoveLength;
+            attackCountdown = attackCooldown;
         }
     }
 

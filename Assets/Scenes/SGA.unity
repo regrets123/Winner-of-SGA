@@ -1129,6 +1129,16 @@ Prefab:
       propertyPath: aggroRange
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114942242367666050, guid: 0a0f688e17fb7904cae451332b3efd2f,
+        type: 2}
+      propertyPath: invulnerabilityTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114942242367666050, guid: 0a0f688e17fb7904cae451332b3efd2f,
+        type: 2}
+      propertyPath: maxHealth
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
   m_IsPrefabParent: 0
@@ -1433,12 +1443,17 @@ Prefab:
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: attackMoveLength
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: maxHealth
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: attackCooldown
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
@@ -1490,6 +1505,16 @@ Prefab:
         type: 2}
       propertyPath: aggroRange
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114942242367666050, guid: 0a0f688e17fb7904cae451332b3efd2f,
+        type: 2}
+      propertyPath: invulnerabilityTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114942242367666050, guid: 0a0f688e17fb7904cae451332b3efd2f,
+        type: 2}
+      propertyPath: maxHealth
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
@@ -1621,6 +1646,16 @@ Prefab:
         type: 2}
       propertyPath: aggroRange
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114942242367666050, guid: 0a0f688e17fb7904cae451332b3efd2f,
+        type: 2}
+      propertyPath: invulnerabilityTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114942242367666050, guid: 0a0f688e17fb7904cae451332b3efd2f,
+        type: 2}
+      propertyPath: maxHealth
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a0f688e17fb7904cae451332b3efd2f, type: 2}
