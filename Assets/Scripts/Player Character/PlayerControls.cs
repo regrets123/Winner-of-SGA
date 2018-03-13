@@ -38,9 +38,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity, stamina, h, v;
+    float yVelocity, stamina, h, v, secondsUntilResetClick;
 
-    int health, lifeForce = 0;
+    int health, lifeForce = 0, nuOfClicks = 0;
 
     private Transform cam;
 
@@ -265,6 +265,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 Attack();
             }
+
+            if (secondsUntilResetClick > 0)
+            {
+                secondsUntilResetClick -= Time.deltaTime;
+            }
         }
     }
 
@@ -283,13 +288,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         else
         {
             health -= ModifyDamage(incomingDamage);
-            print("You will die");
         }
-
 
         if (health <= 0)
         {
-            print("You should die");
             Death();
         }
         else
@@ -314,14 +316,39 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void Attack()
     {
         this.currentWeapon.StartCoroutine("AttackCooldown");
-        anim.SetTrigger("Attack");
+
+
+        if (secondsUntilResetClick <= 0)
+        {
+            nuOfClicks = 0;
+        }
+
+        Mathf.Clamp(nuOfClicks, 0, 3);
+
+        nuOfClicks++;
+
+        if (nuOfClicks == 1)
+        {
+            anim.SetTrigger("LightAttack1");
+            secondsUntilResetClick = 1.5f;
+        }
+
+        if(nuOfClicks == 2)
+        {
+            anim.SetTrigger("LightAttack2");
+            secondsUntilResetClick = 1.5f;
+        }
+
+        if (nuOfClicks == 3)
+        {
+            anim.SetTrigger("LightAttack3");
+            nuOfClicks = 0;
+        }
         //transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward*2, Time.deltaTime*0.5f);
 
         //transform.position = Vector3.MoveTowards(transform.position, transform.forward, Time.deltaTime * 2);
 
         move += transform.forward*attackMoveLength;
-
-        TakeDamage(1);
     }
 
     //Modifies damage depending on armor, resistance etc
