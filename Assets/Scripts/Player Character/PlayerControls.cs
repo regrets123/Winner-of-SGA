@@ -32,6 +32,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     Transform weaponPosition;
 
+    [SerializeField]
+    AudioClip swordSheathe, swordUnsheathe;
+
     CharacterController charController;
 
     Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
@@ -57,7 +60,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     InputManager iM;
 
     Rigidbody rB;
-
 
     public float Stamina
     {
@@ -158,6 +160,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
             anim.SetTrigger("SheatheAndUnsheathe");
+            if (!anim.GetBool("WeaponDrawn"))
+            {
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+            }
             StartCoroutine("SheathingTimer");
         }
     }
@@ -174,6 +180,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             //Equip(weapons[0]);
             EquipWeapon(0);
+            SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
         }
         canSheathe = true;
     }

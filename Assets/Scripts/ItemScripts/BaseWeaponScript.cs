@@ -36,7 +36,7 @@ public class BaseWeaponScript : BaseEquippableObject
     protected AttackMoves[] attacks;
 
     [SerializeField]
-    AudioClip[] attackSounds, impactSounds;
+    AudioClip enemyHit1, enemyHit2, enemyHit3, swing1, swing2, thrust;
 
     bool canAttack = true;
 
@@ -117,6 +117,7 @@ public class BaseWeaponScript : BaseEquippableObject
             if (targetToHit != null)
             {
                 DealDamage(targetToHit);
+                SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
             }
         }
     }
