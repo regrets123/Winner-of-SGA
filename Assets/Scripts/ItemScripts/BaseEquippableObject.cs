@@ -35,7 +35,7 @@ public class BaseEquippableObject : MonoBehaviour {
     }
     
 
-    protected void Start()
+    protected virtual void Start()
     {
         this.player = FindObjectOfType<PlayerControls>();
     }
