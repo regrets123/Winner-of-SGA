@@ -320,40 +320,39 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Sets the current movement type as attacking and which attack move thats used
     public void Attack()
     {
-        this.currentWeapon.StartCoroutine("AttackCooldown");
-
-
-        if (secondsUntilResetClick <= 0)
+        if (charController.isGrounded && grounded && currentWeapon.CanAttack)
         {
-            nuOfClicks = 0;
+            this.currentWeapon.StartCoroutine("AttackCooldown");
+
+
+            if (secondsUntilResetClick <= 0)
+            {
+                nuOfClicks = 0;
+            }
+
+            Mathf.Clamp(nuOfClicks, 0, 3);
+
+            nuOfClicks++;
+
+            if (nuOfClicks == 1)
+            {
+                anim.SetTrigger("LightAttack1");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 2)
+            {
+                anim.SetTrigger("LightAttack2");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 3)
+            {
+                anim.SetTrigger("LightAttack3");
+                nuOfClicks = 0;
+            }
+            move += transform.forward * attackMoveLength;
         }
-
-        Mathf.Clamp(nuOfClicks, 0, 3);
-
-        nuOfClicks++;
-
-        if (nuOfClicks == 1)
-        {
-            anim.SetTrigger("LightAttack1");
-            secondsUntilResetClick = 1.5f;
-        }
-
-        if(nuOfClicks == 2)
-        {
-            anim.SetTrigger("LightAttack2");
-            secondsUntilResetClick = 1.5f;
-        }
-
-        if (nuOfClicks == 3)
-        {
-            anim.SetTrigger("LightAttack3");
-            nuOfClicks = 0;
-        }
-        //transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward*2, Time.deltaTime*0.5f);
-
-        //transform.position = Vector3.MoveTowards(transform.position, transform.forward, Time.deltaTime * 2);
-
-        move += transform.forward*attackMoveLength;
     }
 
     //Modifies damage depending on armor, resistance etc
