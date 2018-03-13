@@ -86,6 +86,25 @@ public class InventoryManager : MonoBehaviour
         UpdateButtons();
     }
 
+    public string[] ReportItems()
+    {
+        string[] items = new string[equippableAbilities.Count + equippableWeapons.Count];
+        int index = 0;
+        for(int i = 0; i < equippableWeapons.Count; i++)
+        {
+            items[index] = equippableWeapons[index].GetComponent<BaseEquippableObject>().ObjectName;
+            index++;
+            print("new weapon");
+        }
+        for (int i = 0; i < equippableAbilities.Count; i++)
+        {
+            items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
+            index++;
+            print("new ability");
+        }
+        return items;
+    }
+
     //Väljer vilka equippables som ska visas i inventorymenyn
     void DisplayNextCollection(bool next)
     {

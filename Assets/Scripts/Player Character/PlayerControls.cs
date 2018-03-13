@@ -103,6 +103,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentWeapon = value; }
     }
 
+    public int Health
+    {
+        get { return this.health; }
+    }
+
     public int LifeForce
     {
         get { return this.lifeForce; }
