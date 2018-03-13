@@ -3,7 +3,7 @@
 	<PlayerInfo>
 		<Transform>
 			<Position X="" Y="" Z=""/>
-			<Rotation X="" Y="" Z=""/>
+			<Rotation X="" Y="" Z="" W=""/>
 		</Transform>
 		<Inventory>
 		</Inventory>

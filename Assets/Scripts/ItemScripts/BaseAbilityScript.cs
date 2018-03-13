@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class BaseAbilityScript : BaseEquippableObject
 {
-
-
     [SerializeField]
     protected float staminaCost, cooldownTime;
 

@@ -94,13 +94,11 @@ public class InventoryManager : MonoBehaviour
         {
             items[index] = equippableWeapons[index].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
-            print("new weapon");
         }
         for (int i = 0; i < equippableAbilities.Count; i++)
         {
             items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
-            print("new ability");
         }
         return items;
     }
