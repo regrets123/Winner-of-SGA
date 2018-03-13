@@ -409,15 +409,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a01e09829485654d957431f032ac8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryIcon: {fileID: 0}
+  objectName: 
+  myType: 0
   damage: 5
-  weaponName: 
-  damageType: 0
   attackSpeed: 1
   repeatRate: 1
   attacks: 0000000001000000
-  attackMoves:
-  - {fileID: 0}
-  - {fileID: 0}
+  attackSounds: []
+  impactSounds: []
 --- !u!114 &114942242367666050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -431,10 +431,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aggroRange: 4
   attackRange: 0
+  invulnerabilityTime: 1
   maxHealth: 15
   strength: 0
+  lifeForce: 0
   unitName: 
   aggroCenter: {fileID: 1137057947161068}
+  soul: {fileID: 0}
   weapon: {fileID: 0}
 --- !u!195 &195544885560627784
 NavMeshAgent:

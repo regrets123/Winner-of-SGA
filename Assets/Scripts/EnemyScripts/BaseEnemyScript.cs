@@ -110,9 +110,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     public void TakeDamage(int incomingDamage)
     {
         if (invulnerable)
+        {
             return;
+        }
+
         int damage = ModifyDamage(incomingDamage);
         this.health -= damage;
+
         if (this.health <= 0)
         {
             Death();
