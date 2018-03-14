@@ -776,6 +776,10 @@ Prefab:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 776250502}
+    - target: {fileID: 4084349214449566, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114330771484981538, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
@@ -1455,6 +1459,26 @@ Prefab:
       propertyPath: attackCooldown
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: swordSheath
+      value: 
+      objectReference: {fileID: 8300000, guid: e323755ba9eadf2418e71e952d928af4, type: 3}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: swordUnsheath
+      value: 
+      objectReference: {fileID: 8300000, guid: 018080c26ab6f2f42b519fee92ace10e, type: 3}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: swordSheathe
+      value: 
+      objectReference: {fileID: 8300000, guid: e323755ba9eadf2418e71e952d928af4, type: 3}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: swordUnsheathe
+      value: 
+      objectReference: {fileID: 8300000, guid: 018080c26ab6f2f42b519fee92ace10e, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0

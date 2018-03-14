@@ -131,5 +131,9 @@ MonoBehaviour:
   damage: 10
   attackSpeed: 0.5
   attacks: 
-  attackSounds: []
-  impactSounds: []
+  enemyHit1: {fileID: 8300000, guid: 92c9b589850e8e0458a953409dca501d, type: 3}
+  enemyHit2: {fileID: 8300000, guid: c942ce7e72b4f3c498517e0cbeb53d71, type: 3}
+  enemyHit3: {fileID: 8300000, guid: f83b6fe95feb58647832ab5f93b4528d, type: 3}
+  swing1: {fileID: 0}
+  swing2: {fileID: 0}
+  thrust: {fileID: 0}
