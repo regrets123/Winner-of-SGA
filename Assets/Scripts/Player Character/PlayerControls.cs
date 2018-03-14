@@ -61,6 +61,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Rigidbody rB;
 
+    IInteractable currentInteractable;
+
     public float Stamina
     {
         get { return this.stamina; }
@@ -267,8 +269,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Lets the character move with the character controller
             charController.Move(move / 8);
 
-            if (Input.GetButtonDown("Interact"))
+            if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
+                currentInteractable.Interact(this);
                 //interagera med vad det nu kan vara
             }
 
@@ -282,7 +285,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 secondsUntilResetClick -= Time.deltaTime;
             }
-            if(attackCountdown > 0)
+            if (attackCountdown > 0)
             {
                 attackCountdown -= Time.deltaTime;
             }
@@ -393,7 +396,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             anim.SetTrigger("RightDead");
             dead = true;
         }
-        else if(hitNormal.y < 0)
+        else if (hitNormal.y < 0)
         {
             anim.SetTrigger("LeftDead");
             dead = true;
@@ -525,7 +528,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move.z += zVal;
         }
 
-        
+
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
@@ -565,5 +568,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(dodgeDuration);
         currentMovementType = previousMovementType;
         dodgeDir = null;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if()
+        currentInteractable = other.gameObject.GetComponent<IInteractable>();
     }
 }

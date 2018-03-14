@@ -194,7 +194,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    //Lägger till equippablen i rätt collection
+    //Lägger till equippable i rätt collection
     void AddEquippable(GameObject equippable, int collection)
     {
         inventory[collection].Add(equippable);
