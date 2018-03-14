@@ -566,7 +566,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void OnTriggerEnter(Collider other)
     {
-        if()
+       // if()
         currentInteractable = other.gameObject.GetComponent<IInteractable>();
     }
 }
