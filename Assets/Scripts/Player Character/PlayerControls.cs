@@ -53,12 +53,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     PauseManager pM;
 
     InventoryManager inventory;
-
-    InputManager iM;
-
-    Rigidbody rB;
-
-
+        
     public float Stamina
     {
         get { return this.stamina; }
@@ -135,8 +130,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     void Start()
     {
         //Just setting all the variables needed
-        rB = GetComponent<Rigidbody>();
-        iM = FindObjectOfType<InputManager>();
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
