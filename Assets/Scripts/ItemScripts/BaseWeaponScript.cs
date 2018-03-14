@@ -31,7 +31,7 @@ public class BaseWeaponScript : BaseEquippableObject
 
     [SerializeField]
     protected float attackSpeed;
-    
+
     [SerializeField]
     protected AttackMoves[] attacks;
 
@@ -55,16 +55,6 @@ public class BaseWeaponScript : BaseEquippableObject
         get { return this.canAttack; }
     }
 
-    public IEnumerator AttackCooldown()
-    {
-        previousMovement = player.CurrentMovementType;
-        player.CurrentMovementType = MovementType.Attacking;
-        this.canAttack = false;
-        yield return new WaitForSeconds(currentSpeed);
-        this.canAttack = true;
-        player.CurrentMovementType = previousMovement;
-    }
-
     public AttackMoves[] Attacks
     {
         get { return this.attacks; }
@@ -75,6 +65,30 @@ public class BaseWeaponScript : BaseEquippableObject
     public IKillable Equipper
     {
         set { if (this.equipper == null) this.equipper = value; }
+    }
+
+    public IEnumerator AttackCooldown()
+    {
+        this.canAttack = false;
+        if (equipper is PlayerControls)
+        {
+            previousMovement = player.CurrentMovementType;
+            player.CurrentMovementType = MovementType.Attacking;
+            yield return new WaitForSeconds(currentSpeed);
+            player.CurrentMovementType = previousMovement;
+        }
+        else if (equipper is BaseEnemyScript)
+        {
+            previousMovement = (equipper as BaseEnemyScript).CurrentMovementType;
+            (equipper as BaseEnemyScript).CurrentMovementType = MovementType.Attacking;
+            yield return new WaitForSeconds(currentSpeed);
+            (equipper as BaseEnemyScript).CurrentMovementType = previousMovement;
+        }
+        else
+        {
+            print("nu gick nåt åt helvete");
+        }
+            this.canAttack = true;
     }
 
     public float AttackSpeed
@@ -109,7 +123,7 @@ public class BaseWeaponScript : BaseEquippableObject
         {
             IKillable targetToHit = other.gameObject.GetComponent<IKillable>();
 
-            if((equipper is BaseEnemyScript && targetToHit is BaseEnemyScript) || (equipper is PlayerControls && targetToHit is PlayerControls))
+            if ((equipper is BaseEnemyScript && targetToHit is BaseEnemyScript) || (equipper is PlayerControls && targetToHit is PlayerControls))
             {
                 return;
             }
