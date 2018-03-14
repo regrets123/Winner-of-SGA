@@ -27,6 +27,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     int maxHealth, rotspeed;
 
     [SerializeField]
+    GameObject[] weapons;
+
+    [SerializeField]
     Transform weaponPosition;
 
     [SerializeField]
@@ -144,6 +147,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
         this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
+        this.inventory.NewEquippable(weapons[0]);
     }
 
     void SheatheAndUnsheathe()
@@ -164,7 +168,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         canSheathe = false;
         yield return new WaitForSeconds(0.4f);
-
         if (currentWeapon != null)
         {
             UnEquipWeapon();
@@ -222,7 +225,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             print("destroying");
             Destroy(currentWeapon.gameObject);
         }
-        this.currentWeapon = Instantiate(inventory.EquippableWeapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
         this.currentWeapon.Equipper = this;
     }
 
@@ -263,7 +266,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
                 currentInteractable.Interact(this);
-                print("Interact");
                 //interagera med vad det nu kan vara
             }
 
@@ -564,10 +566,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<IInteractable>() is PickUpable)
-        {
-            currentInteractable = other.gameObject.GetComponent<IInteractable>();
-            print("Enter pick up");
-        }
+       // if()
+        currentInteractable = other.gameObject.GetComponent<IInteractable>();
     }
 }
