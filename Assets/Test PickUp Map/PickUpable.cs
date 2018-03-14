@@ -15,5 +15,6 @@ public class PickUpable : MonoBehaviour, IInteractable
     public void Interact(PlayerControls player)
     {
         player.Inventory.NewEquippable(item);
+        print("Add item");
     }
 }
