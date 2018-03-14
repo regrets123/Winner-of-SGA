@@ -37,13 +37,18 @@ public class CreditsText : MonoBehaviour {
             this.gameObject.transform.Translate(Vector3.up * scrollTime);
             if(this.gameObject.transform.position.y >= canvasTransform.rect.height /2 + 200)
             {
-                timeToScroll = false;
-                this.gameObject.transform.position = textPosition;
-                this.gameObject.SetActive(false);
-                mainMenu.SetActive(true);
+                Reset();
             }
         }
 
+    }
+
+    public void Reset()
+    {
+        timeToScroll = false;
+        this.gameObject.transform.position = textPosition;
+        this.gameObject.transform.parent.gameObject.SetActive(false);
+        mainMenu.SetActive(true);
     }
 
     public IEnumerator FadeInText(Text title, float t)
