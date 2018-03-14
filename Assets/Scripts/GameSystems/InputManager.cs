@@ -44,4 +44,9 @@ public class InputManager : MonoBehaviour
             }
         }
     }
+
+    public void GoToMenu()
+    {
+        SetInputMode(InputMode.None);
+    }
 }

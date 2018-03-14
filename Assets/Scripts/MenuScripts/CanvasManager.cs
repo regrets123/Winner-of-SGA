@@ -19,9 +19,19 @@ public class CanvasManager : MonoBehaviour {
     InputManager iM;
     PauseManager pM;
 
+    static bool created = false;
     void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (!created)
+        {
+            DontDestroyOnLoad(this);
+            created = true;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         iM = this.gameObject.GetComponent<InputManager>();
         pM = this.gameObject.GetComponent<PauseManager>();
         if (iM != null && pM != null)
