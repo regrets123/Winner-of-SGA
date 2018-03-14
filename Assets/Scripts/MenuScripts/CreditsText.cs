@@ -35,7 +35,7 @@ public class CreditsText : MonoBehaviour {
         if(timeToScroll == true )
         {
             this.gameObject.transform.Translate(Vector3.up * scrollTime);
-            if(this.gameObject.transform.position.y >= canvasTransform.rect.height)
+            if(this.gameObject.transform.position.y >= canvasTransform.rect.height /2 + 200)
             {
                 timeToScroll = false;
                 this.gameObject.transform.position = textPosition;
