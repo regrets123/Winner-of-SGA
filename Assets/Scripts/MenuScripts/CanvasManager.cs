@@ -16,9 +16,19 @@ public class CanvasManager : MonoBehaviour {
     public GameObject backMainMenu;
     public GameObject backInGame;
 
+    InputManager iM;
+    PauseManager pM;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
+        iM = this.gameObject.GetComponent<InputManager>();
+        pM = this.gameObject.GetComponent<PauseManager>();
+        if (iM != null && pM != null)
+        {
+            iM.enabled = false;
+            pM.enabled = false;
+        }
     }
 
     void OnEnable()
@@ -41,6 +51,12 @@ public class CanvasManager : MonoBehaviour {
             backInGame.SetActive(false);
             pauseMenu.SetActive(false);
             gui.SetActive(false);
+            if(iM != null && pM != null)
+            {
+                iM.enabled = false;
+                pM.enabled = false;
+            }
+
         }
         else if(sceneName == "Prototype_TestScene_JP")
         {
@@ -49,6 +65,8 @@ public class CanvasManager : MonoBehaviour {
             backInGame.SetActive(true);
             backMainMenu.SetActive(false);
             gui.SetActive(true);
+            iM.enabled = true;
+            pM.enabled = true;
         }
 
     }
