@@ -118,7 +118,7 @@ public class CameraFollow : MonoBehaviour, IPausable
 
                 //Physics.Raycast(transform.position, enemy.transform.position, out hit, 8);
 
-                if (!Physics.Linecast(transform.position, enemy.transform.position, out hit, -(1 << 8)))
+                if (enemy != null && !Physics.Linecast(transform.position, enemy.transform.position, out hit, -(1 << 8)))
                 {
                     visibleEnemies.Add(enemy);
                     //Debug.DrawLine(transform.position, enemy.transform.position, Color.red);

@@ -34,6 +34,11 @@ public class InventoryManager : MonoBehaviour
         get { return this.equippableAbilities; }
     }
 
+    public List<GameObject> EquippableWeapons
+    {
+        get { return this.equippableWeapons; }
+    }
+
     private void Awake()
     {
         this.player = FindObjectOfType<PlayerControls>();
@@ -160,7 +165,7 @@ public class InventoryManager : MonoBehaviour
     //Equippar ett föremål som finns i spelarens inventory
     void Equip()
     {
-        if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count + 1 || inventory[displayCollection][collectionIndex] == null)
+        if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count - 1 || inventory[displayCollection][collectionIndex] == null)
         {
             Debug.Log("problem med inventory");
             return;
@@ -168,23 +173,23 @@ public class InventoryManager : MonoBehaviour
         player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
-
     //Gömmer inventoryt
     void HideInventory()
     {
         inventoryMenu.SetActive(false);
     }
 
-
     //Lägger till nya föremål i spelarens inventory
     public void NewEquippable(GameObject equippable)
     {
         if (equippable.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
         {
+            print("nytt vapen");
             AddEquippable(equippable, 0);
         }
         else if (equippable.GetComponent<BaseEquippableObject>() is BaseAbilityScript)
         {
+            print("ny ability");
             AddEquippable(equippable, 1);
         }
         else
@@ -194,7 +199,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    //Lägger till equippablen i rätt collection
+    //Lägger till equippable i rätt collection
     void AddEquippable(GameObject equippable, int collection)
     {
         inventory[collection].Add(equippable);

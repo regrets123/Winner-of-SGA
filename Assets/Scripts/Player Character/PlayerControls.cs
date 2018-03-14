@@ -27,9 +27,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     int maxHealth, rotspeed;
 
     [SerializeField]
-    GameObject[] weapons;
-
-    [SerializeField]
     Transform weaponPosition;
 
     [SerializeField]
@@ -57,9 +54,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     InventoryManager inventory;
 
-    InputManager iM;
-
-    Rigidbody rB;
+    IInteractable currentInteractable;
 
     public float Stamina
     {
@@ -137,8 +132,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     void Start()
     {
         //Just setting all the variables needed
-        rB = GetComponent<Rigidbody>();
-        iM = FindObjectOfType<InputManager>();
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
@@ -151,7 +144,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
         this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
-        this.inventory.NewEquippable(weapons[0]);
     }
 
     void SheatheAndUnsheathe()
@@ -172,6 +164,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         canSheathe = false;
         yield return new WaitForSeconds(0.4f);
+
         if (currentWeapon != null)
         {
             UnEquipWeapon();
@@ -229,7 +222,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             print("destroying");
             Destroy(currentWeapon.gameObject);
         }
-        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon = Instantiate(inventory.EquippableWeapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
         this.currentWeapon.Equipper = this;
     }
 
@@ -267,8 +260,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Lets the character move with the character controller
             charController.Move(move / 8);
 
-            if (Input.GetButtonDown("Interact"))
+            if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
+                currentInteractable.Interact(this);
+                print("Interact");
                 //interagera med vad det nu kan vara
             }
 
@@ -282,7 +277,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 secondsUntilResetClick -= Time.deltaTime;
             }
-            if(attackCountdown > 0)
+            if (attackCountdown > 0)
             {
                 attackCountdown -= Time.deltaTime;
             }
@@ -393,7 +388,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             anim.SetTrigger("RightDead");
             dead = true;
         }
-        else if(hitNormal.y < 0)
+        else if (hitNormal.y < 0)
         {
             anim.SetTrigger("LeftDead");
             dead = true;
@@ -525,7 +520,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move.z += zVal;
         }
 
-        
+
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
@@ -565,5 +560,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(dodgeDuration);
         currentMovementType = previousMovementType;
         dodgeDir = null;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<IInteractable>() is PickUpable)
+        {
+            currentInteractable = other.gameObject.GetComponent<IInteractable>();
+            print("Enter pick up");
+        }
     }
 }
