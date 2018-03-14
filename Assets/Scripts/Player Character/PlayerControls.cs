@@ -564,10 +564,18 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<IInteractable>() is PickUpable)
+        if (other.gameObject.GetComponent<IInteractable>() != null)
         {
             currentInteractable = other.gameObject.GetComponent<IInteractable>();
-            print("Enter pick up");
+            print("Interacting");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.GetComponent<IInteractable>() != null)
+        {
+            currentInteractable = null;
         }
     }
 }
