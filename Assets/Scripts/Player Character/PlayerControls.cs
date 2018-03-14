@@ -21,7 +21,7 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -32,23 +32,24 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     Transform weaponPosition;
 
+    [SerializeField]
+    AudioClip swordSheathe, swordUnsheathe;
+
     CharacterController charController;
 
     Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f;
 
-    float stamina, h, v;
-
-    int health, lifeForce = 0;
+    int health, lifeForce = 0, nuOfClicks = 0;
 
     private Transform cam;
 
     private Vector3 camForward;
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -59,7 +60,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     InputManager iM;
 
     Rigidbody rB;
-
 
     public float Stamina
     {
@@ -103,6 +103,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.currentWeapon = value; }
     }
 
+    public int Health
+    {
+        get { return this.health; }
+    }
+
     public int LifeForce
     {
         get { return this.lifeForce; }
@@ -118,8 +123,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.anim; }
     }
 
+    public bool Dead
+    {
+        get { return dead; }
+        set { Dead = dead; }
+    }
+
     [SerializeField]
     GameObject dashTest;
+
+    bool canSheathe = true;
 
     void Start()
     {
@@ -131,13 +144,45 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.health = maxHealth;
         this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
-        EquipWeapon(0);
+        //EquipWeapon(0);
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
-        inventory = new InventoryManager(this);
+        inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
         this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
+        this.inventory.NewEquippable(weapons[0]);
+    }
+
+    void SheatheAndUnsheathe()
+    {
+        if (canSheathe)
+        {
+            anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
+            anim.SetTrigger("SheatheAndUnsheathe");
+            if (!anim.GetBool("WeaponDrawn"))
+            {
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+            }
+            StartCoroutine("SheathingTimer");
+        }
+    }
+
+    IEnumerator SheathingTimer()
+    {
+        canSheathe = false;
+        yield return new WaitForSeconds(0.4f);
+        if (currentWeapon != null)
+        {
+            UnEquipWeapon();
+        }
+        else
+        {
+            //Equip(weapons[0]);
+            EquipWeapon(0);
+            SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+        }
+        canSheathe = true;
     }
 
     public void RestoreHealth(int amount)
@@ -147,28 +192,56 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
+        /*
         BaseEquippableObject equippable = Instantiate(equipment, weaponPosition).GetComponent<BaseEquippableObject>();
         if (equippable is BaseWeaponScript && currentWeapon != null)
         {
-            Destroy(currentWeapon);
+            Destroy(currentWeapon.gameObject);
             currentWeapon = equippable as BaseWeaponScript;
         }
         else if (equippable is BaseAbilityScript && currentAbility != null)
         {
-            Destroy(currentAbility);
-            currentAbility = equippable as BaseAbilityScript;
+            
         }
+        */
+        switch (equipment.GetComponent<BaseEquippableObject>().MyType)
+        {
+            case EquipableType.Ability:
+                Destroy(currentAbility.gameObject);
+                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                break;
+
+            case EquipableType.Weapon:
+                SheatheAndUnsheathe();
+                break;
+
+            default:
+                print("unspecified object type, gör om gör rätt");
+                break;
+        }
+    }
+
+    //Code for equipping different weapons
+    public void EquipWeapon(int weaponToEquip)
+    {
+        if (currentWeapon != null)
+        {
+            print("destroying");
+            Destroy(currentWeapon.gameObject);
+        }
+        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon.Equipper = this;
     }
 
     public void UnEquipWeapon()
     {
-        Destroy(this.currentWeapon);
+        Destroy(this.currentWeapon.gameObject);
         this.currentWeapon = null;
     }
 
     private void Update()
     {
-        if (inputEnabled)
+        if (inputEnabled && !dead)
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
@@ -186,16 +259,32 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            PlayerMovement(sprinting);
+            if (currentMovementType != MovementType.Attacking)
+            {
+                PlayerMovement(sprinting);
+            }
+
+            //Lets the character move with the character controller
+            charController.Move(move / 8);
 
             if (Input.GetButtonDown("Interact"))
             {
                 //interagera med vad det nu kan vara
             }
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
+                && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking))
             {
                 Attack();
+            }
+
+            if (secondsUntilResetClick > 0)
+            {
+                secondsUntilResetClick -= Time.deltaTime;
+            }
+            if(attackCountdown > 0)
+            {
+                attackCountdown -= Time.deltaTime;
             }
         }
     }
@@ -209,9 +298,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void TakeDamage(int incomingDamage)
     {
         if (invulnerable)
+        {
             return;
-        health -= ModifyDamage(incomingDamage);
-        print(health);
+        }
+        else
+        {
+            health -= ModifyDamage(incomingDamage);
+        }
+
         if (health <= 0)
         {
             Death();
@@ -234,20 +328,50 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         invulnerable = false;
     }
 
-    //Code for equipping different weapons
-    public void EquipWeapon(int weaponToEquip)
-    {
-        if (currentWeapon != null)
-            Destroy(currentWeapon.gameObject);
-        //this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
-    }
-
     //Sets the current movement type as attacking and which attack move thats used
     public void Attack()
     {
-        this.currentMovementType = MovementType.Attacking;
+        if (charController.isGrounded && grounded && attackCountdown <= 0f)
+        {
+            this.currentWeapon.StartCoroutine("AttackCooldown");
 
-        anim.SetTrigger("Attack");
+            attackCooldown = 0.5f;
+
+            currentWeapon.CurrentSpeed = 0.5f;
+
+            if (secondsUntilResetClick <= 0)
+            {
+                nuOfClicks = 0;
+            }
+
+            Mathf.Clamp(nuOfClicks, 0, 3);
+
+            nuOfClicks++;
+
+            if (nuOfClicks == 1)
+            {
+                anim.SetTrigger("LightAttack1");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 2)
+            {
+                anim.SetTrigger("LightAttack2");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 3)
+            {
+                anim.SetTrigger("LightAttack3");
+                nuOfClicks = 0;
+                attackCooldown = 1f;
+                currentWeapon.CurrentSpeed = 1f;
+            }
+
+            move = Vector3.zero;
+            move += transform.forward * attackMoveLength;
+            attackCountdown = attackCooldown;
+        }
     }
 
     //Modifies damage depending on armor, resistance etc
@@ -263,7 +387,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void Death()
     {
-        //death animation och reload last saved state
+        if (hitNormal.y > 0)
+        {
+            //death animation och reload last saved state
+            anim.SetTrigger("RightDead");
+            dead = true;
+        }
+        else if(hitNormal.y < 0)
+        {
+            anim.SetTrigger("LeftDead");
+            dead = true;
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -285,11 +419,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging)
         {
             dashDir = null;
-            currentMovementType = sprinting ? MovementType.Sprinting : MovementType.Idle;
 
             move.Normalize();
             move *= moveSpeed;
-
 
             if (sprinting || jumpMomentum)
             {
@@ -298,7 +430,25 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
         }
-        anim.SetFloat("Speed", CalculateSpeed(charController.velocity));
+
+        float charSpeed = CalculateSpeed(charController.velocity);
+
+        anim.SetFloat("Speed", charSpeed);
+        if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
+        {
+            if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Idle;
+            }
+            else if (charSpeed >= 1 && charSpeed < 5 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Walking;
+            }
+            else if (charSpeed >= 5 && charSpeed < 15 && currentMovementType != MovementType.Jumping)
+            {
+                currentMovementType = MovementType.Running;
+            }
+        }
 
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
@@ -311,6 +461,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
                 yVelocity = jumpSpeed;
                 anim.SetTrigger("Jump");
+                currentMovementType = MovementType.Jumping;
             }
         }
         else
@@ -356,6 +507,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (dashDir == null)
             {
                 dashVelocity = transform.forward * 3;
+                move.y = 0;
                 move += dashVelocity;
                 dashDir = move;
             }
@@ -373,25 +525,22 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move.z += zVal;
         }
 
-        //Lets the character move with the character controller
-        charController.Move(move / 8);
+        
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
-        if (charController.isGrounded)
+        if (charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
             anim.SetBool("Falling", false);
-        }
-
-        if (jumpMomentum && charController.isGrounded)
-        {
             jumpMomentum = false;
+            currentMovementType = MovementType.Idle;
         }
 
-        if (sprinting && charController.velocity.magnitude > 0f)
+        if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
             anim.SetFloat("Speed", 20);
+            currentMovementType = MovementType.Sprinting;
         }
     }
 

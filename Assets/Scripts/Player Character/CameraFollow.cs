@@ -12,7 +12,9 @@ public class CameraFollow : MonoBehaviour, IPausable
     float cameraMoveSpeed, clampAngle, inputSensitivity, smoothX, smoothY, lockOnSmooth;
 
     [SerializeField]
-    GameObject cameraFollowObj, cameraObj, playerObj;
+    GameObject cameraFollowObj, cameraObj, playerObj, lockOnSpritePrefab;
+
+    GameObject lockOnSprite;
 
     PauseManager pM;
 
@@ -53,33 +55,42 @@ public class CameraFollow : MonoBehaviour, IPausable
 
     void LateUpdate()
     {
-        if (!paused && !lockOn)
+        if (!playerObj.GetComponent<PlayerControls>().Dead)
         {
-            //Get buttons for cameramovement from character controller, both for a console controller and PC controls
-            float inputX = Input.GetAxis("RightStickHorizontal");
-            float inputZ = Input.GetAxis("RightStickVertical");
-            mouseX = Input.GetAxis("Mouse X");
-            mouseY = Input.GetAxis("Mouse Y");
-            finalInputX = inputX + mouseX;
-            finalInputZ = inputZ + mouseY;
+            if (!paused && !lockOn)
+            {
+                CameraRotation();
 
-            rotY += finalInputX * inputSensitivity * Time.deltaTime;
-            rotX += finalInputZ * inputSensitivity * Time.deltaTime;
+                transform.rotation = localRotation;
+            }
+            else if (lockOn && !paused)
+            {
+                lockOnSprite.transform.rotation = transform.rotation;
+            }
 
-            //clamps the x rotation so camera isn't able to spin around under the character
-            rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+            CameraUpdater();
 
-            localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
-
-            transform.rotation = localRotation;
+            CameraLockOn();
         }
-        else if(lockOn && !paused)
-        {
-        }
+    }
 
-        CameraUpdater();
+    void CameraRotation()
+    {
+        //Get buttons for cameramovement from character controller, both for a console controller and PC controls
+        float inputX = Input.GetAxis("RightStickHorizontal");
+        float inputZ = Input.GetAxis("RightStickVertical");
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
+        finalInputX = inputX + mouseX;
+        finalInputZ = inputZ + mouseY;
 
-        CameraLockOn();
+        rotY += finalInputX * inputSensitivity * Time.deltaTime;
+        rotX += finalInputZ * inputSensitivity * Time.deltaTime;
+
+        //clamps the x rotation so camera isn't able to spin around under the character
+        rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+
+        localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
     }
 
     //Lets the camera follow a specific object, in this case and empty object attached to the character
@@ -99,48 +110,67 @@ public class CameraFollow : MonoBehaviour, IPausable
             float distance;
             float closestDistance;
 
-            visibleEnemies = new List<BaseEnemyScript>();
+            visibleEnemies.Clear();
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
             {
-                if (!Physics.Linecast(transform.position, enemy.transform.position, 8))
+                RaycastHit hit;
+
+                //Physics.Raycast(transform.position, enemy.transform.position, out hit, 8);
+
+                if (!Physics.Linecast(transform.position, enemy.transform.position, out hit, -(1 << 8)))
                 {
                     visibleEnemies.Add(enemy);
+                    //Debug.DrawLine(transform.position, enemy.transform.position, Color.red);
+                    //if (hit.transform != null && hit.transform.gameObject.layer != LayerMask.NameToLayer("Environment"))
+                    //{
+                    //}
+                    //else if(hit.transform != null && hit.transform.gameObject.layer == LayerMask.NameToLayer("Environment"))
+                    //{
+                    //    visibleEnemies.Remove(enemy);
+                    //}
                 }
                 //else
                 //{
                 //    visibleEnemies.Remove(enemy);
                 //}
             }
-
-            closestDistance = targetsLockOnAble.Min(e => (e.transform.position - cameraFollowObj.transform.position).magnitude);
-
-            foreach (BaseEnemyScript target in visibleEnemies)
+            if (visibleEnemies.Count != 0)
             {
-                distance = Vector3.Distance(cameraFollowObj.transform.position, target.transform.position);
+                closestDistance = visibleEnemies.Min(e => (e.transform.position - cameraFollowObj.transform.position).magnitude);
 
-                if (distance <= closestDistance)
+                foreach (BaseEnemyScript target in visibleEnemies)
                 {
-                    lockOn = true;
-                    lookAtMe = target;
+                    distance = Vector3.Distance(cameraFollowObj.transform.position, target.transform.position);
+
+                    if (distance <= closestDistance)
+                    {
+                        lockOn = true;
+                        lookAtMe = target;
+                        lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform.position, cameraObj.transform.rotation);
+                    }
                 }
             }
         }
         else if (Input.GetButtonDown("LockOn") && lockOn)
         {
+            Destroy(lockOnSprite.gameObject);
             lookAtMe = null;
+            Vector3 rot = transform.localRotation.eulerAngles;
+            rotX = rot.x;
+            rotY = rot.y;
             //transform.rotation = Quaternion.Lerp(transform.rotation, localRotation, lockOnSmooth * Time.deltaTime);
             lockOn = false;
         }
 
         if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f && lockOn)
         {
-            visibleEnemies = new List<BaseEnemyScript>();
+            visibleEnemies.Clear();/* = new List<BaseEnemyScript>();*/
 
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
             {
-                if (!Physics.Linecast(transform.position, enemy.transform.position, 8))
+                if (!Physics.Linecast(transform.position, enemy.transform.position, -(1 << 8)))
                 {
                     visibleEnemies.Add(enemy);
                 }
@@ -149,7 +179,8 @@ public class CameraFollow : MonoBehaviour, IPausable
                 //    visibleEnemies.Remove(enemy);
                 //}
             }
-            
+
+
             for (int i = 0; i < visibleEnemies.Count; i++)
             {
 
@@ -178,6 +209,9 @@ public class CameraFollow : MonoBehaviour, IPausable
                     {
                         lookAtMe = visibleEnemies[newIndex];
                     }
+                    Destroy(lockOnSprite.gameObject);
+
+                    lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform.position, cameraObj.transform.rotation);
 
                     break;
                 }
@@ -188,7 +222,15 @@ public class CameraFollow : MonoBehaviour, IPausable
         {
             toRotate = Quaternion.LookRotation(lookAtMe.transform.position - transform.position);
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth*Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth * Time.deltaTime);
+        }
+        else if(lookAtMe == null && lockOn)
+        {
+            Destroy(lockOnSprite.gameObject);
+            Vector3 rot = transform.localRotation.eulerAngles;
+            rotX = rot.x;
+            rotY = rot.y;
+            lockOn = false;
         }
     }
 

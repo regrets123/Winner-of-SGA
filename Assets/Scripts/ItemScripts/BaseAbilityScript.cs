@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class BaseAbilityScript : BaseEquippableObject
 {
-
-
     [SerializeField]
     protected float staminaCost, cooldownTime;
 
@@ -25,7 +23,7 @@ public class BaseAbilityScript : BaseEquippableObject
             || player.CurrentMovementType == MovementType.Walking
             || player.CurrentMovementType == MovementType.Jumping)
             && Input.GetButtonDown("Ability")
-            && !coolingDown)
+            && !coolingDown && !player.Dead)
         {
             UseAbility();
         }

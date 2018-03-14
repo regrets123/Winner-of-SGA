@@ -5,7 +5,12 @@ using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
-public class InventoryManager
+public enum EquipableType
+{
+    Weapon, Ability
+}
+
+public class InventoryManager : MonoBehaviour
 {
 
     [SerializeField]
@@ -29,9 +34,9 @@ public class InventoryManager
         get { return this.equippableAbilities; }
     }
 
-    public InventoryManager(PlayerControls player)
+    private void Awake()
     {
-        this.player = player;
+        this.player = FindObjectOfType<PlayerControls>();
         inventory[0] = new List<GameObject>();
         inventory[1] = new List<GameObject>();
         //inventory[2] = new List<BaseEquippableScript>();
@@ -41,12 +46,16 @@ public class InventoryManager
 
     }
 
-    private void Update()
+    void Update()
     {
-        if (inventoryMenu.activeSelf)
+        //if (inventoryMenu.activeSelf)
+        //{
+        //se till att rätt saker händer när rätt knappar trycks på
+        if (Input.GetKeyDown("r"))
         {
-            //se till att rätt saker händer när rätt knappar trycks på
+            Equip();
         }
+        //}
     }
 
     //Indikerar vilken equippable spelaren överväger att equippa
@@ -75,6 +84,23 @@ public class InventoryManager
             }
         }
         UpdateButtons();
+    }
+
+    public string[] ReportItems()
+    {
+        string[] items = new string[equippableAbilities.Count + equippableWeapons.Count];
+        int index = 0;
+        for(int i = 0; i < equippableWeapons.Count; i++)
+        {
+            items[index] = equippableWeapons[index].GetComponent<BaseEquippableObject>().ObjectName;
+            index++;
+        }
+        for (int i = 0; i < equippableAbilities.Count; i++)
+        {
+            items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
+            index++;
+        }
+        return items;
     }
 
     //Väljer vilka equippables som ska visas i inventorymenyn
