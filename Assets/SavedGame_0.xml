@@ -2,16 +2,16 @@
 <SavedState>
   <PlayerInfo>
     <Transform>
-      <Position X="109.185" Y="0.08000004" Z="252.8097" />
-      <Rotation X="2.883536E-09" Y="-0.3426972" Z="1.051875E-09" W="0.9394459" />
+      <Position X="227.5053" Y="0.08" Z="100.8147" />
+      <Rotation X="0" Y="0.5356" Z="0" W="0.8445" />
     </Transform>
     <Inventory>
     </Inventory>
-    <Resources HP="100" Stamina="2" LifeForce="0" />
+    <Resources HP="100" Stamina="1" LifeForce="0" />
   </PlayerInfo>
   <CameraTransform>
-    <Position X="" Y="" Z="" />
-    <Rotation X="" Y="" Z="" W="" />
+    <Position X="227.5053" Y="1.34" Z="100.8147" />
+    <Rotation X="0.0787" Y="0.5333" Z="-0.0499" W="0.8408" />
   </CameraTransform>
   <SpawnsToRemove>
   </SpawnsToRemove>

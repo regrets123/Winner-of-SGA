@@ -151,6 +151,7 @@ public class SaveManager : MonoBehaviour
         //Lagrar all relevant info i currentGame
         SavePlayerTransform();
         SavePlayerResources();
+        SaveCamTransform();
         SaveInventory();
     }
 
