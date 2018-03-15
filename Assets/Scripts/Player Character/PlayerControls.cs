@@ -25,10 +25,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     int maxHealth, rotspeed;
-
-    [SerializeField]
-    GameObject[] weapons;
-
+    
     [SerializeField]
     Transform weaponPosition;
 
@@ -140,14 +137,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.health = maxHealth;
         this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
-        //EquipWeapon(0);
         pM = FindObjectOfType<PauseManager>();
         pM.Pausables.Add(this);
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
         this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
-        this.inventory.NewEquippable(weapons[0]);
     }
 
     void SheatheAndUnsheathe()
@@ -225,7 +220,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             print("destroying");
             Destroy(currentWeapon.gameObject);
         }
-        this.currentWeapon = Instantiate(weapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon = Instantiate(inventory.EquippableWeapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
         this.currentWeapon.Equipper = this;
     }
 
@@ -266,6 +261,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
                 currentInteractable.Interact(this);
+                this.currentInteractable = null;
                 //interagera med vad det nu kan vara
             }
 
@@ -416,8 +412,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (move.magnitude > 0.0000001f && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging)
         {
             dashDir = null;
-
-            move.Normalize();
             move *= moveSpeed;
 
             if (sprinting || jumpMomentum)
@@ -566,7 +560,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void OnTriggerEnter(Collider other)
     {
-       // if()
-        currentInteractable = other.gameObject.GetComponent<IInteractable>();
+        if (other.gameObject.GetComponent<IInteractable>() != null)
+            currentInteractable = other.gameObject.GetComponent<IInteractable>();
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        IInteractable otherInteractable = other.gameObject.GetComponent<IInteractable>();
+        if (otherInteractable != null && currentInteractable == otherInteractable)
+            currentInteractable = null;
     }
 }

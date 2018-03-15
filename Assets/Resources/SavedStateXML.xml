@@ -9,6 +9,10 @@
 		</Inventory>
 		<Resources HP ="" Stamina="" LifeForce=""/>
 	</PlayerInfo>
+  <CameraTransform>
+    <Position X="" Y="" Z=""/>
+    <Rotation X="" Y="" Z="" W=""/>    
+  </CameraTransform>
 	<SpawnsToRemove>
 	</SpawnsToRemove>
 	<TrapsToRemove>

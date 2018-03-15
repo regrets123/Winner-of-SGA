@@ -21,7 +21,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected GameObject aggroCenter, soul;
 
     [SerializeField]
-    protected BaseWeaponScript weapon;
+    protected GameObject weapon;
+
+    [SerializeField]
+    protected Transform weaponPos;
 
     protected int health;
 
@@ -30,6 +33,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     public MovementType CurrentMovementType
     {
         get { return this.currentMovementType; }
+        set { this.currentMovementType = value; }
     }
 
     protected Collider aggroCollider;
@@ -56,13 +60,17 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         aggroBubble = aggroCenter.AddComponent<SphereCollider>();
         aggroBubble.isTrigger = true;
         aggroBubble.radius = aggroRange;
+        if (this.weapon != null)
+        {
+            this.weapon = Instantiate(weapon, weaponPos);
+        }
     }
 
     protected void Update()
     {
         if (target != null)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && Time.time > lastAttack + weapon.AttackSpeed)
+            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && Time.time > lastAttack + weapon.GetComponent<BaseWeaponScript>().AttackSpeed)
             {
                 Attack(/*Random.Range(0, weapon.Attacks.Length - 1)*/);
             }
