@@ -63,31 +63,36 @@ public class SaveManager : MonoBehaviour
 
 
         /*Exempel för att hitta i XML*/
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
-        print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
+       // xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
+      //  print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
     }
 
     //Laddar ett sparat spel
     void LoadGame()
     {
+        print("loading game");
         if (currentSave == null)
         {
             XmlDocument pathHolder = new XmlDocument();
             pathHolder.Load(Application.dataPath + "/SaveToLoad.xml");
-            this.currentSave = new SavedGame(pathHolder.SelectSingleNode("SavedGame/@SpritePath").Value, pathHolder.SelectSingleNode("SavedGame/@SavePath").Value);
+            print(pathHolder.InnerText);
+            this.currentSave = new SavedGame(pathHolder.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").Value, pathHolder.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").Value);
             File.Delete(Application.dataPath + "/SaveToLoad.xml");
         }
         this.currentGame.Load(currentSave.SavePath);
+        this.xNav = currentGame.CreateNavigator();
         MovePlayer();
         MoveCamera();
     }
 
     void MovePlayer()
     {
+        print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value);
         Vector3 newPos = new Vector3(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Z").Value));
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").Value));
         player.transform.position = newPos;
         player.transform.rotation = newRot;
+        print("player moved");
     }
 
     void MoveCamera()
@@ -96,6 +101,7 @@ public class SaveManager : MonoBehaviour
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").Value));
         camBase.transform.position = newPos;
         camBase.transform.rotation = newRot;
+        print("camera moved");
     }
 
     public void SaveGame()

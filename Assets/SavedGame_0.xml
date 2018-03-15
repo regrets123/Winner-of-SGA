@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<SavedState>
+  <PlayerInfo>
+    <Transform>
+      <Position X="109.185" Y="0.08000004" Z="252.8097" />
+      <Rotation X="2.883536E-09" Y="-0.3426972" Z="1.051875E-09" W="0.9394459" />
+    </Transform>
+    <Inventory>
+    </Inventory>
+    <Resources HP="100" Stamina="2" LifeForce="0" />
+  </PlayerInfo>
+  <CameraTransform>
+    <Position X="" Y="" Z="" />
+    <Rotation X="" Y="" Z="" W="" />
+  </CameraTransform>
+  <SpawnsToRemove>
+  </SpawnsToRemove>
+  <TrapsToRemove>
+  </TrapsToRemove>
+</SavedState>
