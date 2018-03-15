@@ -15,7 +15,7 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
@@ -38,7 +38,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime;
 
     int health, lifeForce = 0, nuOfClicks = 0;
 
@@ -111,6 +111,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public float YVelocity
     {
         set { this.yVelocity = value; }
+    }
+
+    public float InteractTime
+    {
+        set { interactTime = value; }
     }
 
     public Animator Anim
@@ -250,7 +255,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            if (currentMovementType != MovementType.Attacking)
+            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting)
             {
                 PlayerMovement(sprinting);
             }
@@ -260,8 +265,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
+                previousMovementType = currentMovementType;
+                currentMovementType = MovementType.Interacting;
                 currentInteractable.Interact(this);
                 this.currentInteractable = null;
+                move = Vector3.zero;
+                StartCoroutine("NonMovingInteract");
                 //interagera med vad det nu kan vara
             }
 
@@ -556,6 +565,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(dodgeDuration);
         currentMovementType = previousMovementType;
         dodgeDir = null;
+    }
+
+    IEnumerator NonMovingInteract()
+    {
+        yield return new WaitForSeconds(interactTime);
+        currentMovementType = previousMovementType;
     }
 
     void OnTriggerEnter(Collider other)
