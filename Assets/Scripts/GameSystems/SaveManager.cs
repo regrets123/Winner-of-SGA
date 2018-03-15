@@ -154,6 +154,17 @@ public class SaveManager : MonoBehaviour
         xNav.SelectSingleNode("/SavedState/PlayerInfo/Resources/@LifeForce").SetValue(player.LifeForce.ToString());
     }
 
+    void SaveCamTransform()
+    {
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@X").SetValue(camBase.transform.position.x.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Y").SetValue(camBase.transform.position.y.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Z").SetValue(camBase.transform.position.z.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").SetValue(camBase.transform.rotation.x.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").SetValue(camBase.transform.rotation.y.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").SetValue(camBase.transform.rotation.z.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").SetValue(camBase.transform.rotation.w.ToString());
+    }
+
     void SaveInventory()        //Sparar alla föremål i spelarens inventory till XML
     {
         XPathNodeIterator nodes = xNav.Select("/PlayerInfo/Inventory//Item/@Name");
