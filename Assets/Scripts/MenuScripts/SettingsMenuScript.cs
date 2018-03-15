@@ -28,7 +28,8 @@ public class SettingsMenuScript : MonoBehaviour
         if (File.Exists(Application.dataPath + "Settings.xml"))
         {
             settingsXML = new XmlDocument();
-            settingsXML.LoadXml(Application.dataPath + "Settings.xml");
+            print("settings finns");
+            settingsXML.Load(Application.dataPath + "Settings.xml");
             xNav = settingsXML.CreateNavigator();
             SetMusicVolume(float.Parse(xNav.SelectSingleNode("/Settings/Volumes/@Music").Value));
             SetEnvironmentalVolume(float.Parse(xNav.SelectSingleNode("/Settings/Volumes/@Environmental").Value));
@@ -70,6 +71,10 @@ public class SettingsMenuScript : MonoBehaviour
 
     public void SaveSettings()
     {
+        if (xNav == null)
+        {
+            print("bajsmacka");
+        }
         xNav.SelectSingleNode("/Settings/Volumes/@Music").SetValue(musicVolume.ToString());
         xNav.SelectSingleNode("/Settings/Volumes/@Environmental").SetValue(environmentalVolume.ToString());
         xNav.SelectSingleNode("/Settings/Volumes/@FX").SetValue(SFXVolume.ToString());
