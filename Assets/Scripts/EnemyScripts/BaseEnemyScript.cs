@@ -46,9 +46,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected NavMeshAgent nav;
 
-    protected float lastAttack = 0f;
+    protected Animator anim;
 
-    bool invulnerable = false;
+    protected bool invulnerable = false, alive = true;
 
     protected virtual void Start()
     {
@@ -56,6 +56,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         this.health = maxHealth;
         this.currentMovementType = MovementType.Idle;
         this.pM = FindObjectOfType<PauseManager>();
+        this.anim = GetComponentInChildren<Animator>();
         pM.Pausables.Add(this);
         aggroBubble = aggroCenter.AddComponent<SphereCollider>();
         aggroBubble.isTrigger = true;
@@ -68,9 +69,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected void Update()
     {
-        if (target != null)
+        if (alive && target != null)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && Time.time > lastAttack + weapon.GetComponent<BaseWeaponScript>().AttackSpeed)
+            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
             {
                 Attack(/*Random.Range(0, weapon.Attacks.Length - 1)*/);
             }
@@ -78,6 +79,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             {
                 nav.SetDestination(target.transform.position);
             }
+            anim.SetFloat("Speed", nav.velocity.magnitude);
         }
     }
 
@@ -104,6 +106,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    /*
     protected void OnTriggerStay(Collider other)
     {
         if (target == null && other.gameObject.tag == "Player")
@@ -112,7 +115,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 Aggro(other.gameObject.GetComponent<PlayerControls>());
         }
     }
-
+    */
 
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)
@@ -147,9 +150,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Låter fienden attackera
     public void Attack()
     {
-        lastAttack = Time.time;
         this.currentMovementType = MovementType.Attacking;
-        //trigga rätt attackanimation
+        anim.SetTrigger("Attack");
+        weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
     }
 
     //Modifierar skadan fienden tar efter armor, resistance och liknande
@@ -166,11 +169,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             Instantiate(soul).GetComponent<LifeForceTransmitterScript>().StartMe(player, lifeForce);
         }
-        Destroy(gameObject);
+        Destroy(gameObject, 7);
     }
 
     public void Kill()
     {
+        alive = false;
+        anim.SetTrigger("Death");
         Death();
     }
 

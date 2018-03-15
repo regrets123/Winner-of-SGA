@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.Xml;
 using System.Xml.XPath;
 using System.IO;
@@ -63,31 +64,36 @@ public class SaveManager : MonoBehaviour
 
 
         /*Exempel för att hitta i XML*/
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
-        print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
+       // xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
+      //  print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
     }
 
     //Laddar ett sparat spel
     void LoadGame()
     {
+        print("loading game");
         if (currentSave == null)
         {
             XmlDocument pathHolder = new XmlDocument();
             pathHolder.Load(Application.dataPath + "/SaveToLoad.xml");
-            this.currentSave = new SavedGame(pathHolder.SelectSingleNode("SavedGame/@SpritePath").Value, pathHolder.SelectSingleNode("SavedGame/@SavePath").Value);
+            print(pathHolder.InnerText);
+            this.currentSave = new SavedGame(pathHolder.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").Value, pathHolder.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").Value);
             File.Delete(Application.dataPath + "/SaveToLoad.xml");
         }
         this.currentGame.Load(currentSave.SavePath);
+        this.xNav = currentGame.CreateNavigator();
         MovePlayer();
         MoveCamera();
     }
 
     void MovePlayer()
     {
+        print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value);
         Vector3 newPos = new Vector3(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Z").Value));
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").Value));
         player.transform.position = newPos;
         player.transform.rotation = newRot;
+        print("player moved");
     }
 
     void MoveCamera()
@@ -96,6 +102,7 @@ public class SaveManager : MonoBehaviour
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").Value));
         camBase.transform.position = newPos;
         camBase.transform.rotation = newRot;
+        print("camera moved");
     }
 
     public void SaveGame()
@@ -144,6 +151,7 @@ public class SaveManager : MonoBehaviour
         //Lagrar all relevant info i currentGame
         SavePlayerTransform();
         SavePlayerResources();
+        SaveCamTransform();
         SaveInventory();
     }
 
@@ -156,13 +164,13 @@ public class SaveManager : MonoBehaviour
 
     void SaveCamTransform()
     {
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@X").SetValue(camBase.transform.position.x.ToString());
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Y").SetValue(camBase.transform.position.y.ToString());
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Z").SetValue(camBase.transform.position.z.ToString());
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").SetValue(camBase.transform.rotation.x.ToString());
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").SetValue(camBase.transform.rotation.y.ToString());
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").SetValue(camBase.transform.rotation.z.ToString());
-        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").SetValue(camBase.transform.rotation.w.ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@X").SetValue(Math.Round(camBase.transform.position.x, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Y").SetValue(Math.Round(camBase.transform.position.y, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Z").SetValue(Math.Round(camBase.transform.position.z, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").SetValue(Math.Round(camBase.transform.rotation.x, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").SetValue(Math.Round(camBase.transform.rotation.y, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").SetValue(Math.Round(camBase.transform.rotation.z, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").SetValue(Math.Round(camBase.transform.rotation.w, 4).ToString());
     }
 
     void SaveInventory()        //Sparar alla föremål i spelarens inventory till XML
@@ -194,13 +202,13 @@ public class SaveManager : MonoBehaviour
 
     void SavePlayerTransform() //Sparar spelarens transform i XML
     {
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").SetValue(player.transform.position.x.ToString());
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString());
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Z").SetValue(player.transform.position.z.ToString());
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").SetValue(player.transform.rotation.x.ToString());
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").SetValue(player.transform.rotation.y.ToString());
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").SetValue(player.transform.rotation.z.ToString());
-        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").SetValue(player.transform.rotation.w.ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").SetValue(Math.Round(player.transform.position.x, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(Math.Round(player.transform.position.y, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Z").SetValue(Math.Round(player.transform.position.z, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").SetValue(Math.Round(player.transform.rotation.x, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").SetValue(Math.Round(player.transform.rotation.y, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").SetValue(Math.Round(player.transform.rotation.z, 4).ToString());
+        xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").SetValue(Math.Round(player.transform.rotation.w, 4).ToString());
     }
 
     string Screenshot() //Tar ett screenshot som sedan används som en sprite för sparfilen i loadmenyn

@@ -47,11 +47,12 @@ public class LoadMenuScript : MonoBehaviour
         refXML.LoadXml(refText.text);
         XPathNavigator xNav = refXML.CreateNavigator();
         xNav.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").SetValue(Application.dataPath + "/SaveSprite_" + savedGame + ".png");
-        xNav.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").SetValue(Application.dataPath + "/SavePath_" + savedGame + ".xml");
+        xNav.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").SetValue(Application.dataPath + "/SavedGame_" + savedGame + ".xml");
         XmlWriterSettings settings = new XmlWriterSettings();
         settings.Indent = true;
         XmlWriter writer = XmlWriter.Create(Application.dataPath + "/SaveToLoad.xml", settings);
         refXML.Save(writer);
+        print(refXML.InnerText);
         SceneManager.LoadScene(1);
     }
 }

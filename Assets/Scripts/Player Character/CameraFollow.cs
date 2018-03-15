@@ -147,7 +147,7 @@ public class CameraFollow : MonoBehaviour, IPausable
                     {
                         lockOn = true;
                         lookAtMe = target;
-                        lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform.position, cameraObj.transform.rotation);
+                        lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform, false);
                     }
                 }
             }

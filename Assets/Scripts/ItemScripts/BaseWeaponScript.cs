@@ -113,6 +113,7 @@ public class BaseWeaponScript : BaseEquippableObject
     {
         base.Start();
         this.currentSpeed = attackSpeed;
+        this.equipper = GetComponentInParent<IKillable>();
     }
 
     //When a weapon hits a killable target the script triggers and deals damage to target
