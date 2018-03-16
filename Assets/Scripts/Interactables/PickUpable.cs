@@ -14,6 +14,7 @@ public class PickUpable : MonoBehaviour, IInteractable
 
     public void Interact(PlayerControls player)
     {
+        player.InteractTime = 2f;
         player.Anim.SetTrigger("PickUp");
         player.Inventory.NewEquippable(item);
         print("Add item");
