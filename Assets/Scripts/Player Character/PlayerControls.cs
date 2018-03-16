@@ -15,7 +15,7 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
@@ -25,7 +25,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     int maxHealth, rotspeed;
-    
+
     [SerializeField]
     Transform weaponPosition;
 
@@ -38,7 +38,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Vector3? dashDir, dodgeDir;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime;
 
     int health, lifeForce = 0, nuOfClicks = 0;
 
@@ -113,6 +113,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { this.yVelocity = value; }
     }
 
+    public float InteractTime
+    {
+        set { interactTime = value; }
+    }
+
     public Animator Anim
     {
         get { return this.anim; }
@@ -147,7 +152,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void SheatheAndUnsheathe()
     {
-        if (canSheathe)
+        if (!dead && canSheathe)
         {
             anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
             anim.SetTrigger("SheatheAndUnsheathe");
@@ -161,19 +166,22 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     IEnumerator SheathingTimer()
     {
-        canSheathe = false;
-        yield return new WaitForSeconds(0.4f);
-        if (currentWeapon != null)
+        if (!dead)
         {
-            UnEquipWeapon();
+            canSheathe = false;
+            yield return new WaitForSeconds(0.4f);
+            if (currentWeapon != null)
+            {
+                UnEquipWeapon();
+            }
+            else
+            {
+                //Equip(weapons[0]);
+                EquipWeapon(0);
+                SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+            }
+            canSheathe = true;
         }
-        else
-        {
-            //Equip(weapons[0]);
-            EquipWeapon(0);
-            SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
-        }
-        canSheathe = true;
     }
 
     public void RestoreHealth(int amount)
@@ -195,6 +203,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             
         }
         */
+
+        if (dead)
+            return;
+
         switch (equipment.GetComponent<BaseEquippableObject>().MyType)
         {
             case EquipableType.Ability:
@@ -215,6 +227,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Code for equipping different weapons
     public void EquipWeapon(int weaponToEquip)
     {
+        if (dead)
+            return;
         if (currentWeapon != null)
         {
             print("destroying");
@@ -250,7 +264,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            if (currentMovementType != MovementType.Attacking)
+            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting)
             {
                 PlayerMovement(sprinting);
             }
@@ -260,8 +274,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
+                previousMovementType = currentMovementType;
+                currentMovementType = MovementType.Interacting;
                 currentInteractable.Interact(this);
                 this.currentInteractable = null;
+                move = Vector3.zero;
+                StartCoroutine("NonMovingInteract");
                 //interagera med vad det nu kan vara
             }
 
@@ -290,6 +308,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Damage to player
     public void TakeDamage(int incomingDamage)
     {
+        if (dead)
+            return;
         if (invulnerable)
         {
             return;
@@ -314,7 +334,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inputEnabled = !pausing;
     }
 
-    IEnumerator Invulerability()
+    IEnumerator Invulnerability()
     {
         invulnerable = true;
         yield return new WaitForSeconds(invulnerablityTime);
@@ -375,21 +395,21 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Kill()
     {
-        Death();
+        if (!dead)
+            Death();
     }
 
     void Death()
     {
+        dead = true;
         if (hitNormal.y > 0)
         {
             //death animation och reload last saved state
             anim.SetTrigger("RightDead");
-            dead = true;
         }
         else if (hitNormal.y < 0)
         {
             anim.SetTrigger("LeftDead");
-            dead = true;
         }
     }
 
@@ -543,19 +563,31 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     IEnumerator DodgeCooldown()
     {
-        canDodge = false;
-        yield return new WaitForSeconds(dodgeCooldown);
-        canDodge = true;
+        if (!dead)
+        {
+            canDodge = false;
+            yield return new WaitForSeconds(dodgeCooldown);
+            canDodge = true;
+        }
     }
 
     //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
     IEnumerator Dodge()
     {
-        previousMovementType = currentMovementType;
-        currentMovementType = MovementType.Dodging;
-        yield return new WaitForSeconds(dodgeDuration);
+        if (!dead)
+        {
+            previousMovementType = currentMovementType;
+            currentMovementType = MovementType.Dodging;
+            yield return new WaitForSeconds(dodgeDuration);
+            currentMovementType = previousMovementType;
+            dodgeDir = null;
+        }
+    }
+
+    IEnumerator NonMovingInteract()
+    {
+        yield return new WaitForSeconds(interactTime);
         currentMovementType = previousMovementType;
-        dodgeDir = null;
     }
 
     void OnTriggerEnter(Collider other)
