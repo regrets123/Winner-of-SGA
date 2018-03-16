@@ -75,7 +75,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             {
                 Attack(/*Random.Range(0, weapon.Attacks.Length - 1)*/);
             }
-            else
+            else if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
                 nav.SetDestination(target.transform.position);
             }
@@ -85,6 +85,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     public void PauseMe(bool pausing)
     {
+        if (!alive)
+            return;
+
         nav.isStopped = !nav.isStopped;
         if (pausing)
         {
@@ -100,27 +103,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (alive && other.gameObject.tag == "Player")
         {
             Aggro(other.gameObject.GetComponent<PlayerControls>());
         }
     }
 
-    /*
-    protected void OnTriggerStay(Collider other)
-    {
-        if (target == null && other.gameObject.tag == "Player")
-        {
-            if (Physics.Linecast(transform.position, other.transform.position, 2))
-                Aggro(other.gameObject.GetComponent<PlayerControls>());
-        }
-    }
-    */
-
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)
     {
-        if (invulnerable)
+        if (!alive || invulnerable)
         {
             return;
         }
@@ -150,6 +142,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Låter fienden attackera
     public void Attack()
     {
+        if (!alive)
+            return;
         this.currentMovementType = MovementType.Attacking;
         anim.SetTrigger("Attack");
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
@@ -163,7 +157,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected virtual void Death()
     {
-        //play death animation, destroy
+        alive = false;
+        anim.SetTrigger("Death");
+        this.target = null;
+        nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
         if (player.Inventory.EquippableAbilities != null && player.Inventory.EquippableAbilities.Count > 0)
         {
@@ -175,7 +172,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     public void Kill()
     {
         alive = false;
-        anim.SetTrigger("Death");
         Death();
     }
 
