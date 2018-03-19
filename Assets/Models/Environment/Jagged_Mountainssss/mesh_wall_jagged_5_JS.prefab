@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 33128367588073098}
   - component: {fileID: 23623907573181080}
   - component: {fileID: 95914509880837064}
+  - component: {fileID: 64882439263433050}
   m_Layer: 0
   m_Name: mesh_wall_jagged_5_JS
   m_TagString: Untagged
@@ -156,6 +157,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1430154837509780}
   m_Mesh: {fileID: 4300000, guid: 64cb4506522a8d443ab3083e0f2eaee2, type: 3}
+--- !u!64 &64882439263433050
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932897245502924}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 47483b9f9d67a9c48b4bec2cd3b5e5cc, type: 3}
 --- !u!95 &95700526224601188
 Animator:
   serializedVersion: 3
