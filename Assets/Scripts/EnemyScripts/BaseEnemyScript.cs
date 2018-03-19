@@ -9,7 +9,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime;
+    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime, loseAggroDistance, maxAggroFollow;
 
     [SerializeField]
     protected int maxHealth, lifeForce;
@@ -50,7 +50,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected Animator anim;
 
-    protected bool invulnerable = false, alive = true;
+    protected bool invulnerable = false, alive = true, losingAggro = false;
 
     protected Vector3 initialPos;
 
@@ -85,8 +85,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             {
                 nav.SetDestination(target.transform.position);
             }
-            anim.SetFloat("Speed", nav.velocity.magnitude);
+            if (!losingAggro && Vector3.Distance(transform.position, target.transform.position) > loseAggroDistance)
+            {
+                StartCoroutine("LoseAggroTimer");
+            }
+            if (initialPos != null && Vector3.Distance(transform.position, initialPos) > maxAggroFollow)
+            {
+                LoseAggro();
+            }
         }
+        anim.SetFloat("Speed", nav.velocity.magnitude);
     }
 
     public void PauseMe(bool pausing)
@@ -109,9 +117,14 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
-        if (alive && other.gameObject.tag == "Player" && target == null)
+        if (alive && other.gameObject.tag == "Player")
         {
-            Aggro(other.gameObject.GetComponent<PlayerControls>());
+            if (target == null)
+                Aggro(other.gameObject.GetComponent<PlayerControls>());
+            else if (target == other.gameObject.GetComponent<PlayerControls>())
+            {
+                StopCoroutine("LoseAggroTimer");
+            }
         }
     }
 
@@ -184,10 +197,18 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         canAttack = true;
     }
 
-    protected IEnumerator LoseAggro()
+    protected IEnumerator LoseAggroTimer()
     {
+        losingAggro = true;
         yield return new WaitForSeconds(loseAggroTime);
+        LoseAggro();
+    }
 
+    void LoseAggro()
+    {
+        target = null;
+        losingAggro = false;
+        nav.SetDestination(initialPos);
     }
 
     //Modifierar skadan fienden tar efter armor, resistance och liknande
