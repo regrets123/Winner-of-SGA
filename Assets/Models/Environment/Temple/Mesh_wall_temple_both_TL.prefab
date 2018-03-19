@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33094200560694134}
   - component: {fileID: 23983778354684668}
   - component: {fileID: 95786692317730668}
+  - component: {fileID: 64454260606299286}
   m_Layer: 0
   m_Name: Mesh_wall_temple_both_TL
   m_TagString: Untagged
@@ -82,6 +83,20 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1246235726699528}
+  m_Mesh: {fileID: 4300000, guid: e75bff1cae6a5f5418bbde6bcd26786d, type: 3}
+--- !u!64 &64454260606299286
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1246235726699528}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: e75bff1cae6a5f5418bbde6bcd26786d, type: 3}
 --- !u!95 &95786692317730668
 Animator:
