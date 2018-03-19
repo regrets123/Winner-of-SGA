@@ -311,6 +311,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void ReceiveLifeForce(int value)
     {
         this.lifeForce = Mathf.Clamp(this.lifeForce + value, 0, 100);
+        print(lifeForce);
     }
 
     //Damage to player
