@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 54060809120556906}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1247,23 +1247,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee44ae33297a6704eb37b5498ea50e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 3
-  gravity: 0.2
+  jumpSpeed: 2
+  gravity: 0.1
   maxStamina: 10
-  moveSpeed: 0.8
+  moveSpeed: 0.7
   slopeLimit: 40
   slideFriction: -4
   dodgeCost: 0
   invulnerablityTime: 1
   maxLifeForce: 0
   dodgeCooldown: 1
-  dodgeDuration: 0.6
-  dodgeSpeed: 5
-  attackMoveLength: 0
+  dodgeDuration: 0.4
+  dodgeSpeed: 3
+  attackMoveLength: 0.2
+  attackCooldown: 0.4
   maxHealth: 100
-  rotspeed: 3
-  weapons: []
+  rotspeed: 2
   weaponPosition: {fileID: 4385959190690106}
+  swordSheathe: {fileID: 8300000, guid: e323755ba9eadf2418e71e952d928af4, type: 3}
+  swordUnsheathe: {fileID: 8300000, guid: 018080c26ab6f2f42b519fee92ace10e, type: 3}
   attackAnim: {fileID: 0}
   dashTest: {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133, type: 2}
 --- !u!137 &137535728816752232

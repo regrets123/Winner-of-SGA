@@ -5,6 +5,7 @@ using System;
 using System.Xml;
 using System.Xml.XPath;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 /*By Björn Andersson*/
 
@@ -76,7 +77,6 @@ public class SaveManager : MonoBehaviour
         {
             XmlDocument pathHolder = new XmlDocument();
             pathHolder.Load(Application.dataPath + "/SaveToLoad.xml");
-            print(pathHolder.InnerText);
             this.currentSave = new SavedGame(pathHolder.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").Value, pathHolder.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").Value);
             File.Delete(Application.dataPath + "/SaveToLoad.xml");
         }
@@ -84,6 +84,24 @@ public class SaveManager : MonoBehaviour
         this.xNav = currentGame.CreateNavigator();
         MovePlayer();
         MoveCamera();
+    }
+
+    public void ReloadGame()
+    {
+        if (currentSave!= null)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            TextAsset xmlText = Resources.Load("ReferenceXML") as TextAsset;
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xmlText.text);
+            XPathNavigator saveNav = doc.CreateNavigator();
+            XmlWriter writer = XmlWriter.Create(Application.dataPath + "/SaveToLoad.xml", settings);
+            saveNav.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").SetValue(currentSave.SpritePath);
+            saveNav.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").SetValue(currentSave.SavePath);
+            doc.Save(writer);
+        }
+        SceneManager.LoadScene(3);
     }
 
     void MovePlayer()

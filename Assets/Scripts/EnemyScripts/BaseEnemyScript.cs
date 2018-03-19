@@ -9,10 +9,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange, attackRange, invulnerabilityTime;
+    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed;
 
     [SerializeField]
-    protected int maxHealth, strength, lifeForce;
+    protected int maxHealth, lifeForce;
 
     [SerializeField]
     protected string unitName;
@@ -25,6 +25,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     protected Transform weaponPos;
+
+    protected bool canAttack = true;
 
     protected int health;
 
@@ -71,11 +73,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && target != null)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
+            gameObject.transform.LookAt(target.transform);
+            gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, gameObject.transform.rotation.z, gameObject.transform.rotation.w);
+            if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
             {
-                Attack(/*Random.Range(0, weapon.Attacks.Length - 1)*/);
+                Attack();
             }
-            else
+            else if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
                 nav.SetDestination(target.transform.position);
             }
@@ -85,6 +89,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     public void PauseMe(bool pausing)
     {
+        if (!alive)
+            return;
+
         nav.isStopped = !nav.isStopped;
         if (pausing)
         {
@@ -100,19 +107,29 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (alive && other.gameObject.tag == "Player")
         {
             Aggro(other.gameObject.GetComponent<PlayerControls>());
         }
     }
 
     /*
-    protected void OnTriggerStay(Collider other)
+    protected void OnCollisionEnter(Collision collision)
     {
-        if (target == null && other.gameObject.tag == "Player")
+        print("??");
+        if (collision.collider.gameObject.GetComponent<PlayerControls>() != null)
         {
-            if (Physics.Linecast(transform.position, other.transform.position, 2))
-                Aggro(other.gameObject.GetComponent<PlayerControls>());
+            print("yo");
+            nav.isStopped = true;
+        }
+    }
+
+    protected void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.gameObject.GetComponent<PlayerControls>() != null)
+        {
+            print("bye");
+            nav.isStopped = false;
         }
     }
     */
@@ -120,7 +137,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)
     {
-        if (invulnerable)
+        if (!alive || invulnerable)
         {
             return;
         }
@@ -140,7 +157,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    IEnumerator Invulnerability()
+    protected IEnumerator Invulnerability()
     {
         invulnerable = true;
         yield return new WaitForSeconds(invulnerabilityTime);
@@ -150,9 +167,19 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Låter fienden attackera
     public void Attack()
     {
+        if (!alive)
+            return;
         this.currentMovementType = MovementType.Attacking;
         anim.SetTrigger("Attack");
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
+        StartCoroutine("AttackCooldown");
+    }
+
+    protected IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackSpeed);
+        canAttack = true;
     }
 
     //Modifierar skadan fienden tar efter armor, resistance och liknande
@@ -163,7 +190,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected virtual void Death()
     {
-        //play death animation, destroy
+        alive = false;
+        anim.SetTrigger("Death");
+        this.target = null;
+        nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
         if (player.Inventory.EquippableAbilities != null && player.Inventory.EquippableAbilities.Count > 0)
         {
@@ -175,7 +205,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     public void Kill()
     {
         alive = false;
-        anim.SetTrigger("Death");
         Death();
     }
 

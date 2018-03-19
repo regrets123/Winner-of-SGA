@@ -10,6 +10,8 @@ public class OpenDoor : MonoBehaviour, IInteractable
     [SerializeField]
     float movePlayerSmoother;
 
+    float leverPullPosX;
+
     Animator anim, animDoor;
 
     PlayerControls playerToMove;
@@ -24,11 +26,9 @@ public class OpenDoor : MonoBehaviour, IInteractable
     {
         playerToMove = player;
         StartCoroutine("MovePlayerToInteract");
-        //player.gameObject.transform.position = Vector3.MoveTowards(player.gameObject.transform.position, leverPullPos.gameObject.transform.position, smooth);
-        player.gameObject.transform.rotation = Quaternion.Lerp(player.gameObject.transform.rotation, leverPullPos.gameObject.transform.rotation, movePlayerSmoother);
-        player.InteractTime = 6f;
+        player.InteractTime = 5.5f;
         anim.SetTrigger("LeverPull");
-        player.Anim.SetTrigger("PullLever");
+        playerToMove.Anim.SetTrigger("PullLever");
         StartCoroutine("OpenSesame");
     }
 
@@ -40,16 +40,23 @@ public class OpenDoor : MonoBehaviour, IInteractable
 
     IEnumerator MovePlayerToInteract()
     {
+        playerToMove.Anim.SetFloat("Speed", 0.5f);
+
+        MovementType previousMovement = playerToMove.CurrentMovementType;
+        playerToMove.CurrentMovementType = MovementType.Interacting;
+
         float t = 0;
+
         while (t < 1)
         {
             t += Time.deltaTime / movePlayerSmoother;
             playerToMove.gameObject.transform.position = Vector3.Lerp(playerToMove.gameObject.transform.position, leverPullPos.gameObject.transform.position, t);
+            playerToMove.gameObject.transform.rotation = Quaternion.Lerp(playerToMove.gameObject.transform.rotation, leverPullPos.gameObject.transform.rotation, t);
             yield return null;
         }
+        print("HIM STILL STANDING");
+
+
+        playerToMove.CurrentMovementType = previousMovement;
     }
-    //IEnumerator LeverPull()
-    //{
-    //    yield return new WaitForSeconds(0.0f);
-    //}
 }

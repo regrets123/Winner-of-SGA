@@ -280,7 +280,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 this.currentInteractable = null;
                 move = Vector3.zero;
                 StartCoroutine("NonMovingInteract");
-                //interagera med vad det nu kan vara
             }
 
             if (Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
@@ -411,6 +410,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             anim.SetTrigger("LeftDead");
         }
+        FindObjectOfType<SaveManager>().ReloadGame(); //Temporary
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -490,6 +490,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
+                    anim.SetTrigger("Dodge");
                     StartCoroutine("Dodge");
                     StartCoroutine("DodgeCooldown");
                     stamina -= dodgeCost;
