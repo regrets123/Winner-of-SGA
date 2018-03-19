@@ -9,10 +9,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange, attackRange, invulnerabilityTime;
+    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed;
 
     [SerializeField]
-    protected int maxHealth, strength, lifeForce;
+    protected int maxHealth, lifeForce;
 
     [SerializeField]
     protected string unitName;
@@ -25,6 +25,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     protected Transform weaponPos;
+
+    protected bool canAttack = true;
 
     protected int health;
 
@@ -71,9 +73,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && target != null)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
+            gameObject.transform.LookAt(target.transform);
+            gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, gameObject.transform.rotation.z, gameObject.transform.rotation.w);
+            if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
             {
-                Attack(/*Random.Range(0, weapon.Attacks.Length - 1)*/);
+                Attack();
             }
             else if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
@@ -109,6 +113,27 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    /*
+    protected void OnCollisionEnter(Collision collision)
+    {
+        print("??");
+        if (collision.collider.gameObject.GetComponent<PlayerControls>() != null)
+        {
+            print("yo");
+            nav.isStopped = true;
+        }
+    }
+
+    protected void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.gameObject.GetComponent<PlayerControls>() != null)
+        {
+            print("bye");
+            nav.isStopped = false;
+        }
+    }
+    */
+
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage)
     {
@@ -132,7 +157,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    IEnumerator Invulnerability()
+    protected IEnumerator Invulnerability()
     {
         invulnerable = true;
         yield return new WaitForSeconds(invulnerabilityTime);
@@ -147,6 +172,14 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         this.currentMovementType = MovementType.Attacking;
         anim.SetTrigger("Attack");
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
+        StartCoroutine("AttackCooldown");
+    }
+
+    protected IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackSpeed);
+        canAttack = true;
     }
 
     //Modifierar skadan fienden tar efter armor, resistance och liknande

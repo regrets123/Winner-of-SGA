@@ -411,6 +411,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             anim.SetTrigger("LeftDead");
         }
+        FindObjectOfType<SaveManager>().ReloadGame(); //Temporary
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
