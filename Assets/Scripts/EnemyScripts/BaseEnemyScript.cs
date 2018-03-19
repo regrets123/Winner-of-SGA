@@ -9,7 +9,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed;
+    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime;
 
     [SerializeField]
     protected int maxHealth, lifeForce;
@@ -51,6 +51,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected Animator anim;
 
     protected bool invulnerable = false, alive = true;
+
+    protected Vector3 initialPos;
 
     protected virtual void Start()
     {
@@ -107,7 +109,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
-        if (alive && other.gameObject.tag == "Player")
+        if (alive && other.gameObject.tag == "Player" && target == null)
         {
             Aggro(other.gameObject.GetComponent<PlayerControls>());
         }
@@ -182,6 +184,12 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         canAttack = true;
     }
 
+    protected IEnumerator LoseAggro()
+    {
+        yield return new WaitForSeconds(loseAggroTime);
+
+    }
+
     //Modifierar skadan fienden tar efter armor, resistance och liknande
     protected virtual int ModifyDamage(int damage)
     {
@@ -210,6 +218,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected virtual void Aggro(PlayerControls newTarget)
     {
+        this.initialPos = transform.position;
         this.target = newTarget;
     }
 }
