@@ -92,14 +92,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public BaseAbilityScript CurrentAbility
     {
         get { return this.currentAbility; }
-        set { this.currentAbility = value; if (value != null) { print(currentAbility.ObjectName); this.currentRune.sprite = currentAbility.MyRune; } }
     }
 
     //Gets and sets the current weapon
     public BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
-        set { this.currentWeapon = value; }
     }
 
     public int Health
@@ -138,6 +136,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     bool canSheathe = true;
 
+    int abilityNo = 0;
+
     void Start()
     {
         //Just setting all the variables needed
@@ -151,12 +151,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
-        foreach (GameObject ability in abilitiesToTest)
+        foreach (GameObject ability in abilitiesToTest) //Temporary
         {
             inventory.NewEquippable(ability);
         }
-        print(inventory.EquippableAbilities.Count);
-        this.CurrentAbility = Instantiate(abilitiesToTest[0]).GetComponent<BaseAbilityScript>();
     }
 
     void SheatheAndUnsheathe()
@@ -219,8 +217,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         switch (equipment.GetComponent<BaseEquippableObject>().MyType)
         {
             case EquipableType.Ability:
-                Destroy(currentAbility.gameObject);
+                if (currentAbility != null)
+                    Destroy(currentAbility.gameObject);
                 currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
                 break;
 
             case EquipableType.Weapon:
@@ -258,6 +258,18 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (inputEnabled && !dead)
         {
             //A sprint function which drains the stamina float upon activation
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                Equip(Instantiate(inventory.EquippableAbilities[abilityNo])); //Temporary
+                if (abilityNo == 1)
+                {
+                    abilityNo--;
+                }
+                else
+                {
+                    abilityNo++;
+                }
+            }
             bool sprinting = false;
             if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
             {
@@ -305,6 +317,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 attackCountdown -= Time.deltaTime;
             }
+        }
+        else if (!inputEnabled)
+        {
+            move = Vector3.zero;
         }
     }
 
@@ -491,7 +507,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
 
         move.y += yVelocity;
-
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {

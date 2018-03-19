@@ -76,7 +76,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         if (alive && target != null)
         {
             gameObject.transform.LookAt(target.transform);
-            gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, gameObject.transform.rotation.z, gameObject.transform.rotation.w);
+            gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
             if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
             {
                 Attack();
@@ -204,7 +204,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         LoseAggro();
     }
 
-    void LoseAggro()
+    protected void LoseAggro()
     {
         target = null;
         losingAggro = false;
