@@ -10,7 +10,7 @@ public class MagicForceJump : BaseAbilityScript
     GameObject effectsPrefab, spawnPos;
 
     [SerializeField]
-    float magicJumpSpeed;
+    float magicJumpSpeed, delayTime;
 
     public override void UseAbility()
     {
@@ -18,12 +18,18 @@ public class MagicForceJump : BaseAbilityScript
         {
             base.UseAbility();
             //instantiate a magic jump circle
-            GameObject jumpParticles = Instantiate(effectsPrefab, spawnPos.transform.position, spawnPos.transform.rotation);
-
-            //Add a force to the player going up form your current position.
-            player.YVelocity = magicJumpSpeed;
-
-            Destroy(jumpParticles, 1.5f);
+            StartCoroutine("SuperJump");
+            player.CurrentMovementType = MovementType.SuperJumping;
         }
+    }
+
+    IEnumerator SuperJump()
+    {   
+        GameObject jumpParticles = Instantiate(effectsPrefab, spawnPos.transform.position, spawnPos.transform.rotation);
+        player.Anim.SetTrigger("SuperJump");
+        yield return new WaitForSeconds(delayTime);
+        //Add a force to the player going up form your current position.
+        player.YVelocity = magicJumpSpeed;
+        Destroy(jumpParticles, 1.5f);
     }
 }

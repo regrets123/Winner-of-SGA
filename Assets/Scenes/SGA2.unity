@@ -4311,12 +4311,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 699234634}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.29, z: -0.136}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.23080516, z: -0.13599968}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1458528895}
-  m_RootOrder: 2
+  m_Father: {fileID: 1523952201}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &699234636
 SpriteRenderer:
@@ -4352,7 +4352,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 25fb00792c84e9a4bbd2698808c21146, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4360,7 +4360,7 @@ SpriteRenderer:
   m_Size: {x: 2.4, y: 2.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!1 &776250502
 GameObject:
@@ -4746,11 +4746,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1833496529185632, guid: e209d60cd00070445a2e7f6d834c654e,
     type: 2}
   m_PrefabInternal: {fileID: 1532198070}
---- !u!4 &1458528895 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4957631059493478, guid: e209d60cd00070445a2e7f6d834c654e,
-    type: 2}
-  m_PrefabInternal: {fileID: 1532198070}
 --- !u!1 &1484018693
 GameObject:
   m_ObjectHideFlags: 0
@@ -4957,6 +4952,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1523952201 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4293743700750894, guid: e209d60cd00070445a2e7f6d834c654e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1532198070}
 --- !u!1001 &1532198070
 Prefab:
   m_ObjectHideFlags: 0
@@ -4964,6 +4964,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: abilitiesToTest.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4957631059493478, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4996,6 +5001,29 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: dashTest
+      value: 
+      objectReference: {fileID: 1156753218034796, guid: d17e7e6801b3dc0479a8fda1a00da84d,
+        type: 2}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: abilitiesToTest.Array.data[0]
+      value: 
+      objectReference: {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133,
+        type: 2}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: abilitiesToTest.Array.data[1]
+      value: 
+      objectReference: {fileID: 1156753218034796, guid: d17e7e6801b3dc0479a8fda1a00da84d,
+        type: 2}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: currentRune
+      value: 
+      objectReference: {fileID: 699234636}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0
@@ -5176,26 +5204,6 @@ Prefab:
     - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
-        type: 2}
-      propertyPath: attackRange
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
-        type: 2}
-      propertyPath: loseAggroTime
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
-        type: 2}
-      propertyPath: loseAggroDistance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
-        type: 2}
-      propertyPath: maxAggroFollow
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}

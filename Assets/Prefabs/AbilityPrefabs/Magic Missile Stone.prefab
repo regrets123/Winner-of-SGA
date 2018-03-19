@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 135239715060444956}
   - component: {fileID: 23322934628974518}
   m_Layer: 0
-  m_Name: Magic Missiile Stone
+  m_Name: Magic Missile Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,6 +125,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryIcon: {fileID: 0}
+  objectName: 
+  myType: 0
+  staminaCost: 0
+  cooldownTime: 0
+  myRune: {fileID: 0}
   magicProjectilePrefab: {fileID: 1722940970926738, guid: 8b1c083eb4f61904ab1399a8888c4086,
     type: 2}
   cameraPosition: {fileID: 20241331903853856, guid: 40c96716f362dd948a43916c702e22e0,

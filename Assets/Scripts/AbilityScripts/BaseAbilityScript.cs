@@ -9,6 +9,14 @@ public class BaseAbilityScript : BaseEquippableObject
     [SerializeField]
     protected float staminaCost, cooldownTime;
 
+    [SerializeField]
+    protected Sprite myRune;
+
+    public Sprite MyRune
+    {
+        get { return this.myRune; }
+    }
+
     bool coolingDown = false;
 
     public virtual void UseAbility()

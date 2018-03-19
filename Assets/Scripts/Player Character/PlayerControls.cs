@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*By Andreas Nilsson && Björn Andersson*/
 
@@ -15,7 +16,7 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting, SuperJumping
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
@@ -31,6 +32,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     AudioClip swordSheathe, swordUnsheathe;
+
+    [SerializeField]
+    SpriteRenderer currentRune;
 
     CharacterController charController;
 
@@ -88,7 +92,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public BaseAbilityScript CurrentAbility
     {
         get { return this.currentAbility; }
-        set { this.currentAbility = value; }
+        set { this.currentAbility = value; if (value != null) { print(currentAbility.ObjectName); this.currentRune.sprite = currentAbility.MyRune; } }
     }
 
     //Gets and sets the current weapon
@@ -130,7 +134,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     [SerializeField]
-    GameObject dashTest;
+    GameObject[] abilitiesToTest;
 
     bool canSheathe = true;
 
@@ -147,7 +151,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
-        this.currentAbility = Instantiate(dashTest).GetComponent<MagicDash>();
+        foreach (GameObject ability in abilitiesToTest)
+        {
+            inventory.NewEquippable(ability);
+        }
+        print(inventory.EquippableAbilities.Count);
+        this.CurrentAbility = Instantiate(abilitiesToTest[0]).GetComponent<BaseAbilityScript>();
     }
 
     void SheatheAndUnsheathe()
@@ -444,9 +453,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         float charSpeed = CalculateSpeed(charController.velocity);
 
-        anim.SetFloat("Speed", charSpeed);
-        if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
+        if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {
+            anim.SetFloat("Speed", charSpeed);
             if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
             {
                 currentMovementType = MovementType.Idle;
