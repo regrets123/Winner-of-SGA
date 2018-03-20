@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23402874804136678}
   - component: {fileID: 95273302396235994}
   m_Layer: 0
-  m_Name: mesh_weapon_khopesh_JS
+  m_Name: Khopesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
