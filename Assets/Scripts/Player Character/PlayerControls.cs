@@ -21,6 +21,7 @@ public enum MovementType
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
+    #region Serialized Variables
     [SerializeField]
     float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown;
 
@@ -36,21 +37,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     SpriteRenderer currentRune;
 
+    [SerializeField]
+    GameObject[] abilitiesToTest;
+    #endregion
+
+    #region Non-Serialized Variables
     CharacterController charController;
 
     Vector3 move, dashVelocity, dodgeVelocity, hitNormal;
 
     Vector3? dashDir, dodgeDir;
-
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime;
-
-    int health, lifeForce = 0, nuOfClicks = 0;
-
-    private Transform cam;
-
-    private Vector3 camForward;
-
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false;
 
     MovementType currentMovementType, previousMovementType;
 
@@ -60,21 +56,23 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     IInteractable currentInteractable;
 
-    public float Stamina
-    {
-        get { return this.stamina; }
-        set { this.stamina = value; }
-    }
-
     //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
 
     Animator anim;
 
-    //Only test not final product
-    [SerializeField]
-    Animation attackAnim;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime;
 
+    int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
+
+    private Transform cam;
+
+    private Vector3 camForward;
+
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true;
+    #endregion
+
+    #region Public Variables
     //Describes which kind of movement that is currently being used
     public MovementType CurrentMovementType
     {
@@ -98,6 +96,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public BaseWeaponScript CurrentWeapon
     {
         get { return this.currentWeapon; }
+    }
+
+    public float Stamina
+    {
+        get { return this.stamina; }
+        set { this.stamina = value; }
     }
 
     public int Health
@@ -130,14 +134,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return dead; }
         set { Dead = dead; }
     }
+    #endregion
 
-    [SerializeField]
-    GameObject[] abilitiesToTest;
-
-    bool canSheathe = true;
-
-    int abilityNo = 0;
-
+    #region Main Methods
     void Start()
     {
         //Just setting all the variables needed
@@ -155,102 +154,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             inventory.NewEquippable(ability);
         }
-    }
-
-    void SheatheAndUnsheathe()
-    {
-        if (!dead && canSheathe)
-        {
-            anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
-            anim.SetTrigger("SheatheAndUnsheathe");
-            if (!anim.GetBool("WeaponDrawn"))
-            {
-                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
-            }
-            StartCoroutine("SheathingTimer");
-        }
-    }
-
-    IEnumerator SheathingTimer()
-    {
-        if (!dead)
-        {
-            canSheathe = false;
-            yield return new WaitForSeconds(0.4f);
-            if (currentWeapon != null)
-            {
-                UnEquipWeapon();
-            }
-            else
-            {
-                //Equip(weapons[0]);
-                EquipWeapon(0);
-                SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
-            }
-            canSheathe = true;
-        }
-    }
-
-    public void RestoreHealth(int amount)
-    {
-        this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
-    }
-
-    public void Equip(GameObject equipment)
-    {
-        /*
-        BaseEquippableObject equippable = Instantiate(equipment, weaponPosition).GetComponent<BaseEquippableObject>();
-        if (equippable is BaseWeaponScript && currentWeapon != null)
-        {
-            Destroy(currentWeapon.gameObject);
-            currentWeapon = equippable as BaseWeaponScript;
-        }
-        else if (equippable is BaseAbilityScript && currentAbility != null)
-        {
-            
-        }
-        */
-
-        if (dead)
-            return;
-
-        switch (equipment.GetComponent<BaseEquippableObject>().MyType)
-        {
-            case EquipableType.Ability:
-                if (currentAbility != null)
-                    Destroy(currentAbility.gameObject);
-                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
-                currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
-                break;
-
-            case EquipableType.Weapon:
-                SheatheAndUnsheathe();
-                break;
-
-            default:
-                print("unspecified object type, gör om gör rätt");
-                break;
-        }
-    }
-
-    //Code for equipping different weapons
-    public void EquipWeapon(int weaponToEquip)
-    {
-        if (dead)
-            return;
-        if (currentWeapon != null)
-        {
-            print("destroying");
-            Destroy(currentWeapon.gameObject);
-        }
-        this.currentWeapon = Instantiate(inventory.EquippableWeapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
-        this.currentWeapon.Equipper = this;
-    }
-
-    public void UnEquipWeapon()
-    {
-        Destroy(this.currentWeapon.gameObject);
-        this.currentWeapon = null;
     }
 
     private void Update()
@@ -323,13 +226,84 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move = Vector3.zero;
         }
     }
+    #endregion
+
+    #region Resources
+    public void RestoreHealth(int amount)
+    {
+        this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
+    }
 
     public void ReceiveLifeForce(int value)
     {
         this.lifeForce = Mathf.Clamp(this.lifeForce + value, 0, 100);
         print(lifeForce);
     }
+    #endregion
 
+    #region Equipment
+    void SheatheAndUnsheathe()
+    {
+        if (!dead && canSheathe)
+        {
+            anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
+            anim.SetTrigger("SheatheAndUnsheathe");
+            if (!anim.GetBool("WeaponDrawn"))
+            {
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+            }
+            StartCoroutine("SheathingTimer");
+        }
+    }
+
+    public void Equip(GameObject equipment)
+    {
+        if (dead)
+        {
+            return;
+        }
+
+        switch (equipment.GetComponent<BaseEquippableObject>().MyType)
+        {
+            case EquipableType.Ability:
+                if (currentAbility != null)
+                    Destroy(currentAbility.gameObject);
+                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
+                break;
+
+            case EquipableType.Weapon:
+                SheatheAndUnsheathe();
+                break;
+
+            default:
+                print("unspecified object type, gör om gör rätt");
+                break;
+        }
+    }
+
+    //Code for equipping different weapons
+    public void EquipWeapon(int weaponToEquip)
+    {
+        if (dead)
+            return;
+        if (currentWeapon != null)
+        {
+            print("destroying");
+            Destroy(currentWeapon.gameObject);
+        }
+        this.currentWeapon = Instantiate(inventory.EquippableWeapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon.Equipper = this;
+    }
+
+    public void UnEquipWeapon()
+    {
+        Destroy(this.currentWeapon.gameObject);
+        this.currentWeapon = null;
+    }
+    #endregion
+
+    #region Combat
     //Damage to player
     public void TakeDamage(int incomingDamage)
     {
@@ -352,18 +326,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             StartCoroutine("Invulnerability");
         }
-    }
-
-    public void PauseMe(bool pausing)
-    {
-        inputEnabled = !pausing;
-    }
-
-    IEnumerator Invulnerability()
-    {
-        invulnerable = true;
-        yield return new WaitForSeconds(invulnerablityTime);
-        invulnerable = false;
     }
 
     //Sets the current movement type as attacking and which attack move thats used
@@ -439,11 +401,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         FindObjectOfType<SaveManager>().ReloadGame(); //Temporary
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        hitNormal = hit.normal;
-    }
+    #endregion
 
+    #region Systems
+    public void PauseMe(bool pausing)
+    {
+        inputEnabled = !pausing;
+    }
+    #endregion
+
+    #region Movement
     public void PlayerMovement(bool sprinting)
     {
         // Gets the movement axis' for character controller and assigns them to variables
@@ -562,8 +529,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move.z += zVal;
         }
 
-
-
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
 
@@ -586,7 +551,29 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
     }
+    #endregion
 
+    #region Colliders
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<IInteractable>() != null)
+            currentInteractable = other.gameObject.GetComponent<IInteractable>();
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        IInteractable otherInteractable = other.gameObject.GetComponent<IInteractable>();
+        if (otherInteractable != null && currentInteractable == otherInteractable)
+            currentInteractable = null;
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        hitNormal = hit.normal;
+    }
+    #endregion
+
+    #region Coroutines
     IEnumerator DodgeCooldown()
     {
         if (!dead)
@@ -616,16 +603,31 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         currentMovementType = previousMovementType;
     }
 
-    void OnTriggerEnter(Collider other)
+    IEnumerator SheathingTimer()
     {
-        if (other.gameObject.GetComponent<IInteractable>() != null)
-            currentInteractable = other.gameObject.GetComponent<IInteractable>();
+        if (!dead)
+        {
+            canSheathe = false;
+            yield return new WaitForSeconds(0.4f);
+            if (currentWeapon != null)
+            {
+                UnEquipWeapon();
+            }
+            else
+            {
+                //Equip(weapons[0]);
+                EquipWeapon(0);
+                SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+            }
+            canSheathe = true;
+        }
     }
 
-    void OnTriggerExit(Collider other)
+    IEnumerator Invulnerability()
     {
-        IInteractable otherInteractable = other.gameObject.GetComponent<IInteractable>();
-        if (otherInteractable != null && currentInteractable == otherInteractable)
-            currentInteractable = null;
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerablityTime);
+        invulnerable = false;
     }
+    #endregion
 }
