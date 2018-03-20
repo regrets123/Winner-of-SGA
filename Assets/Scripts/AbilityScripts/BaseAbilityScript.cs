@@ -7,21 +7,28 @@ using UnityEngine;
 public class BaseAbilityScript : BaseEquippableObject
 {
     [SerializeField]
-    protected float staminaCost, cooldownTime;
+    protected float staminaCost;
 
     [SerializeField]
     protected Sprite myRune;
+    
+    protected static bool coolingDown = false;
+
+    public static bool CoolingDown
+    {
+        get { return coolingDown; }
+        set { coolingDown = value; }
+    }
 
     public Sprite MyRune
     {
         get { return this.myRune; }
     }
 
-    bool coolingDown = false;
 
     public virtual void UseAbility()
     {
-        StartCoroutine("Cooldown");
+        player.StartCoroutine("AbilityCooldown");
     }
 
     protected virtual void Update()
@@ -36,12 +43,4 @@ public class BaseAbilityScript : BaseEquippableObject
             UseAbility();
         }
     }
-
-    protected IEnumerator Cooldown()
-    {
-        coolingDown = true;
-        yield return new WaitForSeconds(cooldownTime);
-        coolingDown = false;
-    }
-
 }

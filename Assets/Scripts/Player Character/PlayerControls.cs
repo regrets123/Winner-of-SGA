@@ -23,7 +23,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     #region Serialized Variables
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown, abilityCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -36,7 +36,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     SpriteRenderer currentRune;
-    
+
     #endregion
 
     #region Non-Serialized Variables
@@ -59,7 +59,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Animator anim;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime;
 
     int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
 
@@ -70,7 +70,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true;
     #endregion
 
-    #region Public Variables
+    #region Properties
     //Describes which kind of movement that is currently being used
     public MovementType CurrentMovementType
     {
@@ -133,7 +133,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { Dead = dead; }
     }
     #endregion
-    
+
     #region Main Methods
 
     void Awake()
@@ -183,11 +183,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting)
+            if (/*currentMovementType != MovementType.Attacking && */currentMovementType != MovementType.Interacting)
             {
                 PlayerMovement(sprinting);
             }
 
+            if (!charController.isGrounded)
+            {
+                print(currentMovementType);
+                anim.SetBool("Falling", true);
+                yVelocity -= gravity;
+            }
             //Lets the character move with the character controller
             charController.Move(move / 8);
 
@@ -201,7 +207,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 StartCoroutine("NonMovingInteract");
             }
 
-            if (Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
+            if (charController.isGrounded && Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking))
             {
                 Attack();
@@ -463,12 +469,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 currentMovementType = MovementType.Jumping;
             }
         }
-        else
-        {
-            anim.SetBool("Falling", true);
-            yVelocity -= gravity;
-        }
-
         move.y += yVelocity;
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
@@ -509,10 +509,20 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move.y = 0;
                 move += dashVelocity;
                 dashDir = move;
+                dashedTime = 0f;
             }
             else
             {
                 move = (Vector3)dashDir;
+                if (dashedTime < 2f)
+                {
+                    print(dashedTime);
+                    dashedTime += Time.deltaTime;
+                }
+                else
+                {
+                    currentMovementType = MovementType.Idle;
+                }
             }
         }
 
@@ -569,6 +579,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Coroutines
+    public IEnumerator AbilityCooldown()
+    {
+        BaseAbilityScript.CoolingDown = true;
+        yield return new WaitForSeconds(abilityCooldown);
+        BaseAbilityScript.CoolingDown = false;
+    }
+
     IEnumerator DodgeCooldown()
     {
         if (!dead)
@@ -584,10 +601,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         if (!dead)
         {
-            previousMovementType = currentMovementType;
             currentMovementType = MovementType.Dodging;
             yield return new WaitForSeconds(dodgeDuration);
-            currentMovementType = previousMovementType;
+            currentMovementType = MovementType.Idle;
             dodgeDir = null;
         }
     }
