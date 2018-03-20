@@ -21,7 +21,7 @@ public class PauseManager : MonoBehaviour
     bool paused = false;
 
     //Lista av allt som kan pausas
-    static List<IPausable> pausables = new List<IPausable>();
+    List<IPausable> pausables = new List<IPausable>();
 
     InputMode previousInputMode = InputMode.None;
 

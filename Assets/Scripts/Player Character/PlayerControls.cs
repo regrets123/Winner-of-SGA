@@ -36,9 +36,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     SpriteRenderer currentRune;
-
-    [SerializeField]
-    GameObject[] abilitiesToTest;
+    
     #endregion
 
     #region Non-Serialized Variables
@@ -151,10 +149,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
-        foreach (GameObject ability in abilitiesToTest) //Temporary
-        {
-            inventory.NewEquippable(ability);
-        }
     }
 
     private void Update()

@@ -186,12 +186,10 @@ public class InventoryManager : MonoBehaviour
     {
         if (equippable.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
         {
-            print("nytt vapen");
             AddEquippable(equippable, 0);
         }
         else if (equippable.GetComponent<BaseEquippableObject>() is BaseAbilityScript)
         {
-            print("ny ability");
             AddEquippable(equippable, 1);
         }
         else
