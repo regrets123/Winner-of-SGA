@@ -138,7 +138,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     int abilityNo = 0;
 
-    void Start()
+    void Awake()
     {
         //Just setting all the variables needed
         charController = GetComponent<CharacterController>();

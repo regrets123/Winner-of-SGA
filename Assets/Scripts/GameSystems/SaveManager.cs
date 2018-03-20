@@ -40,6 +40,9 @@ public class SaveManager : MonoBehaviour
     [SerializeField]
     GameObject camBase;
 
+    [SerializeField]
+    GameObject[] allItems;
+
     XmlDocument currentGame;
 
     XPathNavigator xNav;
@@ -52,6 +55,7 @@ public class SaveManager : MonoBehaviour
         player = FindObjectOfType<PlayerControls>(); //Temporary
         if (File.Exists(Application.dataPath + "/SaveToLoad.xml"))
         {
+            print("loading game");
             LoadGame();
         }
         else
@@ -65,8 +69,8 @@ public class SaveManager : MonoBehaviour
 
 
         /*Exempel för att hitta i XML*/
-       // xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
-      //  print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
+        // xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
+        //  print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
     }
 
     //Laddar ett sparat spel
@@ -84,29 +88,49 @@ public class SaveManager : MonoBehaviour
         this.xNav = currentGame.CreateNavigator();
         MovePlayer();
         MoveCamera();
+        LoadInventory();
+    }
+
+    void LoadInventory()
+    {
+        XPathNodeIterator nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
+        print(nodes.Count + " nodes");
+        foreach (XPathNavigator node in nodes)
+        {
+            print(node.Value);
+            foreach (GameObject item in allItems)
+            {
+                if (node.Value == item.GetComponent<BaseEquippableObject>().ObjectName)
+                {
+                    player.Inventory.NewEquippable(item);
+                }
+            }
+        }
     }
 
     public void ReloadGame()
     {
-        if (currentSave!= null)
+        if (currentSave != null)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
+            settings.CloseOutput = true;
             TextAsset xmlText = Resources.Load("ReferenceXML") as TextAsset;
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmlText.text);
             XPathNavigator saveNav = doc.CreateNavigator();
-            XmlWriter writer = XmlWriter.Create(Application.dataPath + "/SaveToLoad.xml", settings);
-            saveNav.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").SetValue(currentSave.SpritePath);
-            saveNav.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").SetValue(currentSave.SavePath);
-            doc.Save(writer);
+            using (XmlWriter writer = XmlWriter.Create(Application.dataPath + "/SaveToLoad.xml", settings))
+            {
+                saveNav.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").SetValue(currentSave.SpritePath);
+                saveNav.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").SetValue(currentSave.SavePath);
+                doc.Save(writer);
+            }
         }
         SceneManager.LoadScene(3);
     }
 
     void MovePlayer()
     {
-        print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value);
         Vector3 newPos = new Vector3(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Z").Value));
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").Value));
         player.transform.position = newPos;
@@ -138,19 +162,24 @@ public class SaveManager : MonoBehaviour
                 {
                     XmlWriterSettings settings = new XmlWriterSettings();
                     settings.Indent = true;
+                    settings.CloseOutput = true;
                     // Save the document to a file and auto-indent the output.
                     savePath = Application.dataPath + "/SavedGame_" + saveNumber.ToString() + ".xml";
                     print(savePath);
-                    XmlWriter writer = XmlWriter.Create(savePath, settings);
-                    currentGame.Save(writer);
+                    using (XmlWriter writer = XmlWriter.Create(savePath, settings))
+                    {
+                        currentGame.Save(writer);
+                    }
                     XmlDocument referenceXML = new XmlDocument();
                     TextAsset saveReference = Resources.Load("ReferenceXML") as TextAsset;
                     referenceXML.LoadXml(saveReference.text);
                     XPathNavigator refNav = referenceXML.CreateNavigator();
                     refNav.SelectSingleNode("/ReferenceXML/SavedGame/@SpritePath").SetValue(spritePath);
                     refNav.SelectSingleNode("/ReferenceXML/SavedGame/@SavePath").SetValue(savePath);
-                    XmlWriter refWriter = XmlWriter.Create(Application.dataPath + "/SaveRef_" + saveNumber + ".xml", settings);
-                    referenceXML.Save(refWriter);
+                    using (XmlWriter refWriter = XmlWriter.Create(Application.dataPath + "/SaveRef_" + saveNumber + ".xml", settings))
+                    {
+                        referenceXML.Save(refWriter);
+                    }
                     break;
                 }
                 saveNumber++;
@@ -193,7 +222,7 @@ public class SaveManager : MonoBehaviour
 
     void SaveInventory()        //Sparar alla föremål i spelarens inventory till XML
     {
-        XPathNodeIterator nodes = xNav.Select("/PlayerInfo/Inventory//Item/@Name");
+        XPathNodeIterator nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
         XPathNavigator inventory = xNav.SelectSingleNode("//Inventory");
         foreach (string itemName in player.Inventory.ReportItems())
         {
@@ -262,7 +291,7 @@ public class SaveManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.J))
         {
-            LoadGame();
+            ReloadGame();
         }
     }
 }
