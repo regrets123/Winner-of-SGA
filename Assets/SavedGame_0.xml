@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<SavedState>
+  <PlayerInfo>
+    <Transform>
+      <Position X="-2.3496" Y="-0.02" Z="13.0306" />
+      <Rotation X="0" Y="0.1969" Z="0" W="0.9804" />
+    </Transform>
+    <Inventory>
+      <Item Name="DashAbility" />
+      <Item Name="SuperJumpAbility" />
+      <Item Name="Sword00" />
+      <Item Name="Khopesh" />
+    </Inventory>
+    <Resources HP="100" Stamina="1" LifeForce="0" />
+  </PlayerInfo>
+  <CameraTransform>
+    <Position X="-2.3496" Y="1.24" Z="13.0306" />
+    <Rotation X="0.2358" Y="0.1912" Z="-0.0474" W="0.9516" />
+  </CameraTransform>
+  <SpawnsToRemove>
+  </SpawnsToRemove>
+  <TrapsToRemove>
+  </TrapsToRemove>
+</SavedState>
