@@ -135,9 +135,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { Dead = dead; }
     }
     #endregion
-
+    
     #region Main Methods
-    void Start()
+
+    void Awake()
     {
         //Just setting all the variables needed
         charController = GetComponent<CharacterController>();

@@ -22,8 +22,10 @@ GameObject:
   - component: {fileID: 33555525690275170}
   - component: {fileID: 23402874804136678}
   - component: {fileID: 95273302396235994}
+  - component: {fileID: 114970321110787014}
+  - component: {fileID: 65741798431795054}
   m_Layer: 0
-  m_Name: mesh_weapon_khopesh_JS
+  m_Name: Khopesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,6 +85,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1778787515386620}
   m_Mesh: {fileID: 4300000, guid: 364a797eecfa4ba4aa020181ff4f1906, type: 3}
+--- !u!65 &65741798431795054
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1778787515386620}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.37880927, y: 1.6604093, z: 0.13628046}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95273302396235994
 Animator:
   serializedVersion: 3
@@ -100,3 +114,26 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114970321110787014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1778787515386620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a01e09829485654d957431f032ac8af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryIcon: {fileID: 0}
+  objectName: Khopesh
+  myType: 0
+  damage: 5
+  attackSpeed: 1
+  attacks: 
+  enemyHit1: {fileID: 0}
+  enemyHit2: {fileID: 0}
+  enemyHit3: {fileID: 0}
+  swing1: {fileID: 0}
+  swing2: {fileID: 0}
+  thrust: {fileID: 0}

@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryIcon: {fileID: 0}
-  objectName: 
+  objectName: DashAbility
   myType: 1
   staminaCost: 0
   cooldownTime: 1
