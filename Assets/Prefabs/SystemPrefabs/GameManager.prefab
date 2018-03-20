@@ -44,6 +44,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1274196048889144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4387176485509880}
+  m_Layer: 0
+  m_Name: PauseMenuPlaceHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1408515085867246
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +100,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4595259062306566}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4339872024985164
 Transform:
@@ -93,6 +108,19 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1408515085867246}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595259062306566}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4387176485509880
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1274196048889144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -110,9 +138,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4387176485509880}
+  - {fileID: 4084349214449566}
   - {fileID: 4339872024985164}
   - {fileID: 4650572478031378}
-  - {fileID: 4084349214449566}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -127,7 +156,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4595259062306566}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114233649274650742
 MonoBehaviour:
@@ -151,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a4f0b3d28a3324089b3fb127cffa7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 1408515085867246}
+  pauseMenu: {fileID: 1274196048889144}
 --- !u!114 &114820794684758158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -165,3 +194,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSaves: 3
   camBase: {fileID: 0}
+  allItems:
+  - {fileID: 1778787515386620, guid: 407f107fe7bf70c45898f481c17f5822, type: 2}
+  - {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
+  - {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133, type: 2}
+  - {fileID: 1156753218034796, guid: d17e7e6801b3dc0479a8fda1a00da84d, type: 2}
