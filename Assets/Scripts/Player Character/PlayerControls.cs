@@ -290,7 +290,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 break;
 
             case EquipableType.Weapon:
-                SheatheAndUnsheathe();
+                //SheatheAndUnsheathe();
                 break;
 
             default:

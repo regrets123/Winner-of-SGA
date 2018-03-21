@@ -76,7 +76,6 @@ public class InventoryManager : MonoBehaviour
             if (inventoryMenu.activeSelf)
             {
                 //se till att rätt saker händer när rätt knappar trycks på
-                Equip();
                 HideInventory();
             }
             else
@@ -105,6 +104,11 @@ public class InventoryManager : MonoBehaviour
                     HighlightNextEquippable(true);
                 }
             }
+        }
+        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && Input.GetButtonDown("Jump"))
+        {
+            Equip();
+            HideInventory();
         }
     }
 
@@ -191,7 +195,7 @@ public class InventoryManager : MonoBehaviour
         StartCoroutine("MenuCooldown");
         if (next)
         {
-        StartCoroutine(BlinkArrow(2));
+            StartCoroutine(BlinkArrow(2));
             if (displayCollection + 1 == inventory.Length)
             {
                 displayCollection = 0;
@@ -259,7 +263,12 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         print(displayCollection + "        " + collectionIndex);
-        player.Equip(inventory[displayCollection][collectionIndex]);
+        if (displayCollection == 0 && player.CurrentWeapon != null)
+        {
+            player.EquipWeapon(collectionIndex);
+        }
+        else
+            player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
     //Gömmer inventoryt
