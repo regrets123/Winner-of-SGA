@@ -16,14 +16,15 @@ public interface IKillable
 
 public enum MovementType
 {
-    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting, SuperJumping
+    Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting, SuperJumping, Stagger
 }
 
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     #region Serialized Variables
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, attackCooldown, abilityCooldown;
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, 
+        attackCooldown, abilityCooldown, sprintSpeed, staminaRegen;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -166,7 +167,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
-            if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
+
+            if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f && move != Vector3.zero)
             {
                 stamina -= 0.01f;
                 staminaBar.value = stamina;
@@ -174,8 +176,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else if (charController.isGrounded && stamina < maxStamina && !Input.GetButton("Sprint"))
             {
-                stamina += 0.01f;
+                stamina += staminaRegen;
                 staminaBar.value = stamina;
+
                 if (stamina > maxStamina)
                 {
                     stamina = maxStamina;
@@ -316,6 +319,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             health -= ModifyDamage(incomingDamage);
             healthBar.value = health;
+
+            if(incomingDamage < health)
+            {
+                previousMovementType = currentMovementType;
+                anim.SetTrigger("Stagger");
+                currentMovementType = MovementType.Stagger;
+            }
         }
 
         if (health <= 0)
@@ -432,7 +442,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (sprinting || jumpMomentum)
             {
-                move *= 4;
+                move *= sprintSpeed;
             }
             //Changes the character models rotation to be in the direction its moving
             transform.rotation = Quaternion.LookRotation(move);
