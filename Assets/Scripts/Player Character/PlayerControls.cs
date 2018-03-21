@@ -130,7 +130,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public int Health
     {
         get { return this.health; }
-        set { health = value; }
+        set { this.health = value; if (this.health <= 0f) { Death(); } }
     }
 
     public int LifeForce
@@ -292,7 +292,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             anim.SetTrigger("SheatheAndUnsheathe");
             if (!anim.GetBool("WeaponDrawn"))
             {
-                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+                //SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
             }
             StartCoroutine("SheathingTimer");
         }
@@ -698,7 +698,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             yield return new WaitForSeconds(0.4f);
             if (weaponToEquip != null)
             {
-                SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+                //SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
                 EquipWeapon(weaponToEquip);
             }
             else if (currentWeapon != null)

@@ -767,7 +767,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1216972360605644}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.26, z: 0}
+  m_LocalPosition: {x: -0, y: 1.5, z: 0}
   m_LocalScale: {x: 1.2318623, y: 1.2318625, z: 1.2318609}
   m_Children: []
   m_Father: {fileID: 4957631059493478}
@@ -1225,15 +1225,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1833496529185632}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 20.82}
+  m_LocalRotation: {x: 0, y: 0.5735764, z: 0, w: 0.8191521}
+  m_LocalPosition: {x: 85.9, y: 226.2, z: 116.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4197900504244770}
   - {fileID: 4314314013410422}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 70, z: 0}
 --- !u!54 &54060809120556906
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -1277,23 +1277,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee44ae33297a6704eb37b5498ea50e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 2
+  jumpSpeed: 1.5
   gravity: 0.1
-  maxStamina: 10
-  moveSpeed: 0.7
+  maxStamina: 100
+  moveSpeed: 1.1
   slopeLimit: 40
-  slideFriction: -4
-  dodgeCost: 0
-  invulnerablityTime: 1
+  slideFriction: -0.2
+  dodgeCost: 20
+  invulnerablityTime: 0.5
   maxLifeForce: 0
-  dodgeCooldown: 1
+  dodgeCooldown: 0.67
   dodgeDuration: 0.4
-  dodgeSpeed: 3
+  dodgeSpeed: 2
   attackMoveLength: 0.2
   attackCooldown: 0.4
   abilityCooldown: 0
-  sprintSpeed: 3
-  staminaRegen: 0
+  sprintSpeed: 2
+  staminaRegen: 1
   maxPoise: 0
   staggerTime: 0
   poiseCooldown: 0
