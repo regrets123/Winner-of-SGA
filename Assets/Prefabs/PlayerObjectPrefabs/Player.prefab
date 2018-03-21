@@ -1291,16 +1291,22 @@ MonoBehaviour:
   dodgeSpeed: 3
   attackMoveLength: 0.2
   attackCooldown: 0.4
+  abilityCooldown: 0
+  sprintSpeed: 3
+  staminaRegen: 0
+  maxPoise: 0
+  staggerTime: 0
+  poiseCooldown: 0
   maxHealth: 100
   rotspeed: 2
   weaponPosition: {fileID: 4385959190690106}
   swordSheathe: {fileID: 8300000, guid: e323755ba9eadf2418e71e952d928af4, type: 3}
   swordUnsheathe: {fileID: 8300000, guid: 018080c26ab6f2f42b519fee92ace10e, type: 3}
   currentRune: {fileID: 212213662123886716}
-  attackAnim: {fileID: 0}
-  abilitiesToTest:
-  - {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133, type: 2}
-  - {fileID: 1156753218034796, guid: d17e7e6801b3dc0479a8fda1a00da84d, type: 2}
+  healthBar: {fileID: 0}
+  staminaBar: {fileID: 0}
+  lifeForceBar: {fileID: 0}
+  aggroIndicator: {fileID: 0}
 --- !u!137 &137535728816752232
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

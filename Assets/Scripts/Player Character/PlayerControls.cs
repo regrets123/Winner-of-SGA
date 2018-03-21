@@ -41,6 +41,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     Slider healthBar, staminaBar, lifeForceBar;
 
+    [SerializeField]
+    GameObject aggroIndicator;
+
     #endregion
 
     #region Non-Serialized Variables
@@ -74,6 +77,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     private Transform cam;
 
     private Vector3 camForward;
+
+    List<BaseEnemyScript> enemiesAggroing = new List<BaseEnemyScript>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true;
     #endregion
@@ -309,6 +314,24 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 print("unspecified object type, gör om gör rätt");
                 break;
         }
+    }
+
+    public void EnemyAggro(BaseEnemyScript enemy, bool aggroing)
+    {
+        if (aggroing)
+        {
+            enemiesAggroing.Add(enemy);
+        }
+        else
+        {
+            enemiesAggroing.Remove(enemy);
+        }
+        if (enemiesAggroing.Count > 0)
+        {
+            aggroIndicator.SetActive(true);
+        }
+        else
+            aggroIndicator.SetActive(false);
     }
 
     //Code for equipping different weapons

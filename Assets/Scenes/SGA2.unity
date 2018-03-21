@@ -909,6 +909,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &567901893 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1340238169519882, guid: 04cb31017c8aa424c8da6968bd2f6390,
+    type: 2}
+  m_PrefabInternal: {fileID: 1628100406}
 --- !u!1001 &586146441
 Prefab:
   m_ObjectHideFlags: 0
@@ -1910,26 +1915,9 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
-      propertyPath: abilitiesToTest.Array.data[0]
-      value: 
-      objectReference: {fileID: 1156753218034796, guid: d17e7e6801b3dc0479a8fda1a00da84d,
-        type: 2}
-    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
-        type: 2}
-      propertyPath: abilitiesToTest.Array.data[1]
-      value: 
-      objectReference: {fileID: 1547031262365830, guid: d9a574245d9df8c4facd6f05ef75b133,
-        type: 2}
-    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
-        type: 2}
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1110635688}
-    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
-        type: 2}
-      propertyPath: lifeForceBar
-      value: 
-      objectReference: {fileID: 1979629922}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: staminaBar
@@ -1937,9 +1925,14 @@ Prefab:
       objectReference: {fileID: 868783012}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
-      propertyPath: sprintSpeed
-      value: 3
-      objectReference: {fileID: 0}
+      propertyPath: lifeForceBar
+      value: 
+      objectReference: {fileID: 1979629922}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: aggroIndicator
+      value: 
+      objectReference: {fileID: 567901893}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0
@@ -2165,6 +2158,10 @@ Prefab:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1158951583576494, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340238169519882, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

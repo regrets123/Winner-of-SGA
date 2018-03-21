@@ -235,6 +235,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected void LoseAggro()
     {
+        target.EnemyAggro(this, false);
         target = null;
         losingAggro = false;
         nav.SetDestination(initialPos);
@@ -271,6 +272,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         this.initialPos = transform.position;
         this.target = newTarget;
+        target.EnemyAggro(this, true);
     }
 
     IEnumerator Stagger()
