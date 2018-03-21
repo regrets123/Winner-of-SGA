@@ -1,16 +1,30 @@
 fileFormatVersion: 2
 guid: 1b9eb8f871ae6b54683faa6bd7592fbe
-timeCreated: 1521461533
+timeCreated: 1521636151
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
+    100000: Mesh_Temple_Small_Ruin_Gate_Doors_TL
+    100002: //RootNode
+    100004: Mesh_Temple_Small_Ruin_Gate_TL
+    100006: polySurface1
+    100008: polySurface2
+    400000: Mesh_Temple_Small_Ruin_Gate_Doors_TL
+    400002: //RootNode
+    400004: Mesh_Temple_Small_Ruin_Gate_TL
+    400006: polySurface1
+    400008: polySurface2
     2100000: Material_Small_Ruin_Gate_TL
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Mesh_Temple_Small_Ruin_Gate_TL
+    2300000: Mesh_Temple_Small_Ruin_Gate_TL
+    2300002: polySurface1
+    2300004: polySurface2
+    3300000: Mesh_Temple_Small_Ruin_Gate_TL
+    3300002: polySurface1
+    3300004: polySurface2
+    4300000: polySurface1
+    4300002: polySurface2
+    4300004: Mesh_Temple_Small_Ruin_Gate_TL
     9500000: //RootNode
   externalObjects: {}
   materials:
