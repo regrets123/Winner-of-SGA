@@ -12,18 +12,21 @@ public class MenuManager : MonoBehaviour {
     public void ToggleMenu(GameObject menuToToggle)
     {
         menuToToggle.SetActive(!menuToToggle.activeSelf);
+        print("Toggle");
 
     }
 
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        print("Load Scene");
     }
 
 
     public void ExitApplication()
     {
         Application.Quit();
+        print("Quit");
     }
 
 
