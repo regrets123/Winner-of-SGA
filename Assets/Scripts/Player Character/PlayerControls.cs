@@ -103,6 +103,18 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.currentAbility; }
     }
 
+    public Slider LifeforceBar
+    {
+        get { return lifeForceBar; }
+        set { lifeForceBar = LifeforceBar; }
+    }
+
+    public Slider HealthBar
+    {
+        get { return healthBar; }
+        set { healthBar = HealthBar; }
+    }
+
     //Gets and sets the current weapon
     public BaseWeaponScript CurrentWeapon
     {
@@ -118,11 +130,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public int Health
     {
         get { return this.health; }
+        set { health = value; }
     }
 
     public int LifeForce
     {
         get { return this.lifeForce; }
+        set { lifeForce = value; }
     }
 
     public float YVelocity

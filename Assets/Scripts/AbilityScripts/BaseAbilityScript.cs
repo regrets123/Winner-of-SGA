@@ -7,7 +7,7 @@ using UnityEngine;
 public class BaseAbilityScript : BaseEquippableObject
 {
     [SerializeField]
-    protected float staminaCost;
+    int abilityCost;
 
     [SerializeField]
     protected Sprite myRune;
@@ -40,6 +40,17 @@ public class BaseAbilityScript : BaseEquippableObject
             && Input.GetButtonDown("Ability")
             && !coolingDown && !player.Dead)
         {
+            if(player.LifeForce >= abilityCost)
+            {
+                player.LifeForce -= abilityCost;
+                player.LifeforceBar.value = player.LifeForce;
+            }
+            else
+            {
+                player.Health -= abilityCost;
+                player.HealthBar.value = player.Health;
+            }
+
             UseAbility();
         }
     }
