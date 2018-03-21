@@ -8,11 +8,40 @@ using System.Linq;
 
 public class CameraFollow : MonoBehaviour, IPausable
 {
+    [Header("Camera Settings")]
+    [Space(2)]
     [SerializeField]
-    float cameraMoveSpeed, clampAngle, inputSensitivity, smoothX, smoothY, lockOnSmooth;
+    float cameraMoveSpeed;
+    [SerializeField]
+    float clampAngle;
+    [SerializeField]
+    float inputSensitivity;
+    [SerializeField]
+    float smoothX;
+    [SerializeField]
+    float smoothY;
 
+    [Space(10)]
+
+    [Header("Lock-On Settings")]
+    [Space(2)]
     [SerializeField]
-    GameObject cameraFollowObj, cameraObj, playerObj, lockOnSpritePrefab;
+    float lockOnSmooth;
+    [SerializeField]
+    float maxLockOnDistance;
+
+    [Space(10)]
+
+    [Header("Prefabs")]
+    [Space(2)]
+    [SerializeField]
+    GameObject cameraObj;
+    [SerializeField]
+    GameObject playerObj;
+    [SerializeField]
+    GameObject lockOnSpritePrefab;
+    [SerializeField]
+    GameObject cameraFollowObj;
 
     GameObject lockOnSprite;
 
@@ -28,7 +57,7 @@ public class CameraFollow : MonoBehaviour, IPausable
 
     Quaternion toRotate, localRotation;
 
-    float camDistanceXToPlayer, camDistanceYToPlayer, camDistanceZToPlayer;
+    float camDistanceXToPlayer, camDistanceYToPlayer, camDistanceZToPlayer, distance, closestDistance, targetDistance;
 
     float mouseX, mouseY;
 
@@ -71,7 +100,7 @@ public class CameraFollow : MonoBehaviour, IPausable
             }
             else if (lockOn && !paused)
             {
-                lockOnSprite.transform.rotation = transform.rotation;
+                lockOnSprite.transform.rotation = Quaternion.Lerp(lockOnSprite.transform.rotation, transform.rotation, 0.1f);
             }
 
             CameraUpdater();
@@ -113,33 +142,16 @@ public class CameraFollow : MonoBehaviour, IPausable
     {
         if (Input.GetButtonDown("LockOn") && targetsLockOnAble != null && !lockOn)
         {
-            float distance;
-            float closestDistance;
-
             visibleEnemies.Clear();
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
             {
                 RaycastHit hit;
 
-                //Physics.Raycast(transform.position, enemy.transform.position, out hit, 8);
-
                 if (enemy != null && !Physics.Linecast(transform.position, enemy.transform.position, out hit, -(1 << 8)))
                 {
                     visibleEnemies.Add(enemy);
-                    //Debug.DrawLine(transform.position, enemy.transform.position, Color.red);
-                    //if (hit.transform != null && hit.transform.gameObject.layer != LayerMask.NameToLayer("Environment"))
-                    //{
-                    //}
-                    //else if(hit.transform != null && hit.transform.gameObject.layer == LayerMask.NameToLayer("Environment"))
-                    //{
-                    //    visibleEnemies.Remove(enemy);
-                    //}
                 }
-                //else
-                //{
-                //    visibleEnemies.Remove(enemy);
-                //}
             }
             if (visibleEnemies.Count != 0)
             {
@@ -154,6 +166,7 @@ public class CameraFollow : MonoBehaviour, IPausable
                         lockOn = true;
                         lookAtMe = target;
                         lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform, false);
+                        lockOnSprite.transform.position += (Vector3.up * 0.4f);
                     }
                 }
             }
@@ -165,13 +178,12 @@ public class CameraFollow : MonoBehaviour, IPausable
             Vector3 rot = transform.localRotation.eulerAngles;
             rotX = rot.x;
             rotY = rot.y;
-            //transform.rotation = Quaternion.Lerp(transform.rotation, localRotation, lockOnSmooth * Time.deltaTime);
             lockOn = false;
         }
 
         if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f && lockOn)
         {
-            visibleEnemies.Clear();/* = new List<BaseEnemyScript>();*/
+            visibleEnemies.Clear();
 
 
             foreach (BaseEnemyScript enemy in targetsLockOnAble)
@@ -180,10 +192,6 @@ public class CameraFollow : MonoBehaviour, IPausable
                 {
                     visibleEnemies.Add(enemy);
                 }
-                //else
-                //{
-                //    visibleEnemies.Remove(enemy);
-                //}
             }
 
 
@@ -217,7 +225,7 @@ public class CameraFollow : MonoBehaviour, IPausable
                     }
                     Destroy(lockOnSprite.gameObject);
 
-                    lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform.position, cameraObj.transform.rotation);
+                    lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform.position + (Vector3.up * 0.4f), cameraObj.transform.rotation);
 
                     break;
                 }
@@ -229,14 +237,18 @@ public class CameraFollow : MonoBehaviour, IPausable
             toRotate = Quaternion.LookRotation(lookAtMe.transform.position - transform.position);
 
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, lockOnSmooth * Time.deltaTime);
-        }
-        else if(lookAtMe == null && lockOn)
-        {
-            Destroy(lockOnSprite.gameObject);
-            Vector3 rot = transform.localRotation.eulerAngles;
-            rotX = rot.x;
-            rotY = rot.y;
-            lockOn = false;
+
+            targetDistance = Vector3.Distance(cameraFollowObj.transform.position, lookAtMe.transform.position);
+
+            if (!lookAtMe.gameObject.GetComponent<BaseEnemyScript>().Alive && lockOn || targetDistance > maxLockOnDistance && lockOn)
+            {
+                Destroy(lockOnSprite.gameObject);
+                lookAtMe = null;
+                Vector3 rot = transform.localRotation.eulerAngles;
+                rotX = rot.x;
+                rotY = rot.y;
+                lockOn = false;
+            }
         }
     }
 
