@@ -421,12 +421,12 @@ GameObject:
   - component: {fileID: 222659625169344308}
   - component: {fileID: 114356192945926324}
   m_Layer: 5
-  m_Name: R_Arrow
+  m_Name: Arrow0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1302073592295310
 GameObject:
   m_ObjectHideFlags: 1
@@ -591,7 +591,7 @@ GameObject:
   - component: {fileID: 222500154176138424}
   - component: {fileID: 114163508125728794}
   m_Layer: 5
-  m_Name: EquippedAbility
+  m_Name: EquippedAbilityImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -688,7 +688,7 @@ GameObject:
   - component: {fileID: 222581405179299618}
   - component: {fileID: 114678241667194688}
   m_Layer: 5
-  m_Name: M_Item
+  m_Name: InventoryImage1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -737,7 +737,7 @@ GameObject:
   - component: {fileID: 222027757949104872}
   - component: {fileID: 114562569617427786}
   m_Layer: 5
-  m_Name: EquippedWeapon
+  m_Name: EquippedWeaponImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -985,12 +985,12 @@ GameObject:
   - component: {fileID: 222777890063365468}
   - component: {fileID: 114892314632624900}
   m_Layer: 5
-  m_Name: D_Arrow
+  m_Name: Arrow3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1711918343601374
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,12 +1017,12 @@ GameObject:
   - component: {fileID: 222212282271200852}
   - component: {fileID: 114985299139596690}
   m_Layer: 5
-  m_Name: L_Arrow
+  m_Name: Arrow1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1762161991166424
 GameObject:
   m_ObjectHideFlags: 1
@@ -1351,12 +1351,12 @@ GameObject:
   - component: {fileID: 222611905368874458}
   - component: {fileID: 114609428560782670}
   m_Layer: 5
-  m_Name: U_Arrow
+  m_Name: Arrow2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1904168105264484
 GameObject:
   m_ObjectHideFlags: 1
@@ -1417,7 +1417,7 @@ GameObject:
   - component: {fileID: 222002897602887644}
   - component: {fileID: 114163149360131594}
   m_Layer: 5
-  m_Name: L_Item
+  m_Name: InventoryImage0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1468,7 +1468,7 @@ GameObject:
   - component: {fileID: 222563613567062640}
   - component: {fileID: 114611748936872280}
   m_Layer: 5
-  m_Name: R_Item
+  m_Name: InventoryImage2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1546,12 +1546,12 @@ GameObject:
   m_Component:
   - component: {fileID: 224807640437155436}
   m_Layer: 5
-  m_Name: Selection
+  m_Name: InventoryMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4807952272822764
 Transform:
   m_ObjectHideFlags: 1
