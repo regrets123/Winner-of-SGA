@@ -37,6 +37,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     SpriteRenderer currentRune;
 
+    [SerializeField]
+    Slider healthBar, staminaBar, lifeForceBar;
+
     #endregion
 
     #region Non-Serialized Variables
@@ -99,7 +102,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public float Stamina
     {
         get { return this.stamina; }
-        set { this.stamina = value; }
+        set { this.stamina = value; staminaBar.value = stamina; }
     }
 
     public int Health
@@ -149,6 +152,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
         anim = GetComponentInChildren<Animator>();
+        healthBar.maxValue = maxHealth;
+        staminaBar.maxValue = maxStamina;
+        lifeForceBar.maxValue = maxLifeForce;
+        healthBar.value = health;
+        staminaBar.value = stamina;
+        lifeForceBar.value = lifeForce;
     }
 
     private void Update()
@@ -156,27 +165,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (inputEnabled && !dead)
         {
             //A sprint function which drains the stamina float upon activation
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                Equip(Instantiate(inventory.EquippableAbilities[abilityNo])); //Temporary
-                if (abilityNo == 1)
-                {
-                    abilityNo--;
-                }
-                else
-                {
-                    abilityNo++;
-                }
-            }
             bool sprinting = false;
             if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f)
             {
-                stamina -= 1f;
+                stamina -= 0.01f;
+                staminaBar.value = stamina;
                 sprinting = true;
             }
-            else if (charController.isGrounded && stamina < maxStamina && Input.GetButton("Sprint"))
+            else if (charController.isGrounded && stamina < maxStamina && !Input.GetButton("Sprint"))
             {
-                stamina += 1f;
+                stamina += 0.01f;
+                staminaBar.value = stamina;
                 if (stamina > maxStamina)
                 {
                     stamina = maxStamina;
@@ -190,7 +189,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (!charController.isGrounded)
             {
-                print(currentMovementType);
                 anim.SetBool("Falling", true);
                 yVelocity -= gravity;
             }
@@ -233,11 +231,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void RestoreHealth(int amount)
     {
         this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
+        healthBar.value = health;
     }
 
     public void ReceiveLifeForce(int value)
     {
         this.lifeForce = Mathf.Clamp(this.lifeForce + value, 0, 100);
+        lifeForceBar.value = lifeForce;
         print(lifeForce);
     }
     #endregion
@@ -308,15 +308,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     //Damage to player
     public void TakeDamage(int incomingDamage)
     {
-        if (dead)
-            return;
-        if (invulnerable)
+        if (dead || invulnerable)
         {
             return;
         }
         else
         {
             health -= ModifyDamage(incomingDamage);
+            healthBar.value = health;
         }
 
         if (health <= 0)
@@ -384,12 +383,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public void Kill()
     {
         if (!dead)
+        {
             Death();
+        }
     }
 
     void Death()
     {
         dead = true;
+            healthBar.value = 0f;
         if (hitNormal.y > 0)
         {
             //death animation och reload last saved state
@@ -603,7 +605,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             currentMovementType = MovementType.Dodging;
             yield return new WaitForSeconds(dodgeDuration);
-            currentMovementType = MovementType.Idle;
+            currentMovementType = MovementType.Running;
             dodgeDir = null;
         }
     }
@@ -611,7 +613,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     IEnumerator NonMovingInteract()
     {
         yield return new WaitForSeconds(interactTime);
-        currentMovementType = previousMovementType;
+        currentMovementType = MovementType.Idle;
     }
 
     IEnumerator SheathingTimer()
