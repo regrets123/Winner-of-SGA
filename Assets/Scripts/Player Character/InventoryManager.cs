@@ -32,6 +32,8 @@ public class InventoryManager : MonoBehaviour
 
     InputManager inputManager;
 
+    bool coolingDown = false;
+
     public List<GameObject> EquippableAbilities
     {
         get { return this.equippableAbilities; }
@@ -82,17 +84,35 @@ public class InventoryManager : MonoBehaviour
                 ShowInventory();
             }
         }
-        else if (inventoryMenu.activeSelf)
+        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha8))
+            if (!coolingDown)
             {
-                DisplayNextCollection(false);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                DisplayNextCollection(true);
+                if (Input.GetAxis("NextInventory") < 0f)
+                {
+                    DisplayNextCollection(false);
+                }
+                else if (Input.GetAxis("NextInventory") > 0f)
+                {
+                    DisplayNextCollection(true);
+                }
+                else if (Input.GetAxis("NextItem") < 0f)
+                {
+                    HighlightNextEquippable(false);
+                }
+                else if (Input.GetAxis("NextItem") > 0f)
+                {
+                    HighlightNextEquippable(true);
+                }
             }
         }
+    }
+
+    IEnumerator MenuCooldown()
+    {
+        coolingDown = true;
+        yield return new WaitForSeconds(0.5f);
+        coolingDown = false;
     }
 
     void ShowInventory()
@@ -103,22 +123,25 @@ public class InventoryManager : MonoBehaviour
         {
             inventoryImages[i].gameObject.SetActive(true);
         }
+        displayCollection = 0;
+        collectionIndex = 0;
         UpdateSprites();
     }
 
     IEnumerator BlinkArrow(int arrowIndex)
     {
         inventoryArrows[arrowIndex].SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        inventoryArrows[arrowIndex].SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        inventoryArrows[arrowIndex].SetActive(false);
     }
 
     //Indikerar vilken equippable spelaren överväger att equippa
     void HighlightNextEquippable(bool next)
     {
+        StartCoroutine("MenuCooldown");
         if (next)
         {
-            //StartCoroutine("BlinkArrow");
+            StartCoroutine(BlinkArrow(0));
             if (collectionIndex + 1 == inventory[displayCollection].Count)
             {
                 collectionIndex = 0;
@@ -130,6 +153,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(BlinkArrow(1));
             if (collectionIndex == 0)
             {
                 collectionIndex = inventory[displayCollection].Count - 1;
@@ -161,18 +185,13 @@ public class InventoryManager : MonoBehaviour
         return items;
     }
 
-    IEnumerator BlinkArrow(GameObject arrow)
-    {
-        arrow.SetActive(true);
-        yield return new WaitForSeconds(0.2f);
-        arrow.SetActive(false);
-    }
-
     //Väljer vilka equippables som ska visas i inventorymenyn
     void DisplayNextCollection(bool next)
     {
+        StartCoroutine("MenuCooldown");
         if (next)
         {
+        StartCoroutine(BlinkArrow(2));
             if (displayCollection + 1 == inventory.Length)
             {
                 displayCollection = 0;
@@ -184,6 +203,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(BlinkArrow(3));
             if (displayCollection == 0)
             {
                 displayCollection = inventory.Length - 1;
@@ -238,8 +258,8 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("problem med inventory");
             return;
         }
+        print(displayCollection + "        " + collectionIndex);
         player.Equip(inventory[displayCollection][collectionIndex]);
-        HideInventory();
     }
 
     //Gömmer inventoryt

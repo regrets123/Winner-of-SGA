@@ -24,7 +24,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #region Serialized Variables
     [SerializeField]
     float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, 
-        attackCooldown, abilityCooldown, sprintSpeed, staminaRegen;
+        attackCooldown, abilityCooldown, sprintSpeed, staminaRegen, maxPoise, staggerTime, poiseCooldown;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -63,7 +63,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Animator anim;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise;
 
     int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
 
@@ -185,7 +185,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
 
-            if (/*currentMovementType != MovementType.Attacking && */currentMovementType != MovementType.Interacting)
+            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
                 PlayerMovement(sprinting);
             }
@@ -209,7 +209,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
 
             if (charController.isGrounded && Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
-                && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking))
+                && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking || currentMovementType != MovementType.Stagger))
             {
                 currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
                 Attack();
@@ -220,9 +220,20 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 secondsUntilResetClick -= Time.deltaTime;
             }
+
             if (attackCountdown > 0)
             {
                 attackCountdown -= Time.deltaTime;
+            }
+
+            if(poiseReset > 0)
+            {
+                poiseReset -= Time.deltaTime;
+            }
+
+            if(poiseReset <= 0)
+            {
+                poise = maxPoise;
             }
         }
         else if (!inputEnabled)
@@ -274,7 +285,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             case EquipableType.Ability:
                 if (currentAbility != null)
                     Destroy(currentAbility.gameObject);
-                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                currentAbility = Instantiate(equipment).GetComponent<BaseEquippableObject>() as BaseAbilityScript;
                 currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
                 break;
 
@@ -322,11 +333,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             health -= ModifyDamage(incomingDamage);
             healthBar.value = health;
 
-            if(incomingDamage < health)
+            poise -= incomingDamage;
+
+            if(incomingDamage < health && poise < incomingDamage)
             {
-                previousMovementType = currentMovementType;
-                anim.SetTrigger("Stagger");
-                currentMovementType = MovementType.Stagger;
+                StartCoroutine("Stagger");
             }
         }
 
@@ -653,6 +664,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         invulnerable = true;
         yield return new WaitForSeconds(invulnerablityTime);
         invulnerable = false;
+    }
+
+    IEnumerator Stagger()
+    {
+        if (currentMovementType != MovementType.Stagger)
+            previousMovementType = currentMovementType;
+        currentMovementType = MovementType.Stagger;
+        anim.SetTrigger("Stagger");
+        poiseReset = poiseCooldown;
+        yield return new WaitForSeconds(staggerTime);
+        currentMovementType = previousMovementType;
     }
     #endregion
 }

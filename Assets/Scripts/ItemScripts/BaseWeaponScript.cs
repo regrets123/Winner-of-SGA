@@ -132,7 +132,7 @@ public class BaseWeaponScript : BaseEquippableObject
             if (targetToHit != null)
             {
                 DealDamage(targetToHit);
-                SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
+                ///SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
             }
         }
     }
