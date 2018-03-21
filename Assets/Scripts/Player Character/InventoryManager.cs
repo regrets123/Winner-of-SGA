@@ -32,6 +32,8 @@ public class InventoryManager : MonoBehaviour
 
     InputManager inputManager;
 
+    bool coolingDown = false;
+
     public List<GameObject> EquippableAbilities
     {
         get { return this.equippableAbilities; }
@@ -82,17 +84,35 @@ public class InventoryManager : MonoBehaviour
                 ShowInventory();
             }
         }
-        else if (inventoryMenu.activeSelf)
+        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha8))
+            if (!coolingDown)
             {
-                DisplayNextCollection(false);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                DisplayNextCollection(true);
+                if (Input.GetAxis("NextInventory") < 0f)
+                {
+                    DisplayNextCollection(false);
+                }
+                else if (Input.GetAxis("NextInventory") > 0f)
+                {
+                    DisplayNextCollection(true);
+                }
+                else if (Input.GetAxis("NextItem") < 0f)
+                {
+                    HighlightNextEquippable(false);
+                }
+                else if (Input.GetAxis("NextItem") > 0f)
+                {
+                    HighlightNextEquippable(true);
+                }
             }
         }
+    }
+
+    IEnumerator MenuCooldown()
+    {
+        coolingDown = true;
+        yield return new WaitForSeconds(0.5f);
+        coolingDown = false;
     }
 
     void ShowInventory()
@@ -116,6 +136,7 @@ public class InventoryManager : MonoBehaviour
     //Indikerar vilken equippable spelaren överväger att equippa
     void HighlightNextEquippable(bool next)
     {
+        StartCoroutine("MenuCooldown");
         if (next)
         {
             //StartCoroutine("BlinkArrow");
@@ -171,6 +192,7 @@ public class InventoryManager : MonoBehaviour
     //Väljer vilka equippables som ska visas i inventorymenyn
     void DisplayNextCollection(bool next)
     {
+        StartCoroutine("MenuCooldown");
         if (next)
         {
             if (displayCollection + 1 == inventory.Length)
@@ -239,7 +261,6 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         player.Equip(inventory[displayCollection][collectionIndex]);
-        HideInventory();
     }
 
     //Gömmer inventoryt
