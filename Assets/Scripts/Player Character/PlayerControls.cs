@@ -285,7 +285,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             case EquipableType.Ability:
                 if (currentAbility != null)
                     Destroy(currentAbility.gameObject);
-                currentAbility = equipment.GetComponent<BaseEquippableObject>() as BaseAbilityScript;
+                currentAbility = Instantiate(equipment).GetComponent<BaseEquippableObject>() as BaseAbilityScript;
                 currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
                 break;
 

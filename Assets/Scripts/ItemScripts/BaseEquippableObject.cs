@@ -33,7 +33,6 @@ public class BaseEquippableObject : MonoBehaviour {
     {
         get { return this.inventoryIcon; }
     }
-    
 
     protected virtual void Start()
     {
