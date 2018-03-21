@@ -95,14 +95,16 @@ public class InventoryManager : MonoBehaviour
     {
         string[] items = new string[equippableAbilities.Count + equippableWeapons.Count];
         int index = 0;
-        for(int i = 0; i < equippableWeapons.Count; i++)
+        for(int i = 0; i < equippableAbilities.Count; i++)
         {
-            items[index] = equippableWeapons[index].GetComponent<BaseEquippableObject>().ObjectName;
+            print(equippableAbilities[i].GetComponent<BaseEquippableObject>().ObjectName);
+            items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
-        for (int i = 0; i < equippableAbilities.Count; i++)
+        for (int i = 0; i < equippableWeapons.Count; i++)
         {
-            items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
+            print(equippableWeapons[i].GetComponent<BaseEquippableObject>().ObjectName);
+            items[index] = equippableWeapons[i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
         return items;
@@ -184,12 +186,10 @@ public class InventoryManager : MonoBehaviour
     {
         if (equippable.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
         {
-            print("nytt vapen");
             AddEquippable(equippable, 0);
         }
         else if (equippable.GetComponent<BaseEquippableObject>() is BaseAbilityScript)
         {
-            print("ny ability");
             AddEquippable(equippable, 1);
         }
         else
