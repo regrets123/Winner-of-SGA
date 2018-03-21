@@ -211,7 +211,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (charController.isGrounded && Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking))
             {
+                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
                 Attack();
+                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
             }
 
             if (secondsUntilResetClick > 0)
