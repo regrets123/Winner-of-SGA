@@ -83,26 +83,23 @@ public class InventoryManager : MonoBehaviour
                 ShowInventory();
             }
         }
-        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory)
+        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && !coolingDown)
         {
-            if (!coolingDown)
+            if (Input.GetAxis("NextInventory") < 0f)
             {
-                if (Input.GetAxis("NextInventory") < 0f)
-                {
-                    DisplayNextCollection(false);
-                }
-                else if (Input.GetAxis("NextInventory") > 0f)
-                {
-                    DisplayNextCollection(true);
-                }
-                else if (Input.GetAxis("NextItem") < 0f)
-                {
-                    HighlightNextEquippable(false);
-                }
-                else if (Input.GetAxis("NextItem") > 0f)
-                {
-                    HighlightNextEquippable(true);
-                }
+                DisplayNextCollection(false);
+            }
+            else if (Input.GetAxis("NextInventory") > 0f)
+            {
+                DisplayNextCollection(true);
+            }
+            else if (Input.GetAxis("NextItem") < 0f)
+            {
+                HighlightNextEquippable(false);
+            }
+            else if (Input.GetAxis("NextItem") > 0f)
+            {
+                HighlightNextEquippable(true);
             }
         }
         else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && Input.GetButtonDown("Jump"))
@@ -265,7 +262,7 @@ public class InventoryManager : MonoBehaviour
         print(displayCollection + "        " + collectionIndex);
         if (displayCollection == 0 && player.CurrentWeapon != null)
         {
-            player.EquipWeapon(collectionIndex);
+            player.Equip(inventory[displayCollection][collectionIndex]);
         }
         else
             player.Equip(inventory[displayCollection][collectionIndex]);

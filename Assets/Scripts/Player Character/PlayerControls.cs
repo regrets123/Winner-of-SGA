@@ -58,8 +58,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     IInteractable currentInteractable;
 
+    InputManager iM;
+
     //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
+
+    GameObject weaponToEquip;
 
     Animator anim;
 
@@ -143,6 +147,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     void Awake()
     {
         //Just setting all the variables needed
+        iM = FindObjectOfType<InputManager>();
         charController = GetComponent<CharacterController>();
         cam = FindObjectOfType<Camera>().transform;
         this.health = maxHealth;
@@ -290,7 +295,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 break;
 
             case EquipableType.Weapon:
-                //SheatheAndUnsheathe();
+                this.weaponToEquip = equipment;
+                SheatheAndUnsheathe();
                 break;
 
             default:
@@ -300,7 +306,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     //Code for equipping different weapons
-    public void EquipWeapon(int weaponToEquip)
+    public void EquipWeapon(GameObject weaponToEquip)
     {
         if (dead)
             return;
@@ -309,7 +315,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             print("destroying");
             Destroy(currentWeapon.gameObject);
         }
-        this.currentWeapon = Instantiate(inventory.EquippableWeapons[weaponToEquip], weaponPosition).GetComponent<BaseWeaponScript>();
+        this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
         this.currentWeapon.Equipper = this;
     }
 
@@ -483,7 +489,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Jump") && grounded)
+            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing)
             {
                 if (sprinting)
                 {
@@ -649,11 +655,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 UnEquipWeapon();
             }
-            else
+            if(weaponToEquip != null)
             {
-                //Equip(weapons[0]);
-                EquipWeapon(0);
                 SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+                EquipWeapon(weaponToEquip);
             }
             canSheathe = true;
         }
