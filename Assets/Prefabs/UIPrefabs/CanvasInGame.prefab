@@ -2002,6 +2002,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMixer: {fileID: 24100000, guid: c95e06c410817fa43aac5146289c8119, type: 2}
   brightnessSlider: {fileID: 114423787994245384}
+  environmentalSlider: {fileID: 114419929360499878}
+  musicSlider: {fileID: 114236518678143980}
+  fxSlider: {fileID: 114993999371690416}
+  sensitivitySlider: {fileID: 114659100209272220}
+  cam: {fileID: 0}
+  settingsMenu: {fileID: 1711918343601374}
 --- !u!114 &114199513396913460
 MonoBehaviour:
   m_ObjectHideFlags: 1
