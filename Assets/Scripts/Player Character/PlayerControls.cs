@@ -23,7 +23,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     #region Serialized Variables
     [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength, 
+    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength,
         attackCooldown, abilityCooldown, sprintSpeed, staminaRegen, maxPoise, staggerTime, poiseCooldown;
 
     [SerializeField]
@@ -231,12 +231,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 attackCountdown -= Time.deltaTime;
             }
 
-            if(poiseReset > 0)
+            if (poiseReset > 0)
             {
                 poiseReset -= Time.deltaTime;
             }
 
-            if(poiseReset <= 0)
+            if (poiseReset <= 0)
             {
                 poise = maxPoise;
             }
@@ -268,7 +268,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         if (!dead && canSheathe)
         {
-            anim.SetBool("WeaponDrawn", !anim.GetBool("WeaponDrawn"));
+            bool equip = weaponToEquip == null ? false : true;
+            anim.SetBool("WeaponDrawn", equip);
             anim.SetTrigger("SheatheAndUnsheathe");
             if (!anim.GetBool("WeaponDrawn"))
             {
@@ -284,7 +285,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             return;
         }
-
+        if (equipment == null)
+        {
+            this.weaponToEquip = equipment;
+            SheatheAndUnsheathe();
+            return;
+        }
         switch (equipment.GetComponent<BaseEquippableObject>().MyType)
         {
             case EquipableType.Ability:
@@ -341,7 +347,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             poise -= incomingDamage;
 
-            if(incomingDamage < health && poise < incomingDamage)
+            if (incomingDamage < health && poise < incomingDamage)
             {
                 StartCoroutine("Stagger");
             }
@@ -420,7 +426,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     void Death()
     {
         dead = true;
-            healthBar.value = 0f;
+        healthBar.value = 0f;
         if (hitNormal.y > 0)
         {
             //death animation och reload last saved state
@@ -651,14 +657,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             canSheathe = false;
             yield return new WaitForSeconds(0.4f);
-            if (currentWeapon != null)
-            {
-                UnEquipWeapon();
-            }
-            if(weaponToEquip != null)
+            if (weaponToEquip != null)
             {
                 SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
                 EquipWeapon(weaponToEquip);
+            }
+            else if (currentWeapon != null)
+            {
+                UnEquipWeapon();
             }
             canSheathe = true;
         }
