@@ -101,11 +101,11 @@ public class InventoryManager : MonoBehaviour
             {
                 HighlightNextEquippable(true);
             }
-        }
-        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && Input.GetButtonDown("Jump"))
-        {
-            Equip();
-            HideInventory();
+            else if (Input.GetButtonDown("Jump"))
+            {
+                Equip();
+                HideInventory();
+            }
         }
         else if ((Input.GetAxisRaw("NextInventory") != 0f || Input.GetAxisRaw("NextItem") != 0f || Input.GetKeyDown("r")) && !inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown && player.CurrentWeapon != null)
         {
