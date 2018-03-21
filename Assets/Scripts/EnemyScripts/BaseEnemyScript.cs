@@ -56,6 +56,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected Vector3 initialPos;
 
+    public bool Alive
+    {
+        get { return this.alive; }
+    }
+
     protected virtual void Start()
     {
         this.nav = GetComponent<NavMeshAgent>();

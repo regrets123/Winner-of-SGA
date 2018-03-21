@@ -76,7 +76,6 @@ public class InventoryManager : MonoBehaviour
             if (inventoryMenu.activeSelf)
             {
                 //se till att rätt saker händer när rätt knappar trycks på
-                Equip();
                 HideInventory();
             }
             else
@@ -84,27 +83,35 @@ public class InventoryManager : MonoBehaviour
                 ShowInventory();
             }
         }
-        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory)
+        else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && !coolingDown)
         {
-            if (!coolingDown)
+            if (Input.GetAxis("NextInventory") < 0f)
             {
-                if (Input.GetAxis("NextInventory") < 0f)
-                {
-                    DisplayNextCollection(false);
-                }
-                else if (Input.GetAxis("NextInventory") > 0f)
-                {
-                    DisplayNextCollection(true);
-                }
-                else if (Input.GetAxis("NextItem") < 0f)
-                {
-                    HighlightNextEquippable(false);
-                }
-                else if (Input.GetAxis("NextItem") > 0f)
-                {
-                    HighlightNextEquippable(true);
-                }
+                DisplayNextCollection(false);
             }
+            else if (Input.GetAxis("NextInventory") > 0f)
+            {
+                DisplayNextCollection(true);
+            }
+            else if (Input.GetAxis("NextItem") < 0f)
+            {
+                HighlightNextEquippable(false);
+            }
+            else if (Input.GetAxis("NextItem") > 0f)
+            {
+                HighlightNextEquippable(true);
+            }
+            else if (Input.GetButtonDown("Jump"))
+            {
+                Equip();
+                HideInventory();
+            }
+        }
+        else if ((Input.GetAxisRaw("NextInventory") != 0f || Input.GetAxisRaw("NextItem") != 0f || Input.GetKeyDown("r")) && !inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown && player.CurrentWeapon != null)
+        {
+            StartCoroutine("MenuCooldown");
+            //player.Anim.SetBool("WeaponDrawn", false);
+            player.Equip(null);
         }
     }
 
@@ -191,7 +198,7 @@ public class InventoryManager : MonoBehaviour
         StartCoroutine("MenuCooldown");
         if (next)
         {
-        StartCoroutine(BlinkArrow(2));
+            StartCoroutine(BlinkArrow(2));
             if (displayCollection + 1 == inventory.Length)
             {
                 displayCollection = 0;
@@ -259,7 +266,12 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         print(displayCollection + "        " + collectionIndex);
-        player.Equip(inventory[displayCollection][collectionIndex]);
+        if (displayCollection == 0 && player.CurrentWeapon != null)
+        {
+            player.Equip(inventory[displayCollection][collectionIndex]);
+        }
+        else
+            player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
     //Gömmer inventoryt
