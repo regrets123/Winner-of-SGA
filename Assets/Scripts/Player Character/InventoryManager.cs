@@ -123,14 +123,16 @@ public class InventoryManager : MonoBehaviour
         {
             inventoryImages[i].gameObject.SetActive(true);
         }
+        displayCollection = 0;
+        collectionIndex = 0;
         UpdateSprites();
     }
 
     IEnumerator BlinkArrow(int arrowIndex)
     {
         inventoryArrows[arrowIndex].SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        inventoryArrows[arrowIndex].SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        inventoryArrows[arrowIndex].SetActive(false);
     }
 
     //Indikerar vilken equippable spelaren överväger att equippa
@@ -139,7 +141,7 @@ public class InventoryManager : MonoBehaviour
         StartCoroutine("MenuCooldown");
         if (next)
         {
-            //StartCoroutine("BlinkArrow");
+            StartCoroutine(BlinkArrow(0));
             if (collectionIndex + 1 == inventory[displayCollection].Count)
             {
                 collectionIndex = 0;
@@ -151,6 +153,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(BlinkArrow(1));
             if (collectionIndex == 0)
             {
                 collectionIndex = inventory[displayCollection].Count - 1;
@@ -182,19 +185,13 @@ public class InventoryManager : MonoBehaviour
         return items;
     }
 
-    IEnumerator BlinkArrow(GameObject arrow)
-    {
-        arrow.SetActive(true);
-        yield return new WaitForSeconds(0.2f);
-        arrow.SetActive(false);
-    }
-
     //Väljer vilka equippables som ska visas i inventorymenyn
     void DisplayNextCollection(bool next)
     {
         StartCoroutine("MenuCooldown");
         if (next)
         {
+        StartCoroutine(BlinkArrow(2));
             if (displayCollection + 1 == inventory.Length)
             {
                 displayCollection = 0;
@@ -206,6 +203,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(BlinkArrow(3));
             if (displayCollection == 0)
             {
                 displayCollection = inventory.Length - 1;
@@ -260,6 +258,7 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("problem med inventory");
             return;
         }
+        print(displayCollection + "        " + collectionIndex);
         player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
