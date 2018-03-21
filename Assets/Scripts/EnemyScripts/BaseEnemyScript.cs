@@ -9,7 +9,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
 
     [SerializeField]
-    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime, loseAggroDistance, maxAggroFollow;
+    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime, loseAggroDistance, maxAggroFollow, maxPoise, staggerTime, poiseCooldown;
 
     [SerializeField]
     protected int maxHealth, lifeForce;
@@ -30,7 +30,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected int health;
 
-    protected MovementType currentMovementType;
+    protected float poiseReset, poise;
+
+    protected MovementType currentMovementType, previousMovementType;
 
     public MovementType CurrentMovementType
     {
@@ -77,13 +79,20 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             gameObject.transform.LookAt(target.transform);
             gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
+
             if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
             {
-                Attack();
+                if (currentMovementType != MovementType.Stagger)
+                {
+                    Attack();
+                }
             }
             else if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
-                nav.SetDestination(target.transform.position);
+                if (currentMovementType != MovementType.Stagger)
+                {
+                    nav.SetDestination(target.transform.position);
+                }
             }
             if (!losingAggro && Vector3.Distance(transform.position, target.transform.position) > loseAggroDistance)
             {
@@ -95,6 +104,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             }
         }
         anim.SetFloat("Speed", nav.velocity.magnitude);
+
+        if (poiseReset > 0)
+        {
+            poiseReset -= Time.deltaTime;
+        }
+
+        if (poiseReset <= 0)
+        {
+            poise = maxPoise;
+        }
     }
 
     public void PauseMe(bool pausing)
@@ -160,7 +179,12 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         int damage = ModifyDamage(incomingDamage);
         this.health -= damage;
 
-        print(health);
+        poise -= incomingDamage;
+
+        if (incomingDamage < health && poise < incomingDamage)
+        {
+            StartCoroutine("Stagger");
+        }
 
         if (this.health <= 0)
         {
@@ -242,5 +266,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         this.initialPos = transform.position;
         this.target = newTarget;
+    }
+
+    IEnumerator Stagger()
+    {
+        if (currentMovementType != MovementType.Stagger)
+            previousMovementType = currentMovementType;
+        currentMovementType = MovementType.Stagger;
+        anim.SetTrigger("Stagger");
+        poiseReset = poiseCooldown;
+        yield return new WaitForSeconds(staggerTime);
+        currentMovementType = previousMovementType;
     }
 }
