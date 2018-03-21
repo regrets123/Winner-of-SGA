@@ -30,6 +30,8 @@ public class InventoryManager : MonoBehaviour
 
     BaseEquippableObject currentChoice;
 
+    InputManager inputManager;
+
     public List<GameObject> EquippableAbilities
     {
         get { return this.equippableAbilities; }
@@ -43,6 +45,7 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         this.player = FindObjectOfType<PlayerControls>();
+        inputManager = FindObjectOfType<InputManager>();
         inventory[0] = new List<GameObject>();
         inventory[1] = new List<GameObject>();
         //inventory[2] = new List<BaseEquippableScript>();
@@ -66,7 +69,7 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("r"))
+        if (Input.GetButtonDown("Inventory"))
         {
             if (inventoryMenu.activeSelf)
             {
@@ -95,6 +98,7 @@ public class InventoryManager : MonoBehaviour
     void ShowInventory()
     {
         inventoryMenu.SetActive(true);
+        inputManager.SetInputMode(InputMode.Inventory);
         for (int i = 0; i < inventoryImages.Length; i++)
         {
             inventoryImages[i].gameObject.SetActive(true);
@@ -235,11 +239,13 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         player.Equip(inventory[displayCollection][collectionIndex]);
+        HideInventory();
     }
 
     //Gömmer inventoryt
     void HideInventory()
     {
+        inputManager.SetInputMode(InputMode.Playing);
         inventoryMenu.SetActive(false);
     }
 
