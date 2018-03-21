@@ -100,7 +100,7 @@ public class CameraFollow : MonoBehaviour, IPausable
             }
             else if (lockOn && !paused)
             {
-                lockOnSprite.transform.rotation = Quaternion.Lerp(lockOnSprite.transform.rotation, transform.rotation, 0.1f);
+                lockOnSprite.transform.rotation = transform.rotation;
             }
 
             CameraUpdater();
