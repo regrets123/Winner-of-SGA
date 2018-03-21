@@ -31,11 +31,11 @@ public class SettingsMenuScript : MonoBehaviour
     void Awake()
     {
         camFollow = cam.GetComponent<CameraFollow>();
-        if (File.Exists(Application.dataPath + "Settings.xml"))
+        if (File.Exists(Application.dataPath + "/Settings.xml"))
         {
             settingsXML = new XmlDocument();
             print("settings finns");
-            settingsXML.Load(Application.dataPath + "Settings.xml");
+            settingsXML.Load(Application.dataPath + "/Settings.xml");
             xNav = settingsXML.CreateNavigator();
             SetMusicVolume(float.Parse(xNav.SelectSingleNode("/Settings/Volumes/@Music").Value));
             startingMusic = musicVolume;
