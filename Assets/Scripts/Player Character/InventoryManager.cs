@@ -107,8 +107,9 @@ public class InventoryManager : MonoBehaviour
                 HideInventory();
             }
         }
-        else if ((Input.GetAxisRaw("NextInventory") != 0f || Input.GetAxisRaw("NextItem") != 0f || Input.GetKeyDown("r")) && !inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown && player.CurrentWeapon != null)
+        else if ((Input.GetAxisRaw("NextInventory") < 0f || Input.GetAxisRaw("NextItem") < 0f || Input.GetKeyDown("r")) && !inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown && player.CurrentWeapon != null)
         {
+            print("tja");
             StartCoroutine("MenuCooldown");
             //player.Anim.SetBool("WeaponDrawn", false);
             player.Equip(null);

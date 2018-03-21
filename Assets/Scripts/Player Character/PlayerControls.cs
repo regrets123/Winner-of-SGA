@@ -42,7 +42,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     Slider healthBar, staminaBar, lifeForceBar;
 
     [SerializeField]
-    GameObject aggroIndicator;
+    GameObject aggroIndicator, deathScreen;
 
     #endregion
 
@@ -286,6 +286,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
+        iM.SetInputMode(InputMode.Playing);
         if (dead)
         {
             return;
@@ -459,7 +460,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             anim.SetTrigger("LeftDead");
         }
-        FindObjectOfType<SaveManager>().ReloadGame(); //Temporary
+        iM.SetInputMode(InputMode.Paused);
+        deathScreen.SetActive(true);
     }
 
     #endregion
