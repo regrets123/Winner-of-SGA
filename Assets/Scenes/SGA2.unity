@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -1652,36 +1652,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 224590377363922054, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224590377363922054, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224919133759424916, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224919133759424916, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 224658788266073772, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -1772,73 +1742,35 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1992500186505912, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 224590377363922054, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1992500186505912, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: InventoryMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 1286290282753924, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 224590377363922054, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1755451538947882, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 224919133759424916, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1894850554242736, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 224919133759424916, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1690190315824612, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1286290282753924, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: Arrow0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1755451538947882, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: Arrow1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1894850554242736, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: Arrow2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1690190315824612, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: Arrow3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1458734558025538, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: InventoryImage1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1972325354772466, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: InventoryImage2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1949336644955562, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: InventoryImage0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1363485660418246, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: EquippedAbilityImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 1477990487404702, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_Name
-      value: EquippedWeaponImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 1340238169519882, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1506558937205400, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}

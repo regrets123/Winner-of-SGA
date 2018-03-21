@@ -38,6 +38,12 @@ public class CameraFollow : MonoBehaviour, IPausable
 
     bool paused = false, lockOn = false;
 
+    public float InputSensitivity
+    {
+        get { return this.inputSensitivity; }
+        set { this.inputSensitivity = value; }
+    }
+
     // Use this for initialization
     void Start()
     {
