@@ -12,9 +12,13 @@ public enum EquipableType
 
 public class InventoryManager : MonoBehaviour
 {
-
-    [SerializeField]
     GameObject inventoryMenu;
+
+    Image[] inventoryImages = new Image[3];
+
+    GameObject[] inventoryArrows = new GameObject[4];
+
+    Image equippedWeaponImage, equippedAbilityImage;
 
     List<GameObject> equippableWeapons, equippableAbilities/*, equippableItems*/;
 
@@ -25,9 +29,6 @@ public class InventoryManager : MonoBehaviour
     int displayCollection = 0, collectionIndex = 0;
 
     BaseEquippableObject currentChoice;
-
-    [SerializeField]
-    Image[] inventoryImages = new Image[3];
 
     public List<GameObject> EquippableAbilities
     {
@@ -48,19 +49,64 @@ public class InventoryManager : MonoBehaviour
         equippableWeapons = inventory[0];
         equippableAbilities = inventory[1];
         //equippableItems = inventory[2];
-
+        inventoryMenu = GameObject.Find("InventoryMenu");
+        equippedAbilityImage = GameObject.Find("EquippedAbilityImage").GetComponent<Image>();
+        equippedWeaponImage = GameObject.Find("EquippedWeaponImage").GetComponent<Image>();
+        for (int i = 0; i < inventoryImages.Length; i++)
+        {
+            inventoryImages[i] = GameObject.Find("InventoryImage" + i.ToString()).GetComponent<Image>();
+        }
+        for (int i = 0; i < inventoryArrows.Length; i++)
+        {
+            inventoryArrows[i] = GameObject.Find("Arrow" + i.ToString());
+            inventoryArrows[i].SetActive(false);
+        }
+        inventoryMenu.SetActive(false);
     }
 
     void Update()
     {
-        //if (inventoryMenu.activeSelf)
-        //{
-        //se till att rätt saker händer när rätt knappar trycks på
         if (Input.GetKeyDown("r"))
         {
-            Equip();
+            if (inventoryMenu.activeSelf)
+            {
+                //se till att rätt saker händer när rätt knappar trycks på
+                Equip();
+                HideInventory();
+            }
+            else
+            {
+                ShowInventory();
+            }
         }
-        //}
+        else if (inventoryMenu.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                DisplayNextCollection(false);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                DisplayNextCollection(true);
+            }
+        }
+    }
+
+    void ShowInventory()
+    {
+        inventoryMenu.SetActive(true);
+        for (int i = 0; i < inventoryImages.Length; i++)
+        {
+            inventoryImages[i].gameObject.SetActive(true);
+        }
+        UpdateSprites();
+    }
+
+    IEnumerator BlinkArrow(int arrowIndex)
+    {
+        inventoryArrows[arrowIndex].SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        inventoryArrows[arrowIndex].SetActive(true);
     }
 
     //Indikerar vilken equippable spelaren överväger att equippa
@@ -68,6 +114,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (next)
         {
+            //StartCoroutine("BlinkArrow");
             if (collectionIndex + 1 == inventory[displayCollection].Count)
             {
                 collectionIndex = 0;
@@ -88,14 +135,14 @@ public class InventoryManager : MonoBehaviour
                 collectionIndex--;
             }
         }
-        UpdateButtons();
+        UpdateSprites();
     }
 
     public string[] ReportItems()
     {
         string[] items = new string[equippableAbilities.Count + equippableWeapons.Count];
         int index = 0;
-        for(int i = 0; i < equippableAbilities.Count; i++)
+        for (int i = 0; i < equippableAbilities.Count; i++)
         {
             print(equippableAbilities[i].GetComponent<BaseEquippableObject>().ObjectName);
             items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
@@ -108,6 +155,13 @@ public class InventoryManager : MonoBehaviour
             index++;
         }
         return items;
+    }
+
+    IEnumerator BlinkArrow(GameObject arrow)
+    {
+        arrow.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        arrow.SetActive(false);
     }
 
     //Väljer vilka equippables som ska visas i inventorymenyn
@@ -137,12 +191,12 @@ public class InventoryManager : MonoBehaviour
         }
         //Byt meny
         collectionIndex = 0;
-        UpdateButtons();
+        UpdateSprites();
     }
 
 
     //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
-    void UpdateButtons()
+    void UpdateSprites()
     {
         inventoryImages[1].sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
         if (collectionIndex == 0)
@@ -160,6 +214,14 @@ public class InventoryManager : MonoBehaviour
         else
         {
             inventoryImages[2].sprite = inventory[displayCollection][collectionIndex + 1].GetComponent<BaseEquippableObject>().InventoryIcon;
+        }
+        if (displayCollection == 0)
+        {
+            equippedWeaponImage.sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
+        }
+        else
+        {
+            equippedAbilityImage.sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
     }
 
