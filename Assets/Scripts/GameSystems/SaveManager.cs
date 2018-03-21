@@ -126,7 +126,7 @@ public class SaveManager : MonoBehaviour
                 doc.Save(writer);
             }
         }
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void MovePlayer()
