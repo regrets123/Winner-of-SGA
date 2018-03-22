@@ -1310,14 +1310,11 @@ MonoBehaviour:
   loseAggroTime: 5
   loseAggroDistance: 10
   maxAggroFollow: 50
-  maxPoise: 11
-  staggerTime: 1
-  poiseCooldown: 1
   maxHealth: 30
-  lifeForce: 20
+  lifeForce: 0
   unitName: 
   aggroCenter: {fileID: 1802069882869708}
-  soul: {fileID: 1157158949442700, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+  soul: {fileID: 0}
   weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
   weaponPos: {fileID: 4664436168200820}
 --- !u!137 &137193572997121276

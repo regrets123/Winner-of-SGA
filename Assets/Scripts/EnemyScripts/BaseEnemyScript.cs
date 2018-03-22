@@ -254,9 +254,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         this.target = null;
         nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
-        player.EnemyAggro(this, false);
         if (player.Inventory.EquippableAbilities != null && player.Inventory.EquippableAbilities.Count > 0)
         {
+            print(transform.position);
             Instantiate(soul, transform.position, Quaternion.identity).GetComponent<LifeForceTransmitterScript>().StartMe(player, lifeForce, this);
         }
         Destroy(gameObject, 7);
