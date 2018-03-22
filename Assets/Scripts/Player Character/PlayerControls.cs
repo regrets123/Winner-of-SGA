@@ -22,27 +22,139 @@ public enum MovementType
 public class PlayerControls : MonoBehaviour, IKillable, IPausable
 {
     #region Serialized Variables
-    [SerializeField]
-    float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength,
-        attackCooldown, abilityCooldown, sprintSpeed, staminaRegen, maxPoise, staggerTime, poiseCooldown;
+
+    [Header("Player Stats")]
+
+    [Space(5)]
 
     [SerializeField]
-    int maxHealth, rotspeed;
+    int maxHealth;
+
+    [SerializeField]
+    float maxStamina;
+
+    [SerializeField]
+    float maxLifeForce;
+
+    [SerializeField]
+    float maxPoise;
+
+    [SerializeField]
+    float staminaRegen;
+
+    [SerializeField]
+    float invulnerablityTime;
+
+    [SerializeField]
+    float staggerTime;
+
+    [SerializeField]
+    float poiseCooldown;
+
+    [Space(10)]
+
+    [Header("Player Movement")]
+
+    [Space(5)]
+
+    [SerializeField]
+    float moveSpeed;
+
+    [SerializeField]
+    float sprintSpeed;
+
+    [SerializeField]
+    float jumpSpeed;
+
+    [SerializeField]
+    int rotspeed;
+
+    [Space(10)]
+
+    [Header("Player Actions")]
+
+    [Space(5)]
+
+    [SerializeField]
+    float dodgeCost;
+
+    [SerializeField]
+    float dodgeCooldown;
+
+    [SerializeField]
+    float dodgeDuration;
+
+    [SerializeField]
+    float dodgeSpeed;
+
+    [SerializeField]
+    float attackMoveLength;
+
+    [SerializeField]
+    float attackCooldown;
+
+    [SerializeField]
+    float abilityCooldown;
+
+    [Space(10)]
+
+    [Header("Player Physics")]
+
+    [Space(5)]
+
+    [SerializeField]
+    float gravity;
+
+    [SerializeField]
+    float slopeLimit;
+
+    [SerializeField]
+    float slideFriction;
+
+    [Space(10)]
+
+    [Header("Player Sounds")]
+
+    [Space(5)]
+
+    [SerializeField]
+    AudioClip swordSheathe;
+
+    [SerializeField]
+    AudioClip swordUnsheathe;
+
+    [Space(10)]
+
+    [Header("Player Items")]
+
+    [Space(5)]
 
     [SerializeField]
     Transform weaponPosition;
 
     [SerializeField]
-    AudioClip swordSheathe, swordUnsheathe;
-
-    [SerializeField]
     SpriteRenderer currentRune;
 
-    [SerializeField]
-    Slider healthBar, staminaBar, lifeForceBar;
+    [Space(10)]
+
+    [Header("Player Canvas")]
+
+    [Space(5)]
 
     [SerializeField]
-    GameObject aggroIndicator, deathScreen;
+    Slider healthBar;
+
+    [SerializeField]
+    Slider staminaBar;
+
+    [SerializeField]
+    Slider lifeForceBar;
+
+    [SerializeField]
+    GameObject aggroIndicator;
+
+    [SerializeField]
+    GameObject deathScreen;
 
     #endregion
 

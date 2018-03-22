@@ -507,6 +507,11 @@ Transform:
   m_Father: {fileID: 1393155646}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 30}
+--- !u!1 &295750549 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1158951583576494, guid: 04cb31017c8aa424c8da6968bd2f6390,
+    type: 2}
+  m_PrefabInternal: {fileID: 437407544}
 --- !u!1 &328252858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,6 +2378,11 @@ Prefab:
       propertyPath: poiseCooldown
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: deathScreen
+      value: 
+      objectReference: {fileID: 295750549}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0
