@@ -30,9 +30,10 @@ public class PauseManager : MonoBehaviour
         get { return pausables; }
     }
 
-    private void Start()
+    private void Awake()
     {
         iM = GetComponent<InputManager>();
+        iM.SetInputMode(InputMode.Playing);
     }
 
     private void Update()
@@ -64,21 +65,6 @@ public class PauseManager : MonoBehaviour
             if (pauseMe != null)
                 pauseMe.PauseMe(paused);
         }
-    }
-    
-    public void QuitToMenu()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
-
-    public void ViewOptions()
-    {
-        //Toggle options menu
     }
 
     public void ToggleMenu(GameObject menu)

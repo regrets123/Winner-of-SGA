@@ -49,8 +49,11 @@ public class SaveManager : MonoBehaviour
 
     PlayerControls player;
 
+    InputManager inputManager;
+
     private void Start()
     {
+        inputManager = FindObjectOfType<InputManager>();
         currentGame = new XmlDocument();
         player = FindObjectOfType<PlayerControls>(); //Temporary
         if (File.Exists(Application.dataPath + "/SaveToLoad.xml"))
@@ -126,6 +129,7 @@ public class SaveManager : MonoBehaviour
                 doc.Save(writer);
             }
         }
+        inputManager.SetInputMode(InputMode.Playing);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

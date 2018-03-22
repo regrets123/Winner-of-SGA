@@ -260,7 +260,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 poise = maxPoise;
             }
         }
-        else if (!inputEnabled)
+        else if (!inputEnabled || currentMovementType == MovementType.Stagger)
         {
             move = Vector3.zero;
         }

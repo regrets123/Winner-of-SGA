@@ -48,5 +48,7 @@ public class InputManager : MonoBehaviour
     public void GoToMenu()
     {
         SetInputMode(InputMode.None);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
