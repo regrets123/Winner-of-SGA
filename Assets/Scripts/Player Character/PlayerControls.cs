@@ -24,7 +24,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #region Serialized Variables
     [SerializeField]
     float jumpSpeed, gravity, maxStamina, moveSpeed, slopeLimit, slideFriction, dodgeCost, invulnerablityTime, maxLifeForce, dodgeCooldown, dodgeDuration, dodgeSpeed, attackMoveLength,
-        attackCooldown, abilityCooldown, sprintSpeed, staminaRegen, maxPoise, staggerTime, poiseCooldown;
+        attackCooldown, abilityCooldown, sprintSpeed, staminaRegen, maxPoise, staggerTime, poiseCooldown, sprintCost;
 
     [SerializeField]
     int maxHealth, rotspeed;
@@ -194,7 +194,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f && move != Vector3.zero)
             {
-                stamina -= 0.01f;
+                stamina -= sprintCost;
                 staminaBar.value = stamina;
                 sprinting = true;
             }
@@ -292,7 +292,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             anim.SetTrigger("SheatheAndUnsheathe");
             if (!anim.GetBool("WeaponDrawn"))
             {
-                //SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
             }
             StartCoroutine("SheathingTimer");
         }
@@ -698,7 +698,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             yield return new WaitForSeconds(0.4f);
             if (weaponToEquip != null)
             {
-                //SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+                SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
                 EquipWeapon(weaponToEquip);
             }
             else if (currentWeapon != null)
