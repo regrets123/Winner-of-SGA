@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public interface IKillable
 {
     void Attack();
-    void TakeDamage(int damage);
+    void TakeDamage(int damage, DamageType dmgType);
     void Kill();
 }
 
@@ -50,6 +50,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     float poiseCooldown;
+
+    [SerializeField]
+    int armor;
 
     [Space(10)]
 
@@ -180,7 +183,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     GameObject weaponToEquip;
 
-    Animator anim;
+    //Animator anim;
 
     float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise;
 
@@ -192,7 +195,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<BaseEnemyScript> enemiesAggroing = new List<BaseEnemyScript>();
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true;
+    List<DamageType> resistances = new List<DamageType>();
+
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false;
     #endregion
 
     #region Properties
@@ -261,10 +266,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { interactTime = value; }
     }
 
-    public Animator Anim
+    /*public Animator Anim
     {
         get { return this.anim; }
-    }
+    }*/
 
     public bool Dead
     {
@@ -288,13 +293,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         pM.Pausables.Add(this);
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
-        anim = GetComponentInChildren<Animator>();
+        //anim = GetComponentInChildren<Animator>();
         healthBar.maxValue = maxHealth;
         staminaBar.maxValue = maxStamina;
         lifeForceBar.maxValue = maxLifeForce;
         healthBar.value = health;
         staminaBar.value = stamina;
         lifeForceBar.value = lifeForce;
+        aggroIndicator.SetActive(false);
     }
 
     private void Update()
@@ -325,12 +331,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 PlayerMovement(sprinting);
             }
-
             if (!charController.isGrounded)
             {
-                anim.SetBool("Falling", true);
+                //anim.SetBool("Falling", true);
                 yVelocity -= gravity;
             }
+            if (currentMovementType == MovementType.Stagger)
+            {
+                move = Vector3.zero;
+            }
+
             //Lets the character move with the character controller
             charController.Move(move / 8);
 
@@ -372,7 +382,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 poise = maxPoise;
             }
         }
-        else if (!inputEnabled || currentMovementType == MovementType.Stagger)
+        else if (!inputEnabled)
         {
             move = Vector3.zero;
         }
@@ -400,9 +410,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (!dead && canSheathe)
         {
             bool equip = weaponToEquip == null ? false : true;
-            anim.SetBool("WeaponDrawn", equip);
-            anim.SetTrigger("SheatheAndUnsheathe");
-            if (!anim.GetBool("WeaponDrawn"))
+            //anim.SetBool("WeaponDrawn", equip);
+            //anim.SetTrigger("SheatheAndUnsheathe");
+            //if (!anim.GetBool("WeaponDrawn"))
             {
                 //SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
             }
@@ -484,7 +494,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     #region Combat
     //Damage to player
-    public void TakeDamage(int incomingDamage)
+    public void TakeDamage(int incomingDamage, DamageType dmgType)
     {
         if (dead || invulnerable)
         {
@@ -492,9 +502,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
         else
         {
-            health -= ModifyDamage(incomingDamage);
+            int finalDamage = ModifyDamage(incomingDamage, dmgType);
+            if (finalDamage <= 0)
+            {
+                return;
+            }
+            health -= finalDamage;
             healthBar.value = health;
-
             poise -= incomingDamage;
 
             if (incomingDamage < health && poise < incomingDamage)
@@ -535,19 +549,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (nuOfClicks == 1)
             {
-                anim.SetTrigger("LightAttack1");
+                //anim.SetTrigger("LightAttack1");
                 secondsUntilResetClick = 1.5f;
             }
 
             if (nuOfClicks == 2)
             {
-                anim.SetTrigger("LightAttack2");
+                //anim.SetTrigger("LightAttack2");
                 secondsUntilResetClick = 1.5f;
             }
 
             if (nuOfClicks == 3)
             {
-                anim.SetTrigger("LightAttack3");
+                //anim.SetTrigger("LightAttack3");
                 nuOfClicks = 0;
                 attackCooldown = 1f;
                 currentWeapon.CurrentSpeed = 1f;
@@ -560,8 +574,21 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     //Modifies damage depending on armor, resistance etc
-    int ModifyDamage(int damage)
+    int ModifyDamage(int damage, DamageType dmgType)
     {
+        if (dmgType == DamageType.Physical)
+        {
+            damage -= armor;
+        }
+        else
+            foreach (DamageType resistance in resistances)
+            {
+                if (dmgType == resistance)
+                {
+                    damage /= 2;
+                    break;
+                }
+            }
         return damage;
     }
 
@@ -579,12 +606,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         healthBar.value = 0f;
         if (hitNormal.y > 0)
         {
-            //death animation och reload last saved state
-            anim.SetTrigger("RightDead");
+            //anim.SetTrigger("RightDead");
         }
         else if (hitNormal.y < 0)
         {
-            anim.SetTrigger("LeftDead");
+            //anim.SetTrigger("LeftDead");
         }
         iM.SetInputMode(InputMode.Paused);
         deathScreen.SetActive(true);
@@ -628,7 +654,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {
-            anim.SetFloat("Speed", charSpeed);
+            //anim.SetFloat("Speed", charSpeed);
             if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
             {
                 currentMovementType = MovementType.Idle;
@@ -653,7 +679,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     jumpMomentum = true;
                 }
                 yVelocity = jumpSpeed;
-                anim.SetTrigger("Jump");
+                //anim.SetTrigger("Jump");
                 currentMovementType = MovementType.Jumping;
             }
         }
@@ -665,7 +691,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
-                    anim.SetTrigger("Dodge");
+                    //anim.SetTrigger("Dodge");
                     StartCoroutine("Dodge");
                     StartCoroutine("DodgeCooldown");
                     stamina -= dodgeCost;
@@ -727,14 +753,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
-            anim.SetBool("Falling", false);
+            //anim.SetBool("Falling", false);
             jumpMomentum = false;
             currentMovementType = MovementType.Idle;
         }
 
         if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
-            anim.SetFloat("Speed", 20);
+            //anim.SetFloat("Speed", 20);
             currentMovementType = MovementType.Sprinting;
         }
     }
@@ -833,7 +859,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (currentMovementType != MovementType.Stagger)
             previousMovementType = currentMovementType;
         currentMovementType = MovementType.Stagger;
-        anim.SetTrigger("Stagger");
+        //anim.SetTrigger("Stagger");
         poiseReset = poiseCooldown;
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;
