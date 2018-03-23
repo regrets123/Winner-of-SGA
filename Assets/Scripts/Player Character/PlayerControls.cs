@@ -672,7 +672,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {
-            //anim.SetFloat("Speed", charSpeed);
+            anim.SetFloat("Speed", charSpeed);
             if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
             {
                 currentMovementType = MovementType.Idle;
