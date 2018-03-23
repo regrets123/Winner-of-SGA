@@ -13,7 +13,7 @@ public class MagicDash : BaseAbilityScript
     public override void UseAbility()
     {
             base.UseAbility();
-            player.Anim.SetTrigger("Dash");
+           // player.Anim.SetTrigger("Dash");
             StartCoroutine("Dash");
     }
 

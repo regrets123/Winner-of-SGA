@@ -1944,6 +1944,11 @@ Prefab:
       propertyPath: deathScreen
       value: 
       objectReference: {fileID: 1822003355}
+    - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: safeFallDistance
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0

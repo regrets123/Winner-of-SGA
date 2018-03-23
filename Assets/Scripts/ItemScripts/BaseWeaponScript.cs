@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum DamageType
 {
-    Physical, Magical
+    Physical, Frost, Fire, Falling
 }
 
 public enum AttackMoves
@@ -23,12 +23,7 @@ public class BaseWeaponScript : BaseEquippableObject
 {
     [SerializeField]
     protected int damage;
-
-    /*
-    [SerializeField]
-    protected DamageType damageType;
-    */
-
+    
     [SerializeField]
     protected float attackSpeed;
 
@@ -36,11 +31,14 @@ public class BaseWeaponScript : BaseEquippableObject
     protected AttackMoves[] attacks;
 
     [SerializeField]
-    AudioClip enemyHit1, enemyHit2, enemyHit3, swing1, swing2, thrust;
+    protected DamageType dmgType;
 
-    bool canAttack = true;
+    [SerializeField]
+    protected AudioClip enemyHit1, enemyHit2, enemyHit3, swing1, swing2, thrust;
 
-    MovementType previousMovement;
+    protected bool canAttack = true;
+
+    protected MovementType previousMovement;
 
     protected float currentSpeed;
 
@@ -100,7 +98,7 @@ public class BaseWeaponScript : BaseEquippableObject
     //Deals damage to an object with IKillable on it.
     public virtual void DealDamage(IKillable target)
     {
-        target.TakeDamage(damage);
+        target.TakeDamage(damage, dmgType);
     }
 
     protected IEnumerator ResetSpeed()
