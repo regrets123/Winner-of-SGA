@@ -26,19 +26,14 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     protected Transform weaponPos;
 
-    protected bool canAttack = true;
+    [SerializeField]
+    protected DamageType[] resistances;
+
+    protected bool canAttack = true, burning = false, frozen = false;
 
     protected int health;
 
-    protected float poiseReset, poise;
-
-    protected MovementType currentMovementType, previousMovementType;
-
-    public MovementType CurrentMovementType
-    {
-        get { return this.currentMovementType; }
-        set { this.currentMovementType = value; }
-    }
+    protected float poiseReset, poise, timeToBurn = 0f;
 
     protected Collider aggroCollider;
 
@@ -50,7 +45,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected NavMeshAgent nav;
 
-    protected Animator anim;
+    // protected Animator anim;
 
     protected bool invulnerable = false, alive = true, losingAggro = false;
 
@@ -61,13 +56,21 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         get { return this.alive; }
     }
 
+    protected MovementType currentMovementType, previousMovementType;
+
+    public MovementType CurrentMovementType
+    {
+        get { return this.currentMovementType; }
+        set { this.currentMovementType = value; }
+    }
+
     protected virtual void Start()
     {
         this.nav = GetComponent<NavMeshAgent>();
         this.health = maxHealth;
         this.currentMovementType = MovementType.Idle;
         this.pM = FindObjectOfType<PauseManager>();
-        this.anim = GetComponentInChildren<Animator>();
+        //this.anim = GetComponentInChildren<Animator>();
         pM.Pausables.Add(this);
         aggroBubble = aggroCenter.AddComponent<SphereCollider>();
         aggroBubble.isTrigger = true;
@@ -85,12 +88,17 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             gameObject.transform.LookAt(target.transform);
             gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
 
-            if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack)
+            if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead)
             {
                 if (currentMovementType != MovementType.Stagger)
                 {
                     Attack();
                 }
+            }
+            else if (target.Dead)
+            {
+                LoseAggro();
+                return;
             }
             else if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
@@ -108,7 +116,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 LoseAggro();
             }
         }
-        anim.SetFloat("Speed", nav.velocity.magnitude);
+        //anim.SetFloat("Speed", nav.velocity.magnitude);
 
         if (poiseReset > 0)
         {
@@ -137,7 +145,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
@@ -152,39 +159,31 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    /*
-    protected void OnCollisionEnter(Collision collision)
-    {
-        print("??");
-        if (collision.collider.gameObject.GetComponent<PlayerControls>() != null)
-        {
-            print("yo");
-            nav.isStopped = true;
-        }
-    }
-
-    protected void OnCollisionExit(Collision collision)
-    {
-        if (collision.collider.gameObject.GetComponent<PlayerControls>() != null)
-        {
-            print("bye");
-            nav.isStopped = false;
-        }
-    }
-    */
-
     //Gör att fienden kan bli skadad
-    public void TakeDamage(int incomingDamage)
+    public void TakeDamage(int incomingDamage, DamageType dmgType)
     {
         if (!alive || invulnerable)
         {
             return;
         }
 
-        int damage = ModifyDamage(incomingDamage);
+        int damage = ModifyDamage(incomingDamage, dmgType);
         this.health -= damage;
 
         poise -= incomingDamage;
+
+        switch (dmgType)
+        {
+            case DamageType.Fire:
+                StopCoroutine("Burn");
+                StartCoroutine(Burn(5f, damage / 5));
+                break;
+
+            case DamageType.Frost:
+                StopCoroutine("Freeze");
+                StartCoroutine(Freeze(5f));
+                break;
+        }
 
         if (incomingDamage < health && poise < incomingDamage)
         {
@@ -214,7 +213,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         if (!alive)
             return;
         this.currentMovementType = MovementType.Attacking;
-        anim.SetTrigger("Attack");
+        //anim.SetTrigger("Attack");
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
         StartCoroutine("AttackCooldown");
     }
@@ -242,15 +241,23 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     //Modifierar skadan fienden tar efter armor, resistance och liknande
-    protected virtual int ModifyDamage(int damage)
+    protected virtual int ModifyDamage(int damage, DamageType dmgType)
     {
+        foreach (DamageType resistance in this.resistances)
+        {
+            if (dmgType == resistance)
+            {
+                damage /= 2;
+                break;
+            }
+        }
         return damage;
     }
 
     protected virtual void Death()
     {
         alive = false;
-        anim.SetTrigger("Death");
+        //anim.SetTrigger("Death");
         this.target = null;
         nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
@@ -275,12 +282,39 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         target.EnemyAggro(this, true);
     }
 
-    IEnumerator Stagger()
+    protected IEnumerator Burn(float burnDuration, int burnDamage)
+    {
+        burning = true;
+        timeToBurn += burnDuration;
+        while (timeToBurn > 0f)
+        {
+            yield return new WaitForSeconds(0.5f);
+            this.health -= burnDamage;
+            timeToBurn -= Time.deltaTime;
+        }
+        timeToBurn = 0f;
+        burning = false;
+    }
+
+    protected IEnumerator Freeze(float freezeTime)
+    {
+        if (!frozen)
+        {
+            frozen = true;
+            float originalSpeed = nav.speed;
+            nav.speed /= 2f;
+            yield return new WaitForSeconds(freezeTime);
+            nav.speed = originalSpeed;
+            frozen = false;
+        }
+    }
+
+    protected IEnumerator Stagger()
     {
         if (currentMovementType != MovementType.Stagger)
             previousMovementType = currentMovementType;
         currentMovementType = MovementType.Stagger;
-        anim.SetTrigger("Stagger");
+        //anim.SetTrigger("Stagger");
         poiseReset = poiseCooldown;
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;

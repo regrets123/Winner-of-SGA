@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class MagicProjectileDestroy : MonoBehaviour
 {
-    [SerializeField]
     protected IKillable targetToHit;
 
     [SerializeField]
-    protected int damage = 15;
+    protected int damage;
+
+    [SerializeField]
+    DamageType dmgType;
 
     void Start()
     {
@@ -17,7 +21,7 @@ public class MagicProjectileDestroy : MonoBehaviour
 
     public virtual void DealDamage(IKillable target)
     {
-        target.TakeDamage(damage);
+        target.TakeDamage(damage, dmgType);
     }
 
     void OnTriggerEnter(Collider other)

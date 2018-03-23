@@ -31,7 +31,7 @@ public class OpenDoor : MonoBehaviour, IInteractable
         StartCoroutine("MovePlayerToInteract");
         player.InteractTime = 5.13f;
         anim.SetTrigger("LeverPull");
-        playerToMove.Anim.SetTrigger("PullLever");
+        //playerToMove.Anim.SetTrigger("PullLever");
         StartCoroutine("OpenSesame");
     }
 
@@ -48,7 +48,7 @@ public class OpenDoor : MonoBehaviour, IInteractable
         while (t < 1)
         {
             t += Time.deltaTime / movePlayerSmoother;
-        playerToMove.Anim.SetFloat("Speed", 0.5f);
+        //playerToMove.Anim.SetFloat("Speed", 0.5f);
 
             playerToMove.gameObject.transform.position = Vector3.Lerp(playerToMove.gameObject.transform.position, leverPullPos.gameObject.transform.position, t);
             playerToMove.gameObject.transform.rotation = Quaternion.Lerp(playerToMove.gameObject.transform.rotation, leverPullPos.gameObject.transform.rotation, t);
