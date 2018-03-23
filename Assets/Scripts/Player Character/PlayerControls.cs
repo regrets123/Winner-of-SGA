@@ -188,7 +188,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     //Animator anim;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f;
 
     int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
 
@@ -510,6 +510,18 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 return;
             }
+            switch (dmgType)
+            {
+                case DamageType.Fire:
+                    StopCoroutine("Burn");
+                    StartCoroutine(Burn(5f, finalDamage / 2));
+                    break;
+
+                case DamageType.Frost:
+                    StopCoroutine("Freeze");
+                    StartCoroutine(Freeze(5f));
+                    break;
+            }
             health -= finalDamage;
             healthBar.value = health;
             poise -= incomingDamage;
@@ -753,7 +765,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
-        
+
         if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
             //anim.SetBool("Falling", false);
@@ -872,5 +884,32 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;
     }
+
+    protected IEnumerator Burn(float burnDuration, int burnDamage)
+    {
+        burning = true;
+        timeToBurn += burnDuration;
+        while (timeToBurn > 0f)
+        {
+            yield return new WaitForSeconds(0.5f);
+            this.health -= burnDamage;
+            timeToBurn -= Time.deltaTime;
+        }
+        timeToBurn = 0f;
+        burning = false;
+    }
+
+    protected IEnumerator Freeze(float freezeTime)
+    {
+        if (!frozen)
+        {
+            frozen = true;
+            float originalSpeed = moveSpeed;
+            yield return new WaitForSeconds(freezeTime);
+            moveSpeed = originalSpeed;
+            frozen = false;
+        }
+    }
+
     #endregion
 }
