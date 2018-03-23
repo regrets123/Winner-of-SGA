@@ -33,7 +33,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected int health;
 
-    protected float poiseReset, poise;
+    protected float poiseReset, poise, timeToBurn = 0f;
 
     protected Collider aggroCollider;
 
@@ -45,7 +45,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected NavMeshAgent nav;
 
-   // protected Animator anim;
+    // protected Animator anim;
 
     protected bool invulnerable = false, alive = true, losingAggro = false;
 
@@ -63,7 +63,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         get { return this.currentMovementType; }
         set { this.currentMovementType = value; }
     }
-    
+
     protected virtual void Start()
     {
         this.nav = GetComponent<NavMeshAgent>();
@@ -145,7 +145,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
@@ -172,6 +171,19 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         this.health -= damage;
 
         poise -= incomingDamage;
+
+        switch (dmgType)
+        {
+            case DamageType.Fire:
+                StopCoroutine("Burn");
+                StartCoroutine(Burn(5f, damage / 5));
+                break;
+
+            case DamageType.Frost:
+                StopCoroutine("Freeze");
+                StartCoroutine(Freeze(5f));
+                break;
+        }
 
         if (incomingDamage < health && poise < incomingDamage)
         {
@@ -231,7 +243,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     //Modifierar skadan fienden tar efter armor, resistance och liknande
     protected virtual int ModifyDamage(int damage, DamageType dmgType)
     {
-        foreach(DamageType resistance in this.resistances)
+        foreach (DamageType resistance in this.resistances)
         {
             if (dmgType == resistance)
             {
@@ -270,21 +282,34 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         target.EnemyAggro(this, true);
     }
 
-    IEnumerator Burn(int burnTime)
+    protected IEnumerator Burn(float burnDuration, int burnDamage)
     {
         burning = true;
-        yield return new WaitForSeconds(burnTime);
+        timeToBurn += burnDuration;
+        while (timeToBurn > 0f)
+        {
+            yield return new WaitForSeconds(0.5f);
+            this.health -= burnDamage;
+            timeToBurn -= Time.deltaTime;
+        }
+        timeToBurn = 0f;
         burning = false;
     }
 
-    IEnumerator Freeze(int freezeTime)
+    protected IEnumerator Freeze(float freezeTime)
     {
-        frozen = true;
-        yield return new WaitForSeconds(freezeTime);
-        frozen = false;
+        if (!frozen)
+        {
+            frozen = true;
+            float originalSpeed = nav.speed;
+            nav.speed /= 2f;
+            yield return new WaitForSeconds(freezeTime);
+            nav.speed = originalSpeed;
+            frozen = false;
+        }
     }
 
-    IEnumerator Stagger()
+    protected IEnumerator Stagger()
     {
         if (currentMovementType != MovementType.Stagger)
             previousMovementType = currentMovementType;
