@@ -114,6 +114,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     float slideFriction;
 
+    [SerializeField]
+    float safeFallDistance;
+
     [Space(10)]
 
     [Header("Player Sounds")]
@@ -197,7 +200,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<DamageType> resistances = new List<DamageType>();
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded;
     #endregion
 
     #region Properties
@@ -750,10 +753,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
-
-        if (charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
+        
+        if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
             //anim.SetBool("Falling", false);
+            if (move.y < -safeFallDistance)
+            {
+                TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 5f) - safeFallDistance)), DamageType.Falling);  //FallDamage
+            }
             jumpMomentum = false;
             currentMovementType = MovementType.Idle;
         }
@@ -763,6 +770,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //anim.SetFloat("Speed", 20);
             currentMovementType = MovementType.Sprinting;
         }
+        wasGrounded = charController.isGrounded;
     }
 
     float CalculateSpeed(Vector3 velocity)

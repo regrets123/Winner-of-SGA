@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum DamageType
 {
-    Physical, Frost, Fire
+    Physical, Frost, Fire, Falling
 }
 
 public enum AttackMoves
