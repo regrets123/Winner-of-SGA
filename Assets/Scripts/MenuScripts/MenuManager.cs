@@ -29,5 +29,14 @@ public class MenuManager : MonoBehaviour {
         print("Quit");
     }
 
+    public void Glow(Outline o)
+    {
+        o.enabled = true;
+    }
+    public void NoGlow(Outline o)
+    {
+        o.enabled = false;
+    }
+
 
 }
