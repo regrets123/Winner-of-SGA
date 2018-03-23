@@ -606,6 +606,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
+        anim.SetFloat("SpeedX", h);
+        anim.SetFloat("SpeedZ", v);
+
         //Creates a vector3 to change the character controllers forward to the direction of the camera
         camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1).normalized);
 

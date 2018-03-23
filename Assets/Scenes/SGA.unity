@@ -2280,7 +2280,7 @@ Prefab:
         type: 2}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: a9fcc996de51c194b8e28257cbcc5b97, type: 2}
+      objectReference: {fileID: 9100000, guid: ff4230b8b7b676241bc77e45f1a9a63c, type: 2}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: abilitiesToTest.Array.data[0]
