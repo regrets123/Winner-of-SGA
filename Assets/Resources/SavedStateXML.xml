@@ -1,20 +1,22 @@
 <?xml version="1.0" ?>
 <SavedState>
-	<PlayerInfo>
-		<Transform>
-			<Position X="" Y="" Z=""/>
-			<Rotation X="" Y="" Z="" W=""/>
-		</Transform>
-		<Inventory>
-		</Inventory>
-		<Resources HP ="" Stamina="" LifeForce=""/>
-	</PlayerInfo>
+  <PlayerInfo>
+    <Transform>
+      <Position X="" Y="" Z=""/>
+      <Rotation X="" Y="" Z="" W=""/>
+    </Transform>
+    <Inventory>
+      <QuickSelections>
+      </QuickSelections>
+    </Inventory>
+    <Resources HP ="" Stamina="" LifeForce=""/>
+  </PlayerInfo>
   <CameraTransform>
     <Position X="" Y="" Z=""/>
-    <Rotation X="" Y="" Z="" W=""/>    
+    <Rotation X="" Y="" Z="" W=""/>
   </CameraTransform>
-	<SpawnsToRemove>
-	</SpawnsToRemove>
-	<TrapsToRemove>
-	</TrapsToRemove>
+  <SpawnsToRemove>
+  </SpawnsToRemove>
+  <TrapsToRemove>
+  </TrapsToRemove>
 </SavedState>

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public enum EquipableType
 {
-    Weapon, Ability
+    Weapon, Ability, Consumable, ItemUpgrade
 }
 
 public class InventoryManager : MonoBehaviour
@@ -20,9 +20,9 @@ public class InventoryManager : MonoBehaviour
 
     Image equippedWeaponImage, equippedAbilityImage;
 
-    List<GameObject> equippableWeapons, equippableAbilities/*, equippableItems*/;
+    List<GameObject> equippableWeapons, equippableAbilities, consumables, itemUpgrades;
 
-    List<GameObject>[] inventory = new List<GameObject>[2];
+    List<GameObject>[] inventory = new List<GameObject>[4];
 
     PlayerControls player;
 
@@ -44,16 +44,28 @@ public class InventoryManager : MonoBehaviour
         get { return this.equippableWeapons; }
     }
 
+    public List<GameObject> Consumable
+    {
+        get { return this.consumables; }
+    }
+
+    public List<GameObject> ItemUpgrades
+    {
+        get { return this.itemUpgrades; }
+    }
+
     private void Awake()
     {
         this.player = FindObjectOfType<PlayerControls>();
         inputManager = FindObjectOfType<InputManager>();
         inventory[0] = new List<GameObject>();
         inventory[1] = new List<GameObject>();
-        //inventory[2] = new List<BaseEquippableScript>();
+        inventory[2] = new List<GameObject>();
+        inventory[3] = new List<GameObject>();
         equippableWeapons = inventory[0];
         equippableAbilities = inventory[1];
-        //equippableItems = inventory[2];
+        consumables = inventory[2];
+        itemUpgrades = inventory[2];
         inventoryMenu = GameObject.Find("InventoryMenu");
         equippedAbilityImage = GameObject.Find("EquippedAbilityImage").GetComponent<Image>();
         equippedWeaponImage = GameObject.Find("EquippedWeaponImage").GetComponent<Image>();
