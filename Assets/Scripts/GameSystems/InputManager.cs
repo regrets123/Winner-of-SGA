@@ -14,9 +14,16 @@ public class InputManager : MonoBehaviour
 
     static InputMode currentInputMode = InputMode.Playing;
 
+    InventoryManager playerInventory;
+
     public InputMode CurrentInputMode
     {
         get { return currentInputMode; }
+    }
+
+    public InventoryManager PlayerInventory
+    {
+        set { if (this.playerInventory == null) this.playerInventory = value; }
     }
 
     private void Start()
@@ -24,6 +31,7 @@ public class InputManager : MonoBehaviour
         //Locks cursor in the middle of the screen and hides it out of the way when game starts
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
     }
 
     public void SetInputMode(InputMode newMode)
@@ -32,7 +40,7 @@ public class InputManager : MonoBehaviour
         {
             //If a menu of sorts is brought up like pause screen or inventory the cursor is visable and unlocked again. It's locked and becomes invisable if its the other way around
             currentInputMode = newMode;
-            if (currentInputMode == InputMode.None || currentInputMode == InputMode.Paused)
+            if (currentInputMode == InputMode.None || currentInputMode == InputMode.Paused || currentInputMode == InputMode.Inventory)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -43,6 +51,27 @@ public class InputManager : MonoBehaviour
                 Cursor.visible = false;
             }
         }
+    }
+
+    public void ViewInventoryCollection(int displayCollection)
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+
+    }
+
+    public void Equip(int collectionIndex)
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.Equip(collectionIndex);
+    }
+
+    public void ChangeInventoryCollection(int collection)
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.DisplayNewCollection(collection);
     }
 
     public void GoToMenu()

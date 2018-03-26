@@ -14,8 +14,6 @@ public class InventoryManager : MonoBehaviour
 {
     GameObject inventoryMenu;
 
-    Image[] inventoryImages = new Image[3];
-
     GameObject[] inventoryArrows = new GameObject[4];
 
     Image equippedWeaponImage, equippedAbilityImage;
@@ -26,13 +24,27 @@ public class InventoryManager : MonoBehaviour
 
     PlayerControls player;
 
-    int displayCollection = 0, collectionIndex = 0;
-
-    BaseEquippableObject currentChoice;
-
     InputManager inputManager;
 
+    Button[] inventoryButtons = new Button[12];
+
+    Button[] upgradeButtons = new Button[8];
+
+    PauseManager pM;
+
+    int displayCollection = 0;
+
+    Sprite defaultIcon;
+
+    Button currentChoice;
+
+    MenuManager menuManager;
+
+
+
     bool coolingDown = false;
+
+
 
     public List<GameObject> EquippableAbilities
     {
@@ -54,9 +66,18 @@ public class InventoryManager : MonoBehaviour
         get { return this.itemUpgrades; }
     }
 
+    public Button CurrentChoice
+    {
+        set { this.currentChoice = value; }
+    }
+
     private void Awake()
     {
+        menuManager = FindObjectOfType<MenuManager>();
+        defaultIcon = Resources.Load("EmptySlot") as Sprite;
         this.player = FindObjectOfType<PlayerControls>();
+        FindObjectOfType<InputManager>().PlayerInventory = this;
+        pM = FindObjectOfType<PauseManager>();
         inputManager = FindObjectOfType<InputManager>();
         inventory[0] = new List<GameObject>();
         inventory[1] = new List<GameObject>();
@@ -69,14 +90,9 @@ public class InventoryManager : MonoBehaviour
         inventoryMenu = GameObject.Find("InventoryMenu");
         equippedAbilityImage = GameObject.Find("EquippedAbilityImage").GetComponent<Image>();
         equippedWeaponImage = GameObject.Find("EquippedWeaponImage").GetComponent<Image>();
-        for (int i = 0; i < inventoryImages.Length; i++)
+        for (int i = 0; i < inventoryButtons.Length; i++)
         {
-            inventoryImages[i] = GameObject.Find("InventoryImage" + i.ToString()).GetComponent<Image>();
-        }
-        for (int i = 0; i < inventoryArrows.Length; i++)
-        {
-            inventoryArrows[i] = GameObject.Find("Arrow" + i.ToString());
-            inventoryArrows[i].SetActive(false);
+            inventoryButtons[i] = GameObject.Find("Slot " + (i + 1).ToString()).GetComponent<Button>();
         }
         inventoryMenu.SetActive(false);
     }
@@ -97,6 +113,7 @@ public class InventoryManager : MonoBehaviour
         }
         else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && !coolingDown)
         {
+            /*
             if (Input.GetAxis("NextInventory") < 0f)
             {
                 DisplayNextCollection(false);
@@ -118,6 +135,7 @@ public class InventoryManager : MonoBehaviour
                 Equip();
                 HideInventory();
             }
+            */
         }
         else if ((Input.GetAxisRaw("NextInventory") < 0f || Input.GetAxisRaw("NextItem") < 0f || Input.GetKeyDown("r")) && !inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown && player.CurrentWeapon != null)
         {
@@ -138,14 +156,9 @@ public class InventoryManager : MonoBehaviour
     void ShowInventory()
     {
         inventoryMenu.SetActive(true);
-        inputManager.SetInputMode(InputMode.Inventory);
-        for (int i = 0; i < inventoryImages.Length; i++)
-        {
-            inventoryImages[i].gameObject.SetActive(true);
-        }
-        displayCollection = 0;
-        collectionIndex = 0;
+        pM.PauseAndUnpause();
         UpdateSprites();
+        menuManager.Glow(currentChoice.GetComponent<Outline>());
     }
 
     IEnumerator BlinkArrow(int arrowIndex)
@@ -154,6 +167,8 @@ public class InventoryManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         inventoryArrows[arrowIndex].SetActive(false);
     }
+    
+
 
     //Indikerar vilken equippable spelaren överväger att equippa
     void HighlightNextEquippable(bool next)
@@ -162,28 +177,12 @@ public class InventoryManager : MonoBehaviour
         if (next)
         {
             StartCoroutine(BlinkArrow(0));
-            if (collectionIndex + 1 == inventory[displayCollection].Count)
-            {
-                collectionIndex = 0;
-            }
-            else
-            {
-                collectionIndex++;
-            }
         }
         else
         {
             StartCoroutine(BlinkArrow(1));
-            if (collectionIndex == 0)
-            {
-                collectionIndex = inventory[displayCollection].Count - 1;
-            }
-            else
-            {
-                collectionIndex--;
-            }
         }
-        UpdateSprites();
+        //UpdateSprites();
     }
 
     public string[] ReportItems()
@@ -205,6 +204,13 @@ public class InventoryManager : MonoBehaviour
         return items;
     }
 
+    public void DisplayNewCollection(int displayCollection)
+    {
+        this.displayCollection = displayCollection;
+        UpdateSprites();
+    }
+
+    /*
     //Väljer vilka equippables som ska visas i inventorymenyn
     void DisplayNextCollection(bool next)
     {
@@ -237,27 +243,39 @@ public class InventoryManager : MonoBehaviour
         collectionIndex = 0;
         UpdateSprites();
     }
-
+    */
 
     //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
     void UpdateSprites()
     {
-        inventoryImages[1].sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
+        for (int i = 0; i < inventoryButtons.Length; i++)
+        {
+            if (inventory[displayCollection][i] != null)
+            {
+                inventoryButtons[i].image.sprite = inventory[displayCollection][i].GetComponent<BaseEquippableObject>().InventoryIcon;
+            }
+            else
+            {
+                inventoryButtons[i].image.sprite = defaultIcon;
+            }
+        }
+        /*
+        inventoryButtons[1].sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
         if (collectionIndex == 0)
         {
-            inventoryImages[0].sprite = inventory[displayCollection][inventory[displayCollection].Count - 1].GetComponent<BaseEquippableObject>().InventoryIcon;
+            inventoryButtons[0].sprite = inventory[displayCollection][inventory[displayCollection].Count - 1].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         else
         {
-            inventoryImages[0].sprite = inventory[displayCollection][collectionIndex - 1].GetComponent<BaseEquippableObject>().InventoryIcon;
+            inventoryButtons[0].sprite = inventory[displayCollection][collectionIndex - 1].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         if (collectionIndex + 1 == inventory[displayCollection].Count)
         {
-            inventoryImages[2].sprite = inventory[displayCollection][0].GetComponent<BaseEquippableObject>().InventoryIcon;
+            inventoryButtons[2].sprite = inventory[displayCollection][0].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         else
         {
-            inventoryImages[2].sprite = inventory[displayCollection][collectionIndex + 1].GetComponent<BaseEquippableObject>().InventoryIcon;
+            inventoryButtons[2].sprite = inventory[displayCollection][collectionIndex + 1].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         if (displayCollection == 0)
         {
@@ -267,48 +285,60 @@ public class InventoryManager : MonoBehaviour
         {
             equippedAbilityImage.sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
+        */
     }
 
 
     //Equippar ett föremål som finns i spelarens inventory
-    void Equip()
+    public void Equip(int collectionIndex)
     {
         if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count - 1 || inventory[displayCollection][collectionIndex] == null)
         {
-            Debug.Log("problem med inventory");
+            Debug.Log("Not able to equip");
             return;
         }
-        print(displayCollection + "        " + collectionIndex);
+        /*
         if (displayCollection == 0 && player.CurrentWeapon != null)
         {
             player.Equip(inventory[displayCollection][collectionIndex]);
         }
         else
-            player.Equip(inventory[displayCollection][collectionIndex]);
+        */
+        HideInventory();
+        player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
     //Gömmer inventoryt
     void HideInventory()
     {
-        inputManager.SetInputMode(InputMode.Playing);
+        pM.PauseAndUnpause();
         inventoryMenu.SetActive(false);
     }
 
     //Lägger till nya föremål i spelarens inventory
     public void NewEquippable(GameObject equippable)
     {
-        if (equippable.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
+        switch (equippable.GetComponent<BaseEquippableObject>().MyType)
         {
-            AddEquippable(equippable, 0);
-        }
-        else if (equippable.GetComponent<BaseEquippableObject>() is BaseAbilityScript)
-        {
-            AddEquippable(equippable, 1);
-        }
-        else
-        {
-            Debug.Log("trying to add nonspecified equippable, gör om gör rätt");
-            return;
+            case EquipableType.Weapon:
+                AddEquippable(equippable, 0);
+                break;
+
+            case EquipableType.Ability:
+                AddEquippable(equippable, 1);
+                break;
+
+            case EquipableType.Consumable:
+                AddEquippable(equippable, 2);
+                break;
+
+            case EquipableType.ItemUpgrade:
+                AddEquippable(equippable, 3);
+                break;
+
+            default:
+                Debug.Log("trying to add nonspecified equippable, gör om gör rätt");
+                break;
         }
     }
 
