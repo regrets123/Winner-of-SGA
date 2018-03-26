@@ -37,6 +37,5 @@ public class MenuManager : MonoBehaviour {
     {
         o.enabled = false;
     }
-
-
+    
 }
