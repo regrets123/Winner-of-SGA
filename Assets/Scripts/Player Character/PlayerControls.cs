@@ -200,7 +200,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<DamageType> resistances = new List<DamageType>();
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded, combatStance = false;
     #endregion
 
     #region Properties
@@ -269,10 +269,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { interactTime = value; }
     }
 
-    /*public Animator Anim
+    public Animator Anim
     {
         get { return this.anim; }
-    }*/
+    }
 
     public bool Dead
     {
@@ -336,8 +336,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             if (!charController.isGrounded)
             {
-                //anim.SetBool("Falling", true);
                 yVelocity -= gravity;
+
+                if (yVelocity < 0)
+                {
+                    anim.SetBool("Falling", true);
+                }
             }
             if (currentMovementType == MovementType.Stagger)
             {
@@ -413,11 +417,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (!dead && canSheathe)
         {
             bool equip = weaponToEquip == null ? false : true;
-            //anim.SetBool("WeaponDrawn", equip);
-            //anim.SetTrigger("SheatheAndUnsheathe");
-            //if (!anim.GetBool("WeaponDrawn"))
+            anim.SetBool("WeaponDrawn", equip);
+            anim.SetTrigger("SheatheAndUnsheathe");
+
+            if (anim.GetBool("WeaponDrawn"))
             {
-                //SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+                anim.SetLayerWeight(1, 1);
+            }
+            else
+            {
+                anim.SetLayerWeight(1, 0);
             }
             StartCoroutine("SheathingTimer");
         }
@@ -564,19 +574,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (nuOfClicks == 1)
             {
-                //anim.SetTrigger("LightAttack1");
+                anim.SetTrigger("LightAttack1");
                 secondsUntilResetClick = 1.5f;
             }
 
             if (nuOfClicks == 2)
             {
-                //anim.SetTrigger("LightAttack2");
+                anim.SetTrigger("LightAttack2");
                 secondsUntilResetClick = 1.5f;
             }
 
             if (nuOfClicks == 3)
             {
-                //anim.SetTrigger("LightAttack3");
+                anim.SetTrigger("LightAttack3");
                 nuOfClicks = 0;
                 attackCooldown = 1f;
                 currentWeapon.CurrentSpeed = 1f;
@@ -673,6 +683,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {
             anim.SetFloat("Speed", charSpeed);
+
             if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
             {
                 currentMovementType = MovementType.Idle;
@@ -697,11 +708,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     jumpMomentum = true;
                 }
                 yVelocity = jumpSpeed;
-                //anim.SetTrigger("Jump");
+                anim.SetTrigger("Jump");
                 currentMovementType = MovementType.Jumping;
             }
         }
         move.y += yVelocity;
+
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
@@ -709,7 +721,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
-                    //anim.SetTrigger("Dodge");
+                    anim.SetTrigger("Dodge");
                     StartCoroutine("Dodge");
                     StartCoroutine("DodgeCooldown");
                     stamina -= dodgeCost;
@@ -771,11 +783,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
-            //anim.SetBool("Falling", false);
+            anim.SetBool("Falling", false);
+
             if (move.y < -safeFallDistance)
             {
                 TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 5f) - safeFallDistance)), DamageType.Falling);  //FallDamage
             }
+
             jumpMomentum = false;
             currentMovementType = MovementType.Idle;
         }
