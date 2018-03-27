@@ -16,7 +16,7 @@ public class InventoryManager : MonoBehaviour
 
     GameObject[] inventoryArrows = new GameObject[4];
 
-    Image equippedWeaponImage, equippedAbilityImage;
+    Image equippedWeaponImage, equippedAbilityImage, currentEquipableImage, currentUpgradeImage;
 
     List<GameObject> equippableWeapons, equippableAbilities, consumables, itemUpgrades;
 
@@ -40,9 +40,13 @@ public class InventoryManager : MonoBehaviour
 
     MenuManager menuManager;
 
+    Text equippableName, upgradeName, upgradeInfo;
+
+
 
 
     bool coolingDown = false;
+
 
 
 
@@ -76,7 +80,6 @@ public class InventoryManager : MonoBehaviour
         menuManager = FindObjectOfType<MenuManager>();
         defaultIcon = Resources.Load("EmptySlot") as Sprite;
         this.player = FindObjectOfType<PlayerControls>();
-        FindObjectOfType<InputManager>().PlayerInventory = this;
         pM = FindObjectOfType<PauseManager>();
         inputManager = FindObjectOfType<InputManager>();
         inventory[0] = new List<GameObject>();
@@ -90,6 +93,11 @@ public class InventoryManager : MonoBehaviour
         inventoryMenu = GameObject.Find("InventoryMenu");
         equippedAbilityImage = GameObject.Find("EquippedAbilityImage").GetComponent<Image>();
         equippedWeaponImage = GameObject.Find("EquippedWeaponImage").GetComponent<Image>();
+        currentEquipableImage = GameObject.Find("Equipable Image").GetComponent<Image>();
+        currentUpgradeImage = GameObject.Find("CurrentUpgradeImage").GetComponent<Image>();
+        equippableName = GameObject.Find("Equipable Name").GetComponent<Text>();
+        upgradeName = GameObject.Find("UpgradeName").GetComponent<Text>();
+        upgradeInfo = GameObject.Find("UpgradeInfo").GetComponent<Text>();
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
             inventoryButtons[i] = GameObject.Find("Slot " + (i + 1).ToString()).GetComponent<Button>();
@@ -139,10 +147,16 @@ public class InventoryManager : MonoBehaviour
         }
         else if ((Input.GetAxisRaw("NextInventory") < 0f || Input.GetAxisRaw("NextItem") < 0f || Input.GetKeyDown("r")) && !inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown && player.CurrentWeapon != null)
         {
+            /*
             print("tja");
             StartCoroutine("MenuCooldown");
             //player.Anim.SetBool("WeaponDrawn", false);
             player.Equip(null);
+            */
+        }
+        if (Input.GetKeyDown("r"))
+        {
+            Equip(0);
         }
     }
 
@@ -167,13 +181,14 @@ public class InventoryManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         inventoryArrows[arrowIndex].SetActive(false);
     }
-    
+
 
 
     //Indikerar vilken equippable spelaren överväger att equippa
     void HighlightNextEquippable(bool next)
     {
         StartCoroutine("MenuCooldown");
+        /*
         if (next)
         {
             StartCoroutine(BlinkArrow(0));
@@ -182,7 +197,8 @@ public class InventoryManager : MonoBehaviour
         {
             StartCoroutine(BlinkArrow(1));
         }
-        //UpdateSprites();
+        UpdateSprites();
+        */
     }
 
     public string[] ReportItems()
@@ -209,41 +225,6 @@ public class InventoryManager : MonoBehaviour
         this.displayCollection = displayCollection;
         UpdateSprites();
     }
-
-    /*
-    //Väljer vilka equippables som ska visas i inventorymenyn
-    void DisplayNextCollection(bool next)
-    {
-        StartCoroutine("MenuCooldown");
-        if (next)
-        {
-            StartCoroutine(BlinkArrow(2));
-            if (displayCollection + 1 == inventory.Length)
-            {
-                displayCollection = 0;
-            }
-            else
-            {
-                displayCollection++;
-            }
-        }
-        else
-        {
-            StartCoroutine(BlinkArrow(3));
-            if (displayCollection == 0)
-            {
-                displayCollection = inventory.Length - 1;
-            }
-            else
-            {
-                displayCollection--;
-            }
-        }
-        //Byt meny
-        collectionIndex = 0;
-        UpdateSprites();
-    }
-    */
 
     //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
     void UpdateSprites()
@@ -286,6 +267,14 @@ public class InventoryManager : MonoBehaviour
             equippedAbilityImage.sprite = inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>().InventoryIcon;
         }
         */
+    }
+
+    public void SelectItem(int index)
+    {
+        if (inventory[displayCollection] == null || index >= inventory[displayCollection].Count || inventory[displayCollection] == null)
+            return;
+        equippableName.text = inventory[displayCollection][index].GetComponent<BaseEquippableObject>().ObjectName;
+        currentEquipableImage.sprite = inventory[displayCollection][index].GetComponent<BaseEquippableObject>().InventoryIcon;
     }
 
 
