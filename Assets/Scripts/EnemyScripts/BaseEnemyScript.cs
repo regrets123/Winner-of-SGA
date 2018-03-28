@@ -218,6 +218,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         StartCoroutine("AttackCooldown");
     }
 
+    public void LightAttack()
+    {
+
+    }
+
+    public void HeavyAttack()
+    {
+
+    }
+
     protected IEnumerator AttackCooldown()
     {
         canAttack = false;

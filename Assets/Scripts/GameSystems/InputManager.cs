@@ -31,7 +31,6 @@ public class InputManager : MonoBehaviour
         //Locks cursor in the middle of the screen and hides it out of the way when game starts
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
     }
 
     public void SetInputMode(InputMode newMode)
@@ -51,6 +50,13 @@ public class InputManager : MonoBehaviour
                 Cursor.visible = false;
             }
         }
+    }
+
+    public void SelectEquipable(int index)
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.SelectItem(index);
     }
 
     public void ViewInventoryCollection(int displayCollection)

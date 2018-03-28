@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: feef608bae53ee5429d91c38b3874901, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1661,6 +1661,11 @@ Prefab:
       propertyPath: playerObj
       value: 
       objectReference: {fileID: 1458528891}
+    - target: {fileID: 20241331903853856, guid: 40c96716f362dd948a43916c702e22e0,
+        type: 2}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 40c96716f362dd948a43916c702e22e0, type: 2}
   m_IsPrefabParent: 0
@@ -1947,7 +1952,7 @@ Prefab:
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: safeFallDistance
-      value: 3
+      value: 10000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
@@ -2138,20 +2143,20 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114565133147140412, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 789337183}
     - target: {fileID: 114187614867969674, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: cam
       value: 
       objectReference: {fileID: 1716050378}
+    - target: {fileID: 114565133147140412, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 789337183}
     - target: {fileID: 224590377363922054, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 224590377363922054, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
@@ -2161,7 +2166,7 @@ Prefab:
     - target: {fileID: 224919133759424916, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 224919133759424916, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
@@ -2171,12 +2176,24 @@ Prefab:
     - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656765735986444, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
+      propertyPath: m_Name
+      value: Equipable Name
+      objectReference: {fileID: 0}
+    - target: {fileID: 1817541740114586, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
+      propertyPath: m_Name
+      value: UpgradeName
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959644985914302, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
+      propertyPath: m_Name
+      value: CurrentUpgradeImage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
