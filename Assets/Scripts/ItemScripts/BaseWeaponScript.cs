@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum DamageType
 {
-    Physical, Frost, Fire, Falling
+    Physical, Frost, Fire, Falling, Leech
 }
 
 public enum AttackMoves
@@ -19,11 +19,18 @@ public enum AttackMoveSets
     LightWeapon, HeavyWeapon
 }
 
+public enum Upgrade
+{
+    None, DamageUpgrade, FireUpgrade, FrostUpgrade, LeechUpgrade
+}
+
 public class BaseWeaponScript : BaseEquippableObject
 {
     [SerializeField]
+    protected int origninalDamage;
+
     protected int damage;
-    
+
     [SerializeField]
     protected float attackSpeed;
 
@@ -40,7 +47,21 @@ public class BaseWeaponScript : BaseEquippableObject
 
     protected MovementType previousMovement;
 
+    protected Upgrade currentUpgrade = Upgrade.None;
+
     protected float currentSpeed;
+
+    protected int upgradeLevel = 0;
+
+    public int UpgradeLevel
+    {
+        get { return this.upgradeLevel; }
+    }
+
+    public Upgrade CurrentUpgrade
+    {
+        get { return this.currentUpgrade; }
+    }
 
     public float CurrentSpeed
     {
@@ -53,6 +74,11 @@ public class BaseWeaponScript : BaseEquippableObject
         get { return this.canAttack; }
     }
 
+    public float AttackSpeed
+    {
+        get { return this.attackSpeed; }
+    }
+
     public AttackMoves[] Attacks
     {
         get { return this.attacks; }
@@ -63,6 +89,15 @@ public class BaseWeaponScript : BaseEquippableObject
     public IKillable Equipper
     {
         set { if (this.equipper == null) this.equipper = value; }
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        this.currentSpeed = attackSpeed;
+        this.damage = origninalDamage;
+        print("weaponstart");
+        this.equipper = GetComponentInParent<IKillable>();
     }
 
     public IEnumerator AttackCooldown()
@@ -86,13 +121,45 @@ public class BaseWeaponScript : BaseEquippableObject
         {
             print("nu gick nåt åt helvete");
         }
-            this.canAttack = true;
+        this.canAttack = true;
     }
 
-    public float AttackSpeed
+    public void ApplyUpgrade(Upgrade upgrade)
     {
-        get { return this.attackSpeed; }
-        //set { attackSpeed = AttackSpeed; }
+        print(this.dmgType);
+        print(this.damage);
+        this.currentUpgrade = upgrade;
+        if (upgrade == Upgrade.DamageUpgrade && upgradeLevel < 3)
+        {
+            upgradeLevel++;
+            this.damage += damage / 2;
+        }
+        else
+        {
+            switch (upgrade)
+            {
+                case Upgrade.FireUpgrade:
+                    this.dmgType = DamageType.Fire;
+                    break;
+
+                case Upgrade.FrostUpgrade:
+                    this.dmgType = DamageType.Frost;
+                    break;
+
+                case Upgrade.LeechUpgrade:
+                    this.dmgType = DamageType.Leech;
+                    break;
+
+                default:
+                    print("Nu blev nåt fel här");
+                    break;
+            }
+            this.damage = origninalDamage;
+            upgradeLevel = 0;
+        }
+        print("upgrade applied!");
+        print(this.dmgType);
+        print(this.damage);
     }
 
     //Deals damage to an object with IKillable on it.
@@ -105,13 +172,6 @@ public class BaseWeaponScript : BaseEquippableObject
     {
         yield return new WaitForSeconds(1f);
         this.currentSpeed = attackSpeed;
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        this.currentSpeed = attackSpeed;
-        this.equipper = GetComponentInParent<IKillable>();
     }
 
     //When a weapon hits a killable target the script triggers and deals damage to target

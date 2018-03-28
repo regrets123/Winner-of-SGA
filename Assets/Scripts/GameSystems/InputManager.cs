@@ -52,6 +52,27 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void ApplyUpgrade()
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.ApplyUpgrade();
+    }
+
+    public void AddFavorite()
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.AddFavorite();
+    }
+
+    public void SelectUpgrade(int upgradeIndex)
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.SelectUpgrade(upgradeIndex);
+    }
+
     public void SelectEquipable(int index)
     {
         if (playerInventory == null)
@@ -63,14 +84,21 @@ public class InputManager : MonoBehaviour
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
-
+        playerInventory.DisplayNewCollection(displayCollection);
     }
 
-    public void Equip(int collectionIndex)
+    public void Equip()
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
-        playerInventory.Equip(collectionIndex);
+        playerInventory.Equip();
+    }
+
+    public void ShowUpgradeOptions(bool show)
+    {
+        if (playerInventory == null)
+            this.playerInventory = FindObjectOfType<InventoryManager>();
+        playerInventory.ShowUpgradeOptions(show);
     }
 
     public void ChangeInventoryCollection(int collection)
