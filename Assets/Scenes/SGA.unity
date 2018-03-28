@@ -4901,6 +4901,88 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.8286474, y: 8.881337, z: 1.1059102}
   m_Center: {x: 1.6589614, y: -4.3814216, z: -0.002955079}
+--- !u!1001 &1068653274
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -2.5210266
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 56.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905193992120848, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: soul
+      value: 
+      objectReference: {fileID: 1157158949442700, guid: f18b8f53bd1f81e47935db9cfcefd708,
+        type: 2}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: lifeForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: maxHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: attackSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: staggerTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: maxPoise
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114177110662414554, guid: 4aa0e6b29e9d5094398f807de9a4d28b,
+        type: 2}
+      propertyPath: poiseCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327575094499380, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+      propertyPath: m_Name
+      value: Raider (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1077450053
 Prefab:
   m_ObjectHideFlags: 0
