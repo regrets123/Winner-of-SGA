@@ -3766,22 +3766,22 @@ Prefab:
     - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.63
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -209.35506
+      value: 0.15202713
       objectReference: {fileID: 0}
     - target: {fileID: 224274976531999292, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -7.6899996
+      value: 0.19999999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
