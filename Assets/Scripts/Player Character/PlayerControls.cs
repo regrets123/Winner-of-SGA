@@ -133,7 +133,22 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     AudioClip swordUnsheathe;
 
-    [Space(10)]
+    [SerializeField]
+    AudioClip lightAttack1;
+
+    [SerializeField]
+    AudioClip lightAttack2;
+
+    [SerializeField]
+    AudioClip lightAttack3;
+
+    [SerializeField]
+    AudioClip heavyAttack1;
+
+    [SerializeField]
+    AudioClip heavyAttack2;
+
+ [Space(10)]
 
     [Header("Player Items")]
 
@@ -277,7 +292,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public Animator Anim
     {
-        get { return this.anim; }
+        get { return anim; }
+        set { anim = Anim; }
     }
 
     public bool Dead
@@ -617,9 +633,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 attackCooldown = 1f;
                 currentWeapon.CurrentSpeed = 1f;
             }
+
+            SoundManager.instance.RandomizeSfx(lightAttack1, lightAttack2);
             
             move = Vector3.zero;
             move += transform.forward * attackMoveLength;
+
             attackCountdown = attackCooldown;
         }
     }
@@ -656,8 +675,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 attackCooldown = 1f;
             }
 
+            SoundManager.instance.RandomizeSfx(heavyAttack1, heavyAttack2);
+
             move = Vector3.zero;
             move += transform.forward * attackMoveLength;
+
             attackCountdown = attackCooldown;
         }
     }

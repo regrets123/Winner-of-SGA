@@ -10,6 +10,9 @@ public class OpenDoor : MonoBehaviour, IInteractable
     [SerializeField]
     float movePlayerSmoother;
 
+    [SerializeField]
+    AudioClip openGate;
+
     float leverPullPosX;
 
     Animator anim, animDoor;
@@ -31,13 +34,14 @@ public class OpenDoor : MonoBehaviour, IInteractable
         StartCoroutine("MovePlayerToInteract");
         player.InteractTime = 5.13f;
         anim.SetTrigger("LeverPull");
-        playerToMove.Anim.SetTrigger("OpenDoor");
+        playerToMove.Anim.SetTrigger("PullLever");
         StartCoroutine("OpenSesame");
     }
 
     IEnumerator OpenSesame()
     {
         yield return new WaitForSeconds(5.0f);
+        SoundManager.instance.PlaySingle(openGate);
         animDoor.SetTrigger("OpenDoor");
     }
 
