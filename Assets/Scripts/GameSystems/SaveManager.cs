@@ -233,19 +233,49 @@ public class SaveManager : MonoBehaviour
             if (nodes.Count == 0)
             {
                 inventory.AppendChild("<Item Name=\"" + itemName + "\"/>");
+                continue;
             }
             foreach (XPathNavigator node in nodes)
             {
-                print("node");
                 if (itemName == node.Value)
                 {
-                    print("hittat");
                     break;
                 }
                 else if (nodes.CurrentPosition == nodes.Count)
                 {
                     inventory.AppendChild("<Item Name=\"" + itemName + "\"/>");
-                    print(currentGame.InnerText);
+                }
+            }
+        }
+        nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
+        string[] weaponNames = player.Inventory.ReportWeaponNames();
+        XPathNavigator upgradesNode = xNav.SelectSingleNode("//Upgrades");
+        XPathNodeIterator oldUpgrades = upgradesNode.SelectChildren(XPathNodeType.All);
+        XmlNodeList test = currentGame.SelectNodes("//Upgrade");
+        if (oldUpgrades.Count > 0)
+        {
+            for (int i = test.Count - 1; i > - 1; i--)
+            {
+                test[i].ParentNode.RemoveChild(test[i]);
+            }
+
+        }
+        upgradesNode = xNav.SelectSingleNode("//Upgrades");
+
+        string[][] newUpgrades = player.Inventory.ReportWeaponUpgrades();
+        int index = 0;
+        foreach (string[] upgradeInfo in newUpgrades)
+        {
+            char upgradeLevel = upgradeInfo[1][upgradeInfo[1].Length - 1];
+            string newName = upgradeInfo[1].Remove(upgradeInfo[1].Length - 1, 1);
+            for (int i = index; i < weaponNames.Length; i++)
+            {
+                if (weaponNames[index] == newUpgrades[index][0])
+                {
+                    index++;
+                    print(newName + " " + upgradeLevel);
+                    upgradesNode.AppendChild("<Upgrade Weapon=\"" + newUpgrades[i][0] + "\" Name=\"" + newName + "\" Level=\"" + upgradeLevel + "\"/>");
+                    break;
                 }
             }
         }

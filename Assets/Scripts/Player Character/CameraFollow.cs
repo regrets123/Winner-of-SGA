@@ -199,11 +199,10 @@ public class CameraFollow : MonoBehaviour, IPausable
                 }
             }
 
-
             for (int i = 0; i < visibleEnemies.Count; i++)
             {
 
-                if (visibleEnemies[i] == lookAtMe)
+                if (visibleEnemies[i] == lookAtMe || visibleEnemies[i] != lookAtMe)
                 {
                     int newIndex;
 
@@ -228,9 +227,11 @@ public class CameraFollow : MonoBehaviour, IPausable
                     {
                         lookAtMe = visibleEnemies[newIndex];
                     }
+
                     Destroy(lockOnSprite.gameObject);
 
-                    lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform.position + (Vector3.up * 0.4f), cameraObj.transform.rotation);
+                    lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform, false);
+                    lockOnSprite.transform.position += (Vector3.up * 0.4f);
 
                     break;
                 }

@@ -33,6 +33,8 @@ public class MenuManager : MonoBehaviour {
         o.enabled = true;
         if (iM == null)
             iM = FindObjectOfType<InventoryManager>();
+        if (iM.CurrentChoice != null)
+            NoGlow(iM.CurrentChoice.GetComponent<Outline>());
         iM.CurrentChoice = o.GetComponent<Button>();
     }
 

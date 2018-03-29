@@ -6,8 +6,10 @@
       <Rotation X="" Y="" Z="" W=""/>
     </Transform>
     <Inventory>
-      <QuickSelections>
-      </QuickSelections>
+      <Upgrades>
+      </Upgrades>
+      <Favorites>
+      </Favorites>
     </Inventory>
     <Resources HP ="" Stamina="" LifeForce=""/>
   </PlayerInfo>

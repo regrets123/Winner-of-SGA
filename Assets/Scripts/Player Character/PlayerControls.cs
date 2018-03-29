@@ -55,6 +55,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     int armor;
 
+    [SerializeField]
+    int leechPercentage;
+
     [Space(10)]
 
     [Header("Player Movement")]
@@ -458,7 +461,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
-        iM.SetInputMode(InputMode.Playing);
+        //iM.SetInputMode(InputMode.Playing);
         if (dead)
         {
             return;
@@ -657,6 +660,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             move += transform.forward * attackMoveLength;
             attackCountdown = attackCooldown;
         }
+    }
+
+    public void Leech(int damageDealt)
+    {
+        //RestoreHealth(((damageDealt / 10) * leechAmount));
+        float floatDmg = damageDealt;
+        RestoreHealth(Mathf.RoundToInt(floatDmg / 100f) * leechPercentage);
     }
 
     //Modifies damage depending on armor, resistance etc

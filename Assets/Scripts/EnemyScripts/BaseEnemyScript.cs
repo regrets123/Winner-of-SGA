@@ -183,6 +183,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 StopCoroutine("Freeze");
                 StartCoroutine(Freeze(5f));
                 break;
+
+            case DamageType.Leech:
+                FindObjectOfType<PlayerControls>().Leech(damage);
+                break;
         }
 
         if (incomingDamage < health && poise < incomingDamage)
@@ -273,7 +277,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         PlayerControls player = FindObjectOfType<PlayerControls>();
         if (player.Inventory.EquippableAbilities != null && player.Inventory.EquippableAbilities.Count > 0)
         {
-            print(transform.position);
             Instantiate(soul, transform.position, Quaternion.identity).GetComponent<LifeForceTransmitterScript>().StartMe(player, lifeForce, this);
         }
         Destroy(gameObject, 7);
