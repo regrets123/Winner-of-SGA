@@ -8,12 +8,12 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
 
+    InventoryManager iM;
 
     public void ToggleMenu(GameObject menuToToggle)
     {
         menuToToggle.SetActive(!menuToToggle.activeSelf);
         print("Toggle");
-
     }
 
     public void LoadScene(string sceneName)
@@ -22,12 +22,24 @@ public class MenuManager : MonoBehaviour {
         print("Load Scene");
     }
 
-
     public void ExitApplication()
     {
         Application.Quit();
         print("Quit");
     }
 
+    public void Glow(Outline o)
+    {
+        o.enabled = true;
+        if (iM == null)
+            iM = FindObjectOfType<InventoryManager>();
+        if (iM.CurrentChoice != null)
+            NoGlow(iM.CurrentChoice.GetComponent<Outline>());
+        iM.CurrentChoice = o.GetComponent<Button>();
+    }
 
+    public void NoGlow(Outline o)
+    {
+        o.enabled = false;
+    }
 }

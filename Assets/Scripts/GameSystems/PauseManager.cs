@@ -25,6 +25,8 @@ public class PauseManager : MonoBehaviour
 
     InputMode previousInputMode = InputMode.None;
 
+    InventoryManager playerInventory;
+
     public List<IPausable> Pausables
     {
         get { return pausables; }
@@ -40,7 +42,16 @@ public class PauseManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            PauseAndUnpause();
+            if (playerInventory == null)
+            {
+                playerInventory = FindObjectOfType<InventoryManager>();
+            }
+            if (playerInventory.InventoryMenu.activeSelf)
+            {
+                playerInventory.HideInventory();
+            }
+            else
+                PauseAndUnpause();
         }
     }
 

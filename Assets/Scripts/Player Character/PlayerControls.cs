@@ -9,7 +9,8 @@ using UnityEngine.UI;
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {
-    void Attack();
+    void LightAttack();
+    void HeavyAttack();
     void TakeDamage(int damage, DamageType dmgType);
     void Kill();
 }
@@ -53,6 +54,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     int armor;
+
+    [SerializeField]
+    int leechPercentage;
 
     [Space(10)]
 
@@ -181,14 +185,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     InputManager iM;
 
-    //Which moves are used depending on weapon equipped?
     BaseWeaponScript currentWeapon;
+
+    CameraFollow cameraFollow;
 
     GameObject weaponToEquip;
 
-    //Animator anim;
+    Animator anim;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f;
 
     int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
 
@@ -200,7 +205,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<DamageType> resistances = new List<DamageType>();
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded, 
+        combatStance = false, attacked = false;
     #endregion
 
     #region Properties
@@ -269,10 +275,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         set { interactTime = value; }
     }
 
-    /*public Animator Anim
+    public Animator Anim
     {
         get { return this.anim; }
-    }*/
+    }
 
     public bool Dead
     {
@@ -296,7 +302,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         pM.Pausables.Add(this);
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
-        //anim = GetComponentInChildren<Animator>();
+        anim = GetComponentInChildren<Animator>();
         healthBar.maxValue = maxHealth;
         staminaBar.maxValue = maxStamina;
         lifeForceBar.maxValue = maxLifeForce;
@@ -304,6 +310,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         staminaBar.value = stamina;
         lifeForceBar.value = lifeForce;
         aggroIndicator.SetActive(false);
+        cameraFollow = FindObjectOfType<CameraFollow>();
     }
 
     private void Update()
@@ -336,8 +343,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             if (!charController.isGrounded)
             {
-                //anim.SetBool("Falling", true);
                 yVelocity -= gravity;
+
+                if (yVelocity < 0)
+                {
+                    anim.SetBool("Falling", true);
+                }
             }
             if (currentMovementType == MovementType.Stagger)
             {
@@ -357,12 +368,31 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 StartCoroutine("NonMovingInteract");
             }
 
-            if (charController.isGrounded && Input.GetButtonDown("Fire1") && this.currentWeapon != null && this.currentWeapon.CanAttack
+            if (charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking || currentMovementType != MovementType.Stagger))
             {
-                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
-                Attack();
-                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+                if (Input.GetAxisRaw("Fire2") < -0.5)
+                {
+                    if (!attacked)
+                    {
+                        currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+                        HeavyAttack();
+                        currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
+                        attacked = true;
+                    }
+                }
+
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+                    LightAttack();
+                    currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
+                }
+            }
+
+            if (attacked && (Input.GetAxisRaw("Fire2") > -0.5 || Input.GetAxisRaw("Fire2") < 0.5))
+            {
+                attacked = false;
             }
 
             if (secondsUntilResetClick > 0)
@@ -413,11 +443,17 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (!dead && canSheathe)
         {
             bool equip = weaponToEquip == null ? false : true;
-            //anim.SetBool("WeaponDrawn", equip);
-            //anim.SetTrigger("SheatheAndUnsheathe");
-            //if (!anim.GetBool("WeaponDrawn"))
+            anim.SetBool("WeaponDrawn", equip);
+            anim.SetTrigger("SheatheAndUnsheathe");
+
+            if (anim.GetBool("WeaponDrawn"))
             {
-                //SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+                SoundManager.instance.RandomizeSfx(swordSheathe, swordSheathe);
+                anim.SetLayerWeight(1, 1);
+            }
+            else
+            {
+                anim.SetLayerWeight(1, 0);
             }
             StartCoroutine("SheathingTimer");
         }
@@ -425,7 +461,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
-        iM.SetInputMode(InputMode.Playing);
+        //iM.SetInputMode(InputMode.Playing);
         if (dead)
         {
             return;
@@ -510,6 +546,18 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 return;
             }
+            switch (dmgType)
+            {
+                case DamageType.Fire:
+                    StopCoroutine("Burn");
+                    StartCoroutine(Burn(5f, finalDamage / 2));
+                    break;
+
+                case DamageType.Frost:
+                    StopCoroutine("Freeze");
+                    StartCoroutine(Freeze(5f));
+                    break;
+            }
             health -= finalDamage;
             healthBar.value = health;
             poise -= incomingDamage;
@@ -531,7 +579,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     }
 
     //Sets the current movement type as attacking and which attack move thats used
-    public void Attack()
+    public void LightAttack()
     {
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
@@ -552,28 +600,73 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (nuOfClicks == 1)
             {
-                //anim.SetTrigger("LightAttack1");
+                anim.SetTrigger("LightAttack1");
                 secondsUntilResetClick = 1.5f;
             }
 
             if (nuOfClicks == 2)
             {
-                //anim.SetTrigger("LightAttack2");
+                anim.SetTrigger("LightAttack2");
                 secondsUntilResetClick = 1.5f;
             }
 
             if (nuOfClicks == 3)
             {
-                //anim.SetTrigger("LightAttack3");
+                anim.SetTrigger("LightAttack3");
                 nuOfClicks = 0;
                 attackCooldown = 1f;
                 currentWeapon.CurrentSpeed = 1f;
+            }
+            
+            move = Vector3.zero;
+            move += transform.forward * attackMoveLength;
+            attackCountdown = attackCooldown;
+        }
+    }
+
+    public void HeavyAttack()
+    {
+        if (charController.isGrounded && grounded && attackCountdown <= 0f)
+        {
+            this.currentWeapon.StartCoroutine("AttackCooldown");
+
+            attackCooldown = 0.5f;
+
+            currentWeapon.CurrentSpeed = 0.5f;
+
+            if (secondsUntilResetClick <= 0)
+            {
+                nuOfClicks = 0;
+            }
+
+            Mathf.Clamp(nuOfClicks, 0, 2);
+
+            nuOfClicks++;
+
+            if (nuOfClicks == 1)
+            {
+                anim.SetTrigger("HeavyAttack1");
+                secondsUntilResetClick = 1.5f;
+            }
+
+            if (nuOfClicks == 2 || nuOfClicks == 3)
+            {
+                anim.SetTrigger("HeavyAttack2");
+                nuOfClicks = 0;
+                attackCooldown = 1f;
             }
 
             move = Vector3.zero;
             move += transform.forward * attackMoveLength;
             attackCountdown = attackCooldown;
         }
+    }
+
+    public void Leech(int damageDealt)
+    {
+        //RestoreHealth(((damageDealt / 10) * leechAmount));
+        float floatDmg = damageDealt;
+        RestoreHealth(Mathf.RoundToInt(floatDmg / 100f) * leechPercentage);
     }
 
     //Modifies damage depending on armor, resistance etc
@@ -650,14 +743,27 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move *= sprintSpeed;
             }
             //Changes the character models rotation to be in the direction its moving
-            transform.rotation = Quaternion.LookRotation(move);
+            if (!cameraFollow.LockOn)
+            {
+                anim.SetLayerWeight(2, 0);
+                transform.rotation = Quaternion.LookRotation(move);
+            }
+            else if (cameraFollow.LockOn)
+            {
+                transform.rotation = new Quaternion(0f, cam.rotation.y, 0f, transform.rotation.w);
+                anim.SetLayerWeight(1, 0);
+                anim.SetLayerWeight(2, 1);
+            }
         }
 
         float charSpeed = CalculateSpeed(charController.velocity);
 
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {
-            //anim.SetFloat("Speed", charSpeed);
+            anim.SetFloat("Speed", charSpeed);
+            anim.SetFloat("SpeedX", h);
+            anim.SetFloat("SpeedZ", v);
+
             if (charSpeed < 1 && currentMovementType != MovementType.Jumping)
             {
                 currentMovementType = MovementType.Idle;
@@ -682,11 +788,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     jumpMomentum = true;
                 }
                 yVelocity = jumpSpeed;
-                //anim.SetTrigger("Jump");
+                anim.SetTrigger("Jump");
                 currentMovementType = MovementType.Jumping;
             }
         }
         move.y += yVelocity;
+
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
@@ -694,7 +801,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
-                    //anim.SetTrigger("Dodge");
+                    anim.SetTrigger("Dodge");
                     StartCoroutine("Dodge");
                     StartCoroutine("DodgeCooldown");
                     stamina -= dodgeCost;
@@ -753,14 +860,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         //If the angle of the object hit by the character controller collider is less or equal to the slopelimit you are grounded and wont slide down
         grounded = (Vector3.Angle(Vector3.up, hitNormal) <= slopeLimit);
-        
+
         if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
-            //anim.SetBool("Falling", false);
+            anim.SetBool("Falling", false);
+
             if (move.y < -safeFallDistance)
             {
                 TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 5f) - safeFallDistance)), DamageType.Falling);  //FallDamage
             }
+
             jumpMomentum = false;
             currentMovementType = MovementType.Idle;
         }
@@ -872,5 +981,32 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;
     }
+
+    protected IEnumerator Burn(float burnDuration, int burnDamage)
+    {
+        burning = true;
+        timeToBurn += burnDuration;
+        while (timeToBurn > 0f)
+        {
+            yield return new WaitForSeconds(0.5f);
+            this.health -= burnDamage;
+            timeToBurn -= Time.deltaTime;
+        }
+        timeToBurn = 0f;
+        burning = false;
+    }
+
+    protected IEnumerator Freeze(float freezeTime)
+    {
+        if (!frozen)
+        {
+            frozen = true;
+            float originalSpeed = moveSpeed;
+            yield return new WaitForSeconds(freezeTime);
+            moveSpeed = originalSpeed;
+            frozen = false;
+        }
+    }
+
     #endregion
 }

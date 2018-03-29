@@ -1258,7 +1258,7 @@ Animator:
   m_GameObject: {fileID: 1871210621707556}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b10e0e5bcaaec7142b5e67fee634a6dc, type: 3}
-  m_Controller: {fileID: 9100000, guid: a9fcc996de51c194b8e28257cbcc5b97, type: 2}
+  m_Controller: {fileID: 9100000, guid: ff4230b8b7b676241bc77e45f1a9a63c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1277,31 +1277,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee44ae33297a6704eb37b5498ea50e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 1.5
-  gravity: 0.1
+  maxHealth: 100
   maxStamina: 100
-  moveSpeed: 1.1
-  slopeLimit: 40
-  slideFriction: -0.2
-  dodgeCost: 20
-  invulnerablityTime: 0.5
   maxLifeForce: 0
+  maxPoise: 0
+  staminaRegen: 1
+  invulnerablityTime: 0.5
+  staggerTime: 0
+  poiseCooldown: 0
+  armor: 0
+  moveSpeed: 1.1
+  sprintSpeed: 2
+  jumpSpeed: 1.5
+  rotspeed: 2
+  dodgeCost: 20
   dodgeCooldown: 0.67
   dodgeDuration: 0.4
   dodgeSpeed: 2
   attackMoveLength: 0.2
   attackCooldown: 0.4
   abilityCooldown: 0
-  sprintSpeed: 2
-  staminaRegen: 1
-  maxPoise: 0
-  staggerTime: 0
-  poiseCooldown: 0
-  maxHealth: 100
-  rotspeed: 2
-  weaponPosition: {fileID: 4385959190690106}
+  gravity: 0.1
+  slopeLimit: 40
+  slideFriction: -0.2
+  safeFallDistance: 0
   swordSheathe: {fileID: 8300000, guid: e323755ba9eadf2418e71e952d928af4, type: 3}
   swordUnsheathe: {fileID: 8300000, guid: 018080c26ab6f2f42b519fee92ace10e, type: 3}
+  weaponPosition: {fileID: 4385959190690106}
   currentRune: {fileID: 212213662123886716}
   healthBar: {fileID: 0}
   staminaBar: {fileID: 0}
