@@ -251,10 +251,14 @@ public class SaveManager : MonoBehaviour
         string[] weaponNames = player.Inventory.ReportWeaponNames();
         XPathNavigator upgradesNode = xNav.SelectSingleNode("//Upgrades");
         XPathNodeIterator oldUpgrades = upgradesNode.SelectChildren(XPathNodeType.All);
-        while (oldUpgrades.MoveNext())
+        XmlNodeList test = currentGame.SelectNodes("//Upgrade");
+        if (oldUpgrades.Count > 0)
         {
-            XPathNavigator currentUpgrade = oldUpgrades.Current;
-            currentUpgrade.DeleteSelf();
+            for (int i = test.Count - 1; i > - 1; i--)
+            {
+                test[i].ParentNode.RemoveChild(test[i]);
+            }
+
         }
         upgradesNode = xNav.SelectSingleNode("//Upgrades");
 
