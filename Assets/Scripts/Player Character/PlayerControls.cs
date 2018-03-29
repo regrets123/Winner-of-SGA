@@ -89,7 +89,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     float dodgeCooldown;
 
     [SerializeField]
-    float dodgeDuration;
+    float dodgeLength;
 
     [SerializeField]
     float dodgeSpeed;
@@ -803,7 +803,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing)
+            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging 
+                && currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
                 if (sprinting)
                 {
@@ -819,7 +820,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Dodge"))
+            if (Input.GetButtonDown("Dodge") && currentMovementType != MovementType.Jumping)
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
@@ -955,7 +956,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (!dead)
         {
             currentMovementType = MovementType.Dodging;
-            yield return new WaitForSeconds(dodgeDuration);
+            yield return new WaitForSeconds(dodgeLength);
             currentMovementType = MovementType.Running;
             dodgeDir = null;
         }
