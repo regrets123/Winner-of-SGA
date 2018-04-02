@@ -38,4 +38,6 @@ public class BaseEquippableObject : MonoBehaviour {
     {
         this.player = FindObjectOfType<PlayerControls>();
     }
+
+
 }

@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 /*By Johanna Pettersson*/
 
-public class MenuManager : MonoBehaviour {
+public class MenuManager : MonoBehaviour
+{
 
     InventoryManager iM;
 
@@ -30,12 +32,13 @@ public class MenuManager : MonoBehaviour {
 
     public void Glow(Outline o)
     {
-        o.enabled = true;
         if (iM == null)
             iM = FindObjectOfType<InventoryManager>();
         if (iM.CurrentChoice != null)
             NoGlow(iM.CurrentChoice.GetComponent<Outline>());
+        o.enabled = true;
         iM.CurrentChoice = o.GetComponent<Button>();
+        iM.CollectionIndex = Array.IndexOf(iM.InventoryButtons, o.GetComponent<Button>());
     }
 
     public void NoGlow(Outline o)
