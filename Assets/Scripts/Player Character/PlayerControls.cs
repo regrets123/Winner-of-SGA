@@ -208,7 +208,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     Animator anim;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f, charSpeed;
 
     int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
 
@@ -724,11 +724,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         healthBar.value = 0f;
         if (hitNormal.y > 0)
         {
-            //anim.SetTrigger("RightDead");
+            anim.SetTrigger("RightDead");
         }
         else if (hitNormal.y < 0)
         {
-            //anim.SetTrigger("LeftDead");
+            anim.SetTrigger("LeftDead");
         }
         iM.SetInputMode(InputMode.Paused);
         deathScreen.SetActive(true);
@@ -772,13 +772,15 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else if (cameraFollow.LockOn)
             {
-                transform.rotation = new Quaternion(0f, cam.rotation.y, 0f, transform.rotation.w);
+                //transform.rotation = new Quaternion(0f, cameraFollow.gameObject.transform.rotation.y, 0f, transform.rotation.w);
+                transform.LookAt(cameraFollow.LookAtMe.transform);
+                transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
                 anim.SetLayerWeight(1, 0);
                 anim.SetLayerWeight(2, 1);
             }
         }
 
-        float charSpeed = CalculateSpeed(charController.velocity);
+        charSpeed = CalculateSpeed(charController.velocity);
 
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {

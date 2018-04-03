@@ -78,6 +78,11 @@ public class CameraFollow : MonoBehaviour, IPausable
         get { return lockOn; }
     }
 
+    public BaseEnemyScript LookAtMe
+    {
+        get { return lookAtMe; }
+    }
+
     // Use this for initialization
     void Start()
     {
