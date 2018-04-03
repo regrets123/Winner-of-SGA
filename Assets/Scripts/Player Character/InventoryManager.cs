@@ -42,7 +42,33 @@ public class InventoryManager : MonoBehaviour
 
     Text equippableName, upgradeName, upgradeInfo;
 
-    bool coolingDown = false, itemSelected = false, upgrading = false;
+    bool coolingDown = false, itemSelected = false, upgrading = false, equippingFavorite = false, upgradeSelected = false;
+
+    public bool Upgrading
+    {
+        get { return this.upgrading; }
+    }
+
+    public Button[] UpgradeButtons
+    {
+        get { return this.upgradeButtons; }
+    }
+
+    public Button CurrentUpgrade
+    {
+        get { return this.currentUpgrade; }
+        set { this.currentUpgrade = value; }
+    }
+
+    public int UpgradeIndex
+    {
+        set { this.upgradeIndex = value; }
+    }
+
+    public bool ItemSelected
+    {
+        get { return this.itemSelected; }
+    }
 
     public GameObject InventoryMenu
     {
@@ -183,32 +209,62 @@ public class InventoryManager : MonoBehaviour
                     DisplayNewCollection((displayCollection + 1) % inventory.Length);
                 }
             }
-            if (Input.GetButtonDown("SelectItem"))
-            {
-                //SelectItem(collectionIndex);
-                currentChoice.onClick.Invoke();
-            }
-            else if (itemSelected)
+            if (itemSelected)
             {
                 if (Input.GetButtonDown("Favorite"))
                 {
-                    AddFavorite();
+                    favoriteButton.GetComponent<Button>().onClick.Invoke();
                 }
                 else if (Input.GetButtonDown("Upgrade"))
                 {
-                    UpgradeWeapon(true);
+                    upgradeButton.GetComponent<Button>().onClick.Invoke();
                 }
+                else if (Input.GetButtonDown("SelectItem"))
+                {
+                    //Equip();
+                    equipButton.GetComponent<Button>().onClick.Invoke();
+                }
+                else if (Input.GetButtonDown("GoBack"))
+                {
+                    ShowUpgradeOptions(false);
+                    upgradeButton.SetActive(false);
+                    favoriteButton.SetActive(false);
+                    equipButton.SetActive(false);
+                    currentEquipableImage.sprite = defaultIcon;
+                    equippableName.text = "";
+                }
+            }
+            else if (Input.GetButtonDown("SelectItem") && !itemSelected)
+            {
+                currentChoice.onClick.Invoke();
             }
         }
         else if (upgrading && !coolingDown)
         {
-            if (Input.GetAxisRaw("NextItem") > 0f)
+            if (Input.GetButtonDown("SelectItem"))
             {
+                if (!upgradeSelected)
+                {
+                    currentUpgrade.onClick.Invoke();
+                    upgradeSelected = true;
+                }
+                else
+                {
+                    applyUpgradeButton.GetComponent<Button>().onClick.Invoke();
+                    upgradeSelected = false;
+                }
+            }
+            else if (Input.GetAxisRaw("NextItem") > 0f)
+            {
+                upgradeSelected = false;
+                menuManager.NoGlow(currentUpgrade.GetComponent<Outline>());
                 StartCoroutine("MenuCooldown");
                 upgradeIndex = (upgradeIndex + 1) % upgradeButtons.Length;
             }
             else if (Input.GetAxisRaw("NextItem") < 0f)
             {
+                upgradeSelected = false;
+                menuManager.NoGlow(currentUpgrade.GetComponent<Outline>());
                 StartCoroutine("MenuCooldown");
                 if (upgradeIndex == 0)
                 {
@@ -221,6 +277,8 @@ public class InventoryManager : MonoBehaviour
             }
             else if (Input.GetAxisRaw("NextInventoryRow") != 0f)
             {
+                upgradeSelected = false;
+                menuManager.NoGlow(currentUpgrade.GetComponent<Outline>());
                 StartCoroutine("MenuCooldown");
                 int nextUpgradeIndex = 2;
                 if (Input.GetAxisRaw("NextInventoryRow") > 0f)
@@ -249,26 +307,29 @@ public class InventoryManager : MonoBehaviour
         }
         else if (!inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Playing && !coolingDown)
         {
-            if (Input.GetAxisRaw("NextInventoryRow") > 0f)
+            if (!equippingFavorite)
             {
-
+                if (Input.GetAxisRaw("NextInventoryRow") > 0f || Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    EquipFavorite(0);
+                }
+                else if (Input.GetAxisRaw("NextInventoryRow") < 0f || Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    EquipFavorite(2);
+                }
+                else if (Input.GetAxisRaw("NextItem") > 0f || Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    EquipFavorite(1);
+                }
+                else if (Input.GetAxisRaw("NextItem") < 0f || Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    EquipFavorite(3);
+                }
             }
-            else if (Input.GetAxisRaw("NextInventoryRow") < 0f)
+            if (Input.GetButtonDown("UnEquip"))
             {
-
+                UnEquipWeapon();
             }
-            else if (Input.GetAxisRaw("NextItem") > 0f)
-            {
-
-            }
-            else if (Input.GetAxisRaw("NextItem") < 0f)
-            {
-
-            }
-            /*
-            //player.Anim.SetBool("WeaponDrawn", false);
-            player.Equip(null);
-            */
         }
         if (Input.GetKeyDown("r"))
         {
@@ -276,17 +337,35 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    void UnEquipWeapon()
+    {
+        player.UnEquipWeapon();
+    }
+
+    public string[] ReportFavorites()
+    {
+        string[] allFavorites = new string[inventory[3].Count];
+        for (int i = 0; i < inventory[3].Count; i++)
+        {
+            allFavorites[i] = inventory[3][i].GetComponent<BaseEquippableObject>().ObjectName;
+        }
+        return allFavorites;
+    }
+
     void EquipFavorite(int favoriteIndex)
     {
+        print("Favorite: " + favoriteIndex);
         if (inventory[3] == null || inventory[3].Count <= favoriteIndex || inventory[3][favoriteIndex] == null)
             return;
         player.Equip(inventory[3][favoriteIndex]);
-        StartCoroutine("DisplayEquippedFavorite");
+        StartCoroutine(DisplayEquippedFavorite(favoriteIndex));
     }
 
     IEnumerator DisplayEquippedFavorite(int favoriteIndex)
     {
-        yield return null; //Lerpa bild in & ut
+        equippingFavorite = true;
+        yield return new WaitForSeconds(2); //Lerpa bild in & ut
+        equippingFavorite = false;
     }
 
     void UpgradeWeapon(bool upgrading)
@@ -366,6 +445,7 @@ public class InventoryManager : MonoBehaviour
         {
             currentChoice = inventoryButtons[0];
         }
+        upgradeSelected = false;
         inventoryMenu.SetActive(true);
         equippableName.text = "";
         upgradeInfo.text = "";
@@ -379,21 +459,22 @@ public class InventoryManager : MonoBehaviour
 
     public string[] ReportItems()
     {
-        string[] items = new string[equippableAbilities.Count + equippableWeapons.Count];
+        string[] items = new string[inventory[0].Count + inventory[1].Count + inventory[3].Count];
+        print(items.Length + " Items");
         int index = 0;
-        for (int i = 0; i < equippableWeapons.Count; i++)
+        for (int i = 0; i < inventory[0].Count; i++)
         {
-            items[index] = equippableWeapons[i].GetComponent<BaseEquippableObject>().ObjectName;
+            items[index] = inventory[0][i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
-        for (int i = 0; i < equippableAbilities.Count; i++)
+        for (int i = 0; i < inventory[1].Count; i++)
         {
-            items[index] = equippableAbilities[index].GetComponent<BaseEquippableObject>().ObjectName;
+            items[index] = inventory[1][i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
-        for (int i = 0; i < consumables.Count; i++)
+        for (int i = 0; i < inventory[2].Count; i++)
         {
-            items[index] = consumables[i].GetComponent<BaseEquippableObject>().ObjectName;
+            items[index] = inventory[2][i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
         return items;
@@ -481,6 +562,7 @@ public class InventoryManager : MonoBehaviour
     {
         itemSelected = show;
         upgradeOptions.SetActive(show);
+        this.upgrading = show;
         menuManager.NoGlow(currentChoice.GetComponent<Outline>());
         if (show)
         {
@@ -497,7 +579,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SelectItem(int index)
     {
-        if (inventory[displayCollection] == null || index >= inventory[displayCollection].Count || inventory[displayCollection] == null || itemSelected)
+        if (inventory[displayCollection] == null || index >= inventory[displayCollection].Count || inventory[displayCollection] == null)
             return;
         collectionIndex = index;
         itemSelected = true;
@@ -511,11 +593,6 @@ public class InventoryManager : MonoBehaviour
         inventory[0][collectionIndex].GetComponent<BaseWeaponScript>().ApplyUpgrade(itemUpgrades[upgradeIndex].GetComponent<UpgradeScript>().MyUpgrade);
         itemUpgrades.Remove(itemUpgrades[upgradeIndex]);
         UpdateSprites();
-    }
-
-    void ClickCurrentButton()
-    {
-        currentChoice.onClick.Invoke();
     }
 
     public void SelectUpgrade(int upgradeIndex)
@@ -551,6 +628,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void AddFavorite(GameObject newFav)
+    {
+        inventory[3].Add(newFav);
+    }
+
     void AddUpgrade(GameObject newUpgrade)
     {
         itemUpgrades.Add(newUpgrade);
@@ -559,6 +641,8 @@ public class InventoryManager : MonoBehaviour
     //Gömmer inventoryt
     public void HideInventory()
     {
+        upgradeSelected = false;
+        itemSelected = false;
         favoriteButton.SetActive(false);
         applyUpgradeButton.SetActive(false);
         ShowItemOptions(false);
@@ -596,6 +680,36 @@ public class InventoryManager : MonoBehaviour
             default:
                 Debug.Log("trying to add nonspecified equippable, gör om gör rätt");
                 break;
+        }
+    }
+
+    public void SetWeaponUpgrade(string weaponName, string upgradeName, int upgradeLevel)
+    {
+        foreach (GameObject weapon in inventory[0])
+        {
+            BaseWeaponScript weaponScript = weapon.GetComponent<BaseWeaponScript>();
+            if (weaponScript.ObjectName == weaponName)
+            {
+                Upgrade upgrade = Upgrade.DamageUpgrade;
+                switch (upgradeName)
+                {
+                    case "LeechUpgrade":
+                        upgrade = Upgrade.LeechUpgrade;
+                        break;
+
+                    case "FrostUpgrade":
+                        upgrade = Upgrade.FireUpgrade;
+                        break;
+
+                    case "FireUpgrade":
+                        upgrade = Upgrade.FireUpgrade;
+                        break;
+                }
+                for (int i = 0; i < upgradeLevel; i++)
+                {
+                    weaponScript.ApplyUpgrade(upgrade);
+                }
+            }
         }
     }
 

@@ -36,9 +36,21 @@ public class MenuManager : MonoBehaviour
             iM = FindObjectOfType<InventoryManager>();
         if (iM.CurrentChoice != null)
             NoGlow(iM.CurrentChoice.GetComponent<Outline>());
+        if (iM.CurrentUpgrade != null)
+            NoGlow(iM.CurrentUpgrade.GetComponent<Outline>());
         o.enabled = true;
-        iM.CurrentChoice = o.GetComponent<Button>();
-        iM.CollectionIndex = Array.IndexOf(iM.InventoryButtons, o.GetComponent<Button>());
+        if (iM.ItemSelected)
+            return;
+        if (iM.Upgrading)
+        {
+            iM.CurrentUpgrade = o.GetComponent<Button>();
+            iM.UpgradeIndex = Array.IndexOf(iM.UpgradeButtons, o.GetComponent<Button>());
+        }
+        else
+        {
+            iM.CurrentChoice = o.GetComponent<Button>();
+            iM.CollectionIndex = Array.IndexOf(iM.InventoryButtons, o.GetComponent<Button>());
+        }
     }
 
     public void NoGlow(Outline o)
