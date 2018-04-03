@@ -1323,6 +1323,8 @@ MonoBehaviour:
   weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
   weaponPos: {fileID: 4664436168200820}
   resistances: 
+  swordSwing1: {fileID: 8300000, guid: b39c723b6d1e1724692ea89092cb097c, type: 3}
+  swordSwing2: {fileID: 8300000, guid: 6c85a0138632937498d329cf694a500b, type: 3}
 --- !u!137 &137193572997121276
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
