@@ -724,11 +724,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         healthBar.value = 0f;
         if (hitNormal.y > 0)
         {
-            //anim.SetTrigger("RightDead");
+            anim.SetTrigger("RightDead");
         }
         else if (hitNormal.y < 0)
         {
-            //anim.SetTrigger("LeftDead");
+            anim.SetTrigger("LeftDead");
         }
         iM.SetInputMode(InputMode.Paused);
         deathScreen.SetActive(true);
