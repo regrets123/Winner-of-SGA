@@ -31,7 +31,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected DamageType[] resistances;
 
     [SerializeField]
-    AudioClip swordSwing1, swordSwing2;
+    AudioClip swordSwing1, swordSwing2, raiderHowl;
 
     protected bool canAttack = true, burning = false, frozen = false;
 
@@ -366,6 +366,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         this.initialPos = transform.position;
         this.target = newTarget;
         target.EnemyAggro(this, true);
+        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
     }
 
     protected IEnumerator Burn(float burnDuration, int burnDamage)
