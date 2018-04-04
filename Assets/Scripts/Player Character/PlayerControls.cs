@@ -148,7 +148,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     AudioClip heavyAttack2;
 
- [Space(10)]
+    [Space(10)]
 
     [Header("Player Items")]
 
@@ -206,6 +206,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     GameObject weaponToEquip;
 
+    ClimbableScript currentClimbable;
+
     Animator anim;
 
     float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f, charSpeed;
@@ -220,8 +222,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<DamageType> resistances = new List<DamageType>();
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded, 
-        combatStance = false, attacked = false;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
+        combatStance = false, attacked = false, climbing = false;
     #endregion
 
     #region Properties
@@ -230,6 +232,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         get { return this.currentMovementType; }
         set { this.currentMovementType = value; }
+    }
+
+    public ClimbableScript CurrentClimbable
+    {
+        set { this.currentClimbable = value; }
     }
 
     public InventoryManager Inventory
@@ -357,7 +364,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 PlayerMovement(sprinting);
             }
-            if (!charController.isGrounded)
+            if (!charController.isGrounded && !climbing)
             {
                 yVelocity -= gravity;
 
@@ -366,13 +373,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     anim.SetBool("Falling", true);
                 }
             }
-            if (currentMovementType == MovementType.Stagger)
+            if (currentMovementType == MovementType.Stagger && !climbing)
             {
                 move = Vector3.zero;
             }
 
             //Lets the character move with the character controller
-            charController.Move(move / 8);
+            if (!climbing)
+                charController.Move(move / 8);
 
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
@@ -635,7 +643,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
 
             SoundManager.instance.RandomizeSfx(lightAttack1, lightAttack2);
-            
+
             move = Vector3.zero;
             move += transform.forward * attackMoveLength;
 
@@ -746,6 +754,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #region Movement
     public void PlayerMovement(bool sprinting)
     {
+        if (climbing)
+            return;
         // Gets the movement axis' for character controller and assigns them to variables
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
@@ -805,16 +815,23 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging 
+            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging
                 && currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
-                if (sprinting)
+                if (currentClimbable != null)
                 {
-                    jumpMomentum = true;
+                    currentClimbable.Climb(this);
                 }
-                yVelocity = jumpSpeed;
-                anim.SetTrigger("Jump");
-                currentMovementType = MovementType.Jumping;
+                else
+                {
+                    if (sprinting)
+                    {
+                        jumpMomentum = true;
+                    }
+                    yVelocity = jumpSpeed;
+                    anim.SetTrigger("Jump");
+                    currentMovementType = MovementType.Jumping;
+                }
             }
         }
         move.y += yVelocity;
@@ -935,6 +952,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Coroutines
+    public IEnumerator Climb(AnimationClip climbAnim)
+    {
+        ClimbableScript currentClimb = currentClimbable;
+        gameObject.transform.LookAt(currentClimbable.FinalClimbingPosition);
+        gameObject.transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
+        this.climbing = true;
+        string animTrigger = (climbAnim.length > 2f) ? "Climb1" : "Climb2";
+        anim.SetTrigger(animTrigger);
+        yield return new WaitForSeconds(climbAnim.length - 0.15f);
+        gameObject.transform.position = currentClimb.FinalClimbingPosition.position;
+        this.climbing = false;
+    }
+
     public IEnumerator AbilityCooldown()
     {
         BaseAbilityScript.CoolingDown = true;

@@ -248,11 +248,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             anim.SetTrigger("LightAttack1");
         }
-        else if(lightAttack == 2)
+        else if (lightAttack == 2)
         {
             anim.SetTrigger("LightAttack2");
         }
-        else if(lightAttack == 2)
+        else if (lightAttack == 2)
         {
             anim.SetTrigger("LightAttack3");
         }
@@ -358,7 +358,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected virtual void Aggro(PlayerControls newTarget)
     {
-        this.initialPos = transform.position;
+        if (this.initialPos == null)
+            this.initialPos = transform.position;
         this.target = newTarget;
         target.EnemyAggro(this, true);
     }
