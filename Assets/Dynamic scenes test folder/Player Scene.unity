@@ -113,11 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: efbde3daaabd6224790e3139840936a8, type: 2}
---- !u!1 &295750549 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1158951583576494, guid: 04cb31017c8aa424c8da6968bd2f6390,
-    type: 2}
-  m_PrefabInternal: {fileID: 437407544}
 --- !u!1001 &437407544
 Prefab:
   m_ObjectHideFlags: 0
@@ -284,6 +279,40 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224456043515403194, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 224456043515403194, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224646614837140968, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 224646614837140968, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224724491579377112, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 224724491579377112, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343605449595066, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
   m_IsPrefabParent: 0
@@ -292,18 +321,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1732705421200960, guid: 40c96716f362dd948a43916c702e22e0,
     type: 2}
   m_PrefabInternal: {fileID: 1366434253}
---- !u!114 &747717522 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114112280164591232, guid: 04cb31017c8aa424c8da6968bd2f6390,
-    type: 2}
-  m_PrefabInternal: {fileID: 437407544}
-  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
---- !u!114 &1312352709 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114415172967153054, guid: 04cb31017c8aa424c8da6968bd2f6390,
-    type: 2}
-  m_PrefabInternal: {fileID: 437407544}
-  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &1366434253
 Prefab:
   m_ObjectHideFlags: 0
@@ -621,17 +638,17 @@ Prefab:
         type: 2}
       propertyPath: healthBar
       value: 
-      objectReference: {fileID: 1312352709}
+      objectReference: {fileID: 0}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: staminaBar
       value: 
-      objectReference: {fileID: 747717522}
+      objectReference: {fileID: 0}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: lifeForceBar
       value: 
-      objectReference: {fileID: 1538276184}
+      objectReference: {fileID: 0}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: maxPoise
@@ -666,7 +683,7 @@ Prefab:
         type: 2}
       propertyPath: deathScreen
       value: 
-      objectReference: {fileID: 295750549}
+      objectReference: {fileID: 0}
     - target: {fileID: 114207877422867504, guid: e209d60cd00070445a2e7f6d834c654e,
         type: 2}
       propertyPath: aggroIndicator
@@ -679,9 +696,3 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1538276184 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114431734345401024, guid: 04cb31017c8aa424c8da6968bd2f6390,
-    type: 2}
-  m_PrefabInternal: {fileID: 437407544}
-  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
