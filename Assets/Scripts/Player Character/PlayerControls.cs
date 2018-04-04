@@ -148,6 +148,36 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     AudioClip heavyAttack2;
 
+    [SerializeField]
+    AudioClip sandSteps;
+
+    [SerializeField]
+    AudioClip stoneSteps;
+
+    [SerializeField]
+    AudioClip woodSteps;
+
+    [SerializeField]
+    AudioSource rightFoot;
+
+    [SerializeField]
+    AudioSource leftFoot;
+
+    [SerializeField]
+    AudioClip landingSand;
+
+    [SerializeField]
+    AudioClip landingStone;
+
+    [SerializeField]
+    AudioClip landingWood;
+
+    [SerializeField]
+    float footStepsVolume;
+
+    [SerializeField]
+    float landingVolume;
+        
     [Space(10)]
 
     [Header("Player Items")]
@@ -381,6 +411,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             //Lets the character move with the character controller
             if (!climbing)
                 charController.Move(move / 8);
+
+            
 
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
@@ -782,7 +814,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else if (cameraFollow.LockOn)
             {
-                //transform.rotation = new Quaternion(0f, cameraFollow.gameObject.transform.rotation.y, 0f, transform.rotation.w);
                 transform.LookAt(cameraFollow.LookAtMe.transform);
                 transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
                 anim.SetLayerWeight(1, 0);
@@ -928,6 +959,92 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
+    }
+    #endregion
+
+    #region Sound Events
+    void FootstepRight()
+    {
+        if (charController.isGrounded && grounded && move != Vector3.zero)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    rightFoot.volume = footStepsVolume;
+                    rightFoot.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    rightFoot.volume = footStepsVolume;
+                    rightFoot.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    rightFoot.volume = footStepsVolume;
+                    rightFoot.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+
+    void FootstepLeft()
+    {
+        if (charController.isGrounded && grounded && move != Vector3.zero)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    leftFoot.volume = footStepsVolume;
+                    leftFoot.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    leftFoot.volume = footStepsVolume;
+                    leftFoot.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    leftFoot.volume = footStepsVolume;
+                    leftFoot.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+
+    void Landing()
+    {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+            if (hit.collider.gameObject.tag == "Sand")
+            {
+                leftFoot.volume = landingVolume;
+                rightFoot.volume = landingVolume;
+                leftFoot.PlayOneShot(landingSand);
+                rightFoot.PlayOneShot(landingSand);
+            }
+            else if (hit.collider.gameObject.tag == "Stone")
+            {
+                leftFoot.volume = landingVolume;
+                rightFoot.volume = landingVolume;
+                leftFoot.PlayOneShot(landingStone);
+                rightFoot.PlayOneShot(landingStone);
+            }
+            else if (hit.collider.gameObject.tag == "Wood")
+            {
+                leftFoot.volume = landingVolume;
+                rightFoot.volume = landingVolume;
+                leftFoot.PlayOneShot(landingWood);
+                rightFoot.PlayOneShot(landingWood);
+            }
+        }
     }
     #endregion
 

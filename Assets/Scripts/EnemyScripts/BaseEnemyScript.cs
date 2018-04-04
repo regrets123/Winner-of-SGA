@@ -30,6 +30,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     protected DamageType[] resistances;
 
+    [SerializeField]
+    AudioClip swordSwing1, swordSwing2, raiderHowl;
+
     protected bool canAttack = true, burning = false, frozen = false;
 
     protected int health, lightAttack, heavyAttack, attack;
@@ -257,6 +260,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             anim.SetTrigger("LightAttack3");
         }
 
+        SoundManager.instance.RandomizeSfx(swordSwing1, swordSwing2);
+
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
         StartCoroutine("AttackCooldown");
     }
@@ -362,6 +367,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             this.initialPos = transform.position;
         this.target = newTarget;
         target.EnemyAggro(this, true);
+        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
     }
 
     protected IEnumerator Burn(float burnDuration, int burnDamage)
