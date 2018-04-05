@@ -936,6 +936,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
+            Landing();
+
             anim.SetBool("Falling", false);
 
             if (move.y < -safeFallDistance)
@@ -949,7 +951,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
-            //anim.SetFloat("Speed", 20);
             currentMovementType = MovementType.Sprinting;
         }
         wasGrounded = charController.isGrounded;

@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
-
+    #region Serialized Variables
     [SerializeField]
     protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime, loseAggroDistance, maxAggroFollow, maxPoise, staggerTime, poiseCooldown, attackColliderActivationSpeed,
                     attackColliderDeactivationSpeed;
@@ -31,8 +31,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected DamageType[] resistances;
 
     [SerializeField]
-    AudioClip swordSwing1, swordSwing2, raiderHowl;
+    AudioClip swordSwing1, swordSwing2, raiderHowl, sandSteps, stoneSteps, woodSteps;
 
+    [SerializeField]
+    AudioSource leftFoot, rightFoot;
+    #endregion
+
+    #region Non-Serialized Variables
     protected bool canAttack = true, burning = false, frozen = false;
 
     protected int health, lightAttack, heavyAttack, attack;
@@ -67,7 +72,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         get { return this.currentMovementType; }
         set { this.currentMovementType = value; }
     }
+    #endregion
 
+    #region Main Methods
     protected virtual void Start()
     {
         this.nav = GetComponent<NavMeshAgent>();
@@ -146,6 +153,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             poise = maxPoise;
         }
     }
+    #endregion
 
     public void PauseMe(bool pausing)
     {
@@ -294,6 +302,54 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
         StartCoroutine("AttackCooldown");
+    }
+
+    void FootstepRight()
+    {
+        if (!nav.isStopped)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    rightFoot.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    rightFoot.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    rightFoot.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+
+    void FootstepLeft()
+    {
+        if (!nav.isStopped)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    leftFoot.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    leftFoot.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    leftFoot.PlayOneShot(woodSteps);
+                }
+            }
+        }
     }
 
     protected IEnumerator AttackCooldown()
