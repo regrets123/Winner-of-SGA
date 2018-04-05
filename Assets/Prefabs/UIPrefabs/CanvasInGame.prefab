@@ -40,8 +40,9 @@ GameObject:
   - component: {fileID: 114747358218433198}
   - component: {fileID: 114236754035634728}
   - component: {fileID: 114162743394762472}
+  - component: {fileID: 114193527102553742}
   m_Layer: 5
-  m_Name: Magic Abilities
+  m_Name: Category 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,8 +324,9 @@ GameObject:
   - component: {fileID: 114080586175375530}
   - component: {fileID: 114328671723316366}
   - component: {fileID: 114334873395733480}
+  - component: {fileID: 114802866105487926}
   m_Layer: 5
-  m_Name: Weapons
+  m_Name: Category 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -639,8 +641,9 @@ GameObject:
   - component: {fileID: 114200308182453100}
   - component: {fileID: 114898134483273738}
   - component: {fileID: 114687392819007952}
+  - component: {fileID: 114415934917048596}
   m_Layer: 5
-  m_Name: Items
+  m_Name: Category 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -946,8 +949,9 @@ GameObject:
   - component: {fileID: 114546366994816848}
   - component: {fileID: 114570309430185654}
   - component: {fileID: 114289656552344412}
+  - component: {fileID: 114111979839303326}
   m_Layer: 5
-  m_Name: Favorite
+  m_Name: Category 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2273,7 +2277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224983226315826350}
   m_Layer: 5
-  m_Name: InventoryMenu
+  m_Name: QuickSelectionBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3060,6 +3064,20 @@ MonoBehaviour:
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   delegates: []
+--- !u!114 &114111979839303326
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395304567097556}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.78255576, g: 1, b: 0.014705896, a: 0.859}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114112797626723538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3740,6 +3758,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 1, g: 0, b: 1, a: 0.522}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &114193527102553742
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1018581910685336}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.78255576, g: 1, b: 0.014705896, a: 0.859}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!114 &114194485834907948
@@ -5333,6 +5365,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114415934917048596
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1267692252741632}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.78255576, g: 1, b: 0.014705896, a: 0.859}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114421287742669302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8121,6 +8167,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114802866105487926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1127257135093436}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.78255576, g: 1, b: 0.014705896, a: 0.859}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114805369852300946
 MonoBehaviour:
   m_ObjectHideFlags: 1
