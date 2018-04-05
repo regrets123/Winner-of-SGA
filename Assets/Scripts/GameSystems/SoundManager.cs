@@ -5,7 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     [SerializeField]
-    AudioSource efxSource, musicSource;
+    AudioSource efxSource, musicSource, environmentSource;
 
     public static SoundManager instance = null;
 
@@ -40,6 +40,6 @@ public class SoundManager : MonoBehaviour
 
         efxSource.pitch = randomPitch;
         efxSource.clip = clips[randomIndex];
-        efxSource.Play();
+        efxSource.PlayOneShot(efxSource.clip);
     }
 }

@@ -89,7 +89,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     float dodgeCooldown;
 
     [SerializeField]
-    float dodgeDuration;
+    float dodgeLength;
 
     [SerializeField]
     float dodgeSpeed;
@@ -133,6 +133,51 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     AudioClip swordUnsheathe;
 
+    [SerializeField]
+    AudioClip lightAttack1;
+
+    [SerializeField]
+    AudioClip lightAttack2;
+
+    [SerializeField]
+    AudioClip lightAttack3;
+
+    [SerializeField]
+    AudioClip heavyAttack1;
+
+    [SerializeField]
+    AudioClip heavyAttack2;
+
+    [SerializeField]
+    AudioClip sandSteps;
+
+    [SerializeField]
+    AudioClip stoneSteps;
+
+    [SerializeField]
+    AudioClip woodSteps;
+
+    [SerializeField]
+    AudioSource rightFoot;
+
+    [SerializeField]
+    AudioSource leftFoot;
+
+    [SerializeField]
+    AudioClip landingSand;
+
+    [SerializeField]
+    AudioClip landingStone;
+
+    [SerializeField]
+    AudioClip landingWood;
+
+    [SerializeField]
+    float footStepsVolume;
+
+    [SerializeField]
+    float landingVolume;
+        
     [Space(10)]
 
     [Header("Player Items")]
@@ -191,9 +236,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     GameObject weaponToEquip;
 
+    ClimbableScript currentClimbable;
+
     Animator anim;
 
-    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f;
+    float yVelocity, stamina, h, v, secondsUntilResetClick, attackCountdown = 0f, interactTime, dashedTime, poiseReset, poise, timeToBurn = 0f, charSpeed;
 
     int health, lifeForce = 0, nuOfClicks = 0, abilityNo = 0;
 
@@ -205,8 +252,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<DamageType> resistances = new List<DamageType>();
 
-    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded, 
-        combatStance = false, attacked = false;
+    bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
+        combatStance = false, attacked = false, climbing = false;
     #endregion
 
     #region Properties
@@ -215,6 +262,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         get { return this.currentMovementType; }
         set { this.currentMovementType = value; }
+    }
+
+    public ClimbableScript CurrentClimbable
+    {
+        set { this.currentClimbable = value; }
     }
 
     public InventoryManager Inventory
@@ -277,7 +329,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public Animator Anim
     {
-        get { return this.anim; }
+        get { return anim; }
+        set { anim = Anim; }
     }
 
     public bool Dead
@@ -341,7 +394,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 PlayerMovement(sprinting);
             }
-            if (!charController.isGrounded)
+            if (!charController.isGrounded && !climbing)
             {
                 yVelocity -= gravity;
 
@@ -350,13 +403,16 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     anim.SetBool("Falling", true);
                 }
             }
-            if (currentMovementType == MovementType.Stagger)
+            if (currentMovementType == MovementType.Stagger && !climbing)
             {
                 move = Vector3.zero;
             }
 
             //Lets the character move with the character controller
-            charController.Move(move / 8);
+            if (!climbing)
+                charController.Move(move / 8);
+
+            
 
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
@@ -617,9 +673,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 attackCooldown = 1f;
                 currentWeapon.CurrentSpeed = 1f;
             }
-            
+
+            SoundManager.instance.RandomizeSfx(lightAttack1, lightAttack2);
+
             move = Vector3.zero;
             move += transform.forward * attackMoveLength;
+
             attackCountdown = attackCooldown;
         }
     }
@@ -656,8 +715,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 attackCooldown = 1f;
             }
 
+            SoundManager.instance.RandomizeSfx(heavyAttack1, heavyAttack2);
+
             move = Vector3.zero;
             move += transform.forward * attackMoveLength;
+
             attackCountdown = attackCooldown;
         }
     }
@@ -702,11 +764,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         healthBar.value = 0f;
         if (hitNormal.y > 0)
         {
-            //anim.SetTrigger("RightDead");
+            anim.SetTrigger("RightDead");
         }
         else if (hitNormal.y < 0)
         {
-            //anim.SetTrigger("LeftDead");
+            anim.SetTrigger("LeftDead");
         }
         iM.SetInputMode(InputMode.Paused);
         deathScreen.SetActive(true);
@@ -724,6 +786,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #region Movement
     public void PlayerMovement(bool sprinting)
     {
+        if (climbing)
+            return;
         // Gets the movement axis' for character controller and assigns them to variables
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
@@ -750,13 +814,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else if (cameraFollow.LockOn)
             {
-                transform.rotation = new Quaternion(0f, cam.rotation.y, 0f, transform.rotation.w);
+                transform.LookAt(cameraFollow.LookAtMe.transform);
+                transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
                 anim.SetLayerWeight(1, 0);
                 anim.SetLayerWeight(2, 1);
             }
         }
 
-        float charSpeed = CalculateSpeed(charController.velocity);
+        charSpeed = CalculateSpeed(charController.velocity);
 
         if (currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.SuperJumping)
         {
@@ -781,15 +846,23 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you can jump
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing)
+            if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging
+                && currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
-                if (sprinting)
+                if (currentClimbable != null)
                 {
-                    jumpMomentum = true;
+                    currentClimbable.Climb(this);
                 }
-                yVelocity = jumpSpeed;
-                anim.SetTrigger("Jump");
-                currentMovementType = MovementType.Jumping;
+                else
+                {
+                    if (sprinting)
+                    {
+                        jumpMomentum = true;
+                    }
+                    yVelocity = jumpSpeed;
+                    anim.SetTrigger("Jump");
+                    currentMovementType = MovementType.Jumping;
+                }
             }
         }
         move.y += yVelocity;
@@ -797,7 +870,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Dodge"))
+            if (Input.GetButtonDown("Dodge") && currentMovementType != MovementType.Jumping)
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
@@ -863,6 +936,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
+            Landing();
+
             anim.SetBool("Falling", false);
 
             if (move.y < -safeFallDistance)
@@ -876,7 +951,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (sprinting && charController.velocity.magnitude > 0f && currentMovementType != MovementType.Jumping && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)
         {
-            //anim.SetFloat("Speed", 20);
             currentMovementType = MovementType.Sprinting;
         }
         wasGrounded = charController.isGrounded;
@@ -886,6 +960,92 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
+    }
+    #endregion
+
+    #region Sound Events
+    void FootstepRight()
+    {
+        if (charController.isGrounded && grounded && move != Vector3.zero)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    rightFoot.volume = footStepsVolume;
+                    rightFoot.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    rightFoot.volume = footStepsVolume;
+                    rightFoot.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    rightFoot.volume = footStepsVolume;
+                    rightFoot.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+
+    void FootstepLeft()
+    {
+        if (charController.isGrounded && grounded && move != Vector3.zero)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    leftFoot.volume = footStepsVolume;
+                    leftFoot.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    leftFoot.volume = footStepsVolume;
+                    leftFoot.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    leftFoot.volume = footStepsVolume;
+                    leftFoot.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+
+    void Landing()
+    {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+            if (hit.collider.gameObject.tag == "Sand")
+            {
+                leftFoot.volume = landingVolume;
+                rightFoot.volume = landingVolume;
+                leftFoot.PlayOneShot(landingSand);
+                rightFoot.PlayOneShot(landingSand);
+            }
+            else if (hit.collider.gameObject.tag == "Stone")
+            {
+                leftFoot.volume = landingVolume;
+                rightFoot.volume = landingVolume;
+                leftFoot.PlayOneShot(landingStone);
+                rightFoot.PlayOneShot(landingStone);
+            }
+            else if (hit.collider.gameObject.tag == "Wood")
+            {
+                leftFoot.volume = landingVolume;
+                rightFoot.volume = landingVolume;
+                leftFoot.PlayOneShot(landingWood);
+                rightFoot.PlayOneShot(landingWood);
+            }
+        }
     }
     #endregion
 
@@ -910,6 +1070,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Coroutines
+    public IEnumerator Climb(AnimationClip climbAnim)
+    {
+        ClimbableScript currentClimb = currentClimbable;
+        gameObject.transform.LookAt(currentClimbable.FinalClimbingPosition);
+        gameObject.transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
+        this.climbing = true;
+        string animTrigger = (climbAnim.length > 2f) ? "Climb1" : "Climb2";
+        anim.SetTrigger(animTrigger);
+        yield return new WaitForSeconds(climbAnim.length - 0.15f);
+        gameObject.transform.position = currentClimb.FinalClimbingPosition.position;
+        this.climbing = false;
+    }
+
     public IEnumerator AbilityCooldown()
     {
         BaseAbilityScript.CoolingDown = true;
@@ -933,7 +1106,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (!dead)
         {
             currentMovementType = MovementType.Dodging;
-            yield return new WaitForSeconds(dodgeDuration);
+            yield return new WaitForSeconds(dodgeLength);
             currentMovementType = MovementType.Running;
             dodgeDir = null;
         }

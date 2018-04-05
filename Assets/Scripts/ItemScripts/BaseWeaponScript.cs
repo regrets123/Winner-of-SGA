@@ -91,12 +91,11 @@ public class BaseWeaponScript : BaseEquippableObject
         set { if (this.equipper == null) this.equipper = value; }
     }
 
-    protected override void Start()
+    protected void Awake()
     {
         base.Start();
         this.currentSpeed = attackSpeed;
         this.damage = origninalDamage;
-        print("weaponstart");
         this.equipper = GetComponentInParent<IKillable>();
     }
 
@@ -128,6 +127,8 @@ public class BaseWeaponScript : BaseEquippableObject
     {
         print(this.dmgType);
         print(this.damage);
+        if (this.currentUpgrade != Upgrade.DamageUpgrade)
+            this.upgradeLevel = 0;
         this.currentUpgrade = upgrade;
         if (upgrade == Upgrade.DamageUpgrade && upgradeLevel < 3)
         {
@@ -136,6 +137,7 @@ public class BaseWeaponScript : BaseEquippableObject
         }
         else
         {
+            this.upgradeLevel = 1;
             switch (upgrade)
             {
                 case Upgrade.FireUpgrade:
@@ -155,7 +157,6 @@ public class BaseWeaponScript : BaseEquippableObject
                     break;
             }
             this.damage = origninalDamage;
-            upgradeLevel = 0;
         }
         print("upgrade applied!");
         print(this.dmgType);
@@ -190,7 +191,7 @@ public class BaseWeaponScript : BaseEquippableObject
             if (targetToHit != null)
             {
                 DealDamage(targetToHit);
-                ///SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
+                SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
             }
         }
     }

@@ -51,7 +51,7 @@ public class InputManager : MonoBehaviour
             }
         }
     }
-
+    
     public void ApplyUpgrade()
     {
         if (playerInventory == null)

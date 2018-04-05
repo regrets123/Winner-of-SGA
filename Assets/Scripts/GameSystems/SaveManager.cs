@@ -58,7 +58,6 @@ public class SaveManager : MonoBehaviour
         player = FindObjectOfType<PlayerControls>(); //Temporary
         if (File.Exists(Application.dataPath + "/SaveToLoad.xml"))
         {
-            print("loading game");
             LoadGame();
         }
         else
@@ -97,6 +96,8 @@ public class SaveManager : MonoBehaviour
     void LoadInventory()
     {
         XPathNodeIterator nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
+        XPathNodeIterator upgrades = xNav.Select("/SavedState/PlayerInfo/Inventory/Upgrades//Upgrade");
+        XPathNodeIterator favorites = xNav.Select("/SavedState/PlayerInfo/Inventory/Favorites//Favorite/@Name");
         print(nodes.Count + " nodes");
         foreach (XPathNavigator node in nodes)
         {
@@ -105,7 +106,28 @@ public class SaveManager : MonoBehaviour
             {
                 if (node.Value == item.GetComponent<BaseEquippableObject>().ObjectName)
                 {
-                    player.Inventory.NewEquippable(item);
+                    GameObject newItem = Instantiate(item);
+                    player.Inventory.NewEquippable(newItem);
+                    if (newItem.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
+                        while (upgrades.MoveNext())
+                        {
+                            XPathNavigator thisUpgrade = upgrades.Current.CreateNavigator();
+                            string weaponToUpgrade = thisUpgrade.GetAttribute("Weapon", "");
+                            if (newItem.GetComponent<BaseWeaponScript>().ObjectName == weaponToUpgrade)
+                            {
+                                player.Inventory.SetWeaponUpgrade(weaponToUpgrade, thisUpgrade.GetAttribute("Name", ""), int.Parse(thisUpgrade.GetAttribute("Level", "")));
+                                break;
+                            }
+                        }
+                    while (favorites.MoveNext())
+                    {
+                        if (favorites.Current.Value == newItem.GetComponent<BaseEquippableObject>().ObjectName)
+                        {
+                            player.Inventory.AddFavorite(newItem);
+                            break;
+                        }
+                    }
+                    //Destroy(newItem);
                 }
             }
         }
@@ -247,21 +269,33 @@ public class SaveManager : MonoBehaviour
                 }
             }
         }
+        XPathNavigator favoritesNode = xNav.SelectSingleNode("//Favorites");
+        XPathNodeIterator oldFavorites = favoritesNode.SelectChildren(XPathNodeType.All);
+        XmlNodeList allOldFavorites = currentGame.SelectNodes("//Favorite");
+        if (oldFavorites.Count > 0)
+        {
+            for (int i = allOldFavorites.Count - 1; i > -1; i--)
+            {
+                allOldFavorites[i].ParentNode.RemoveChild(allOldFavorites[i]);
+            }
+        }
+        foreach(string favName in player.Inventory.ReportFavorites())
+        {
+            favoritesNode.AppendChild("<Favorite Name =\"" + favName + "\"/>");
+        }
         nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
         string[] weaponNames = player.Inventory.ReportWeaponNames();
         XPathNavigator upgradesNode = xNav.SelectSingleNode("//Upgrades");
         XPathNodeIterator oldUpgrades = upgradesNode.SelectChildren(XPathNodeType.All);
-        XmlNodeList test = currentGame.SelectNodes("//Upgrade");
+        XmlNodeList allOldUpgrades = currentGame.SelectNodes("//Upgrade");
         if (oldUpgrades.Count > 0)
         {
-            for (int i = test.Count - 1; i > - 1; i--)
+            for (int i = allOldUpgrades.Count - 1; i > -1; i--)
             {
-                test[i].ParentNode.RemoveChild(test[i]);
+                allOldUpgrades[i].ParentNode.RemoveChild(allOldUpgrades[i]);
             }
-
         }
         upgradesNode = xNav.SelectSingleNode("//Upgrades");
-
         string[][] newUpgrades = player.Inventory.ReportWeaponUpgrades();
         int index = 0;
         foreach (string[] upgradeInfo in newUpgrades)
