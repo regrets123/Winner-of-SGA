@@ -177,7 +177,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     float landingVolume;
-        
+
     [Space(10)]
 
     [Header("Player Items")]
@@ -253,7 +253,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     List<DamageType> resistances = new List<DamageType>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
-        combatStance = false, attacked = false, climbing = false;
+        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false;
     #endregion
 
     #region Properties
@@ -372,7 +372,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
-
+            /*
             if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f && move != Vector3.zero)
             {
                 stamina -= 0.01f;
@@ -389,12 +389,42 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     stamina = maxStamina;
                 }
             }
+            */
+            if (currentMovementType == MovementType.Idle && stamina < maxStamina)
+            {
+                if (staminaRegenerating )
+                {
+                    stamina += staminaRegen;
+                    staminaBar.value = stamina;
 
+                    if (stamina > maxStamina)
+                    {
+                        stamina = maxStamina;
+                    }
+                }
+                else if (!staminaRegWait)
+                {
+                    StartCoroutine("StaminaRegenerationWait");
+                }
+            }
+            else
+            {
+                StopCoroutine("StaminaRegenerationWait");
+                staminaRegenerating = false;
+                staminaRegWait = false;
+                if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
+                {
+                    stamina -= 0.1f;
+                    staminaBar.value = stamina;
+                    sprinting = true;
+
+                }
+            }
             if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
                 PlayerMovement(sprinting);
             }
-            if (!charController.isGrounded && !climbing)
+            if (!charController.isGrounded && !climbing && currentMovementType != MovementType.Interacting)
             {
                 yVelocity -= gravity;
 
@@ -412,7 +442,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (!climbing)
                 charController.Move(move / 8);
 
-            
+
 
             if (currentInteractable != null && Input.GetButtonDown("Interact"))
             {
@@ -517,7 +547,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     public void Equip(GameObject equipment)
     {
-        //iM.SetInputMode(InputMode.Playing);
         if (dead)
         {
             return;
@@ -942,7 +971,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (move.y < -safeFallDistance)
             {
-                TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 5f) - safeFallDistance)), DamageType.Falling);  //FallDamage
+                print(move.y);
+                TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 3f) + safeFallDistance)), DamageType.Falling);  //FallDamage
             }
 
             jumpMomentum = false;
@@ -1020,10 +1050,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     void Landing()
     {
-            RaycastHit hit;
+        RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, Vector3.down, out hit))
-            {
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        {
             if (hit.collider.gameObject.tag == "Sand")
             {
                 leftFoot.volume = landingVolume;
@@ -1179,6 +1209,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             moveSpeed = originalSpeed;
             frozen = false;
         }
+    }
+
+    IEnumerator StaminaRegenerationWait()
+    {
+        staminaRegWait = true;
+        yield return new WaitForSeconds(1);
+        staminaRegWait = false;
+        staminaRegenerating = true;
     }
 
     #endregion
