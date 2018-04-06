@@ -1304,19 +1304,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroRange: 6
-  attackRange: 1
+  attackRange: 1.5
   invulnerabilityTime: 0.4
-  attackSpeed: 4
+  attackSpeed: 2
   loseAggroTime: 5
   loseAggroDistance: 10
   maxAggroFollow: 50
+  maxPoise: 0
+  staggerTime: 0
+  poiseCooldown: 0
+  attackColliderActivationSpeed: 0
+  attackColliderDeactivationSpeed: 0
   maxHealth: 30
   lifeForce: 0
   unitName: 
   aggroCenter: {fileID: 1802069882869708}
-  soul: {fileID: 0}
+  soul: {fileID: 1157158949442700, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
   weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
   weaponPos: {fileID: 4664436168200820}
+  resistances: 
+  swordSwing1: {fileID: 8300000, guid: b39c723b6d1e1724692ea89092cb097c, type: 3}
+  swordSwing2: {fileID: 8300000, guid: 6c85a0138632937498d329cf694a500b, type: 3}
+  raiderHowl: {fileID: 8300000, guid: 7348e3a85168bcd4fb2b6fae8b1ea0c7, type: 3}
 --- !u!137 &137193572997121276
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -1408,7 +1417,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 7
+  m_Speed: 8
   m_Acceleration: 60
   avoidancePriority: 50
   m_AngularSpeed: 120

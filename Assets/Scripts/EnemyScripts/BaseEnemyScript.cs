@@ -7,9 +7,10 @@ using UnityEngine.AI;
 
 public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 {
-
+    #region Serialized Variables
     [SerializeField]
-    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime, loseAggroDistance, maxAggroFollow, maxPoise, staggerTime, poiseCooldown;
+    protected float aggroRange, attackRange, invulnerabilityTime, attackSpeed, loseAggroTime, loseAggroDistance, maxAggroFollow, maxPoise, staggerTime, poiseCooldown, attackColliderActivationSpeed,
+                    attackColliderDeactivationSpeed;
 
     [SerializeField]
     protected int maxHealth, lifeForce;
@@ -29,9 +30,17 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     protected DamageType[] resistances;
 
+    [SerializeField]
+    AudioClip swordSwing1, swordSwing2, raiderHowl, sandSteps, stoneSteps, woodSteps;
+
+    [SerializeField]
+    AudioSource footSteps;
+    #endregion
+
+    #region Non-Serialized Variables
     protected bool canAttack = true, burning = false, frozen = false;
 
-    protected int health;
+    protected int health, lightAttack, heavyAttack, attack;
 
     protected float poiseReset, poise, timeToBurn = 0f;
 
@@ -45,7 +54,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected NavMeshAgent nav;
 
-    // protected Animator anim;
+    protected Animator anim;
 
     protected bool invulnerable = false, alive = true, losingAggro = false;
 
@@ -63,14 +72,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         get { return this.currentMovementType; }
         set { this.currentMovementType = value; }
     }
+    #endregion
 
+    #region Main Methods
     protected virtual void Start()
     {
         this.nav = GetComponent<NavMeshAgent>();
         this.health = maxHealth;
         this.currentMovementType = MovementType.Idle;
         this.pM = FindObjectOfType<PauseManager>();
-        //this.anim = GetComponentInChildren<Animator>();
+        this.anim = GetComponentInChildren<Animator>();
         pM.Pausables.Add(this);
         aggroBubble = aggroCenter.AddComponent<SphereCollider>();
         aggroBubble.isTrigger = true;
@@ -79,20 +90,43 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             this.weapon = Instantiate(weapon, weaponPos);
         }
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         if (alive && target != null)
         {
-            gameObject.transform.LookAt(target.transform);
-            gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
+            if (currentMovementType != MovementType.Attacking)
+            {
+                gameObject.transform.LookAt(target.transform);
+                gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
+            }
 
-            if (canAttack && Vector3.Distance(transform.position, target.transform.position) < aggroRange && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead)
+            if(canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) > attackRange)
+            {
+                DashAttack();
+            }
+
+            if (canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) <= attackRange)
             {
                 if (currentMovementType != MovementType.Stagger)
                 {
-                    Attack();
+                    attack = Random.Range(1, 3);
+
+                    if(health < maxHealth/2 && target.CurrentMovementType == MovementType.Attacking)
+                    {
+                        Dodge();
+                    }
+
+                    if (attack == 1)
+                    {
+                        LightAttack();
+                    }
+                    else if (attack == 2)
+                    {
+                        HeavyAttack();
+                    }
                 }
             }
             else if (target.Dead)
@@ -102,8 +136,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             }
             else if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
-                if (currentMovementType != MovementType.Stagger)
+                if (currentMovementType != MovementType.Stagger && currentMovementType != MovementType.Attacking)
                 {
+                    nav.isStopped = false;
                     nav.SetDestination(target.transform.position);
                 }
             }
@@ -116,7 +151,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 LoseAggro();
             }
         }
-        //anim.SetFloat("Speed", nav.velocity.magnitude);
+        anim.SetFloat("Speed", nav.velocity.magnitude);
 
         if (poiseReset > 0)
         {
@@ -128,6 +163,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             poise = maxPoise;
         }
     }
+    #endregion
 
     public void PauseMe(bool pausing)
     {
@@ -145,6 +181,33 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    #region Sounds
+    void Footstep()
+    {
+        if (!nav.isStopped)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    footSteps.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    footSteps.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    footSteps.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+    #endregion
+
+    #region Combat
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
@@ -204,46 +267,56 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    protected IEnumerator Invulnerability()
-    {
-        invulnerable = true;
-        yield return new WaitForSeconds(invulnerabilityTime);
-        invulnerable = false;
-    }
-
     //Låter fienden attackera
-    public void Attack()
+    public void LightAttack()
     {
         if (!alive)
+        {
             return;
+        }
+
+        nav.isStopped = true;
+        previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;
-        //anim.SetTrigger("Attack");
+        lightAttack = Random.Range(1, 4);
+
+        attackColliderActivationSpeed = 0.5f;
+        attackColliderDeactivationSpeed = 1.0f;
+
+        StartCoroutine("ActivateAttackCollider");
+
+        if (lightAttack == 1)
+        {
+            anim.SetTrigger("LightAttack1");
+        }
+        else if (lightAttack == 2)
+        {
+            anim.SetTrigger("LightAttack2");
+        }
+        else if (lightAttack == 2)
+        {
+            anim.SetTrigger("LightAttack3");
+        }
+
+        SoundManager.instance.RandomizeSfx(swordSwing1, swordSwing2);
+
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
         StartCoroutine("AttackCooldown");
     }
 
-    public void LightAttack()
+    public virtual void HeavyAttack()
     {
-
+        return;
     }
 
-    public void HeavyAttack()
+    protected virtual void Dodge()
     {
-
+        return;
     }
 
-    protected IEnumerator AttackCooldown()
+    protected virtual void DashAttack()
     {
-        canAttack = false;
-        yield return new WaitForSeconds(attackSpeed);
-        canAttack = true;
-    }
-
-    protected IEnumerator LoseAggroTimer()
-    {
-        losingAggro = true;
-        yield return new WaitForSeconds(loseAggroTime);
-        LoseAggro();
+        return;
     }
 
     protected void LoseAggro()
@@ -271,7 +344,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected virtual void Death()
     {
         alive = false;
-        //anim.SetTrigger("Death");
+        anim.SetTrigger("Death");
         this.target = null;
         nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
@@ -287,12 +360,39 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         alive = false;
         Death();
     }
+    #endregion
 
+    #region Coroutines
     protected virtual void Aggro(PlayerControls newTarget)
     {
-        this.initialPos = transform.position;
+        if (this.initialPos == null)
+            this.initialPos = transform.position;
         this.target = newTarget;
         target.EnemyAggro(this, true);
+        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
+    }
+
+    protected IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackSpeed);
+        currentMovementType = previousMovementType;
+        canAttack = true;
+    }
+
+    protected IEnumerator ActivateAttackCollider()
+    {
+        yield return new WaitForSeconds(attackColliderActivationSpeed);
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = true;
+        yield return new WaitForSeconds(attackColliderDeactivationSpeed);
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
+    }
+
+    protected IEnumerator LoseAggroTimer()
+    {
+        losingAggro = true;
+        yield return new WaitForSeconds(loseAggroTime);
+        LoseAggro();
     }
 
     protected IEnumerator Burn(float burnDuration, int burnDamage)
@@ -327,9 +427,17 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         if (currentMovementType != MovementType.Stagger)
             previousMovementType = currentMovementType;
         currentMovementType = MovementType.Stagger;
-        //anim.SetTrigger("Stagger");
+        anim.SetTrigger("Stagger");
         poiseReset = poiseCooldown;
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;
     }
+
+    protected IEnumerator Invulnerability()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityTime);
+        invulnerable = false;
+    }
+    #endregion
 }

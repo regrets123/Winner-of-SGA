@@ -51,19 +51,22 @@ public class PauseManager : MonoBehaviour
                 playerInventory.HideInventory();
             }
             else
-                PauseAndUnpause();
+                PauseAndUnpause(false);
         }
     }
 
     //Pausar/unpausar spelet och tar fram/döljer pausmenyn
-    public void PauseAndUnpause()
+    public void PauseAndUnpause(bool inventory)
     {
         paused = !paused;
         if (paused)
         {
             Time.timeScale = 0f;
             previousInputMode = iM.CurrentInputMode;
-            iM.SetInputMode(InputMode.Paused);
+            if (!inventory)
+                iM.SetInputMode(InputMode.Paused);
+            else
+                iM.SetInputMode(InputMode.Inventory);
         }
         else
         {
