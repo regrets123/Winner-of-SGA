@@ -182,17 +182,13 @@ public class BaseWeaponScript : BaseEquippableObject
             || (equipper is PlayerControls && (equipper as PlayerControls).CurrentMovementType == MovementType.Attacking))
         {
             IKillable targetToHit = other.gameObject.GetComponent<IKillable>();
-
-            if ((equipper is BaseEnemyScript && targetToHit is BaseEnemyScript) || (equipper is PlayerControls && targetToHit is PlayerControls))
+            if (targetToHit == null || (equipper is BaseEnemyScript && targetToHit is BaseEnemyScript) || (equipper is PlayerControls && targetToHit is PlayerControls))
             {
                 return;
             }
-
-            if (targetToHit != null)
-            {
-                DealDamage(targetToHit);
-                SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
-            }
+            print("Hit by " + this.objectName);
+            DealDamage(targetToHit);
+            SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
         }
     }
 }

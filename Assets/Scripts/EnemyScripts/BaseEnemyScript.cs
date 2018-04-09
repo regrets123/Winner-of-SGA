@@ -31,7 +31,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected DamageType[] resistances;
 
     [SerializeField]
-    AudioClip swordSwing1, swordSwing2, raiderHowl, sandSteps, stoneSteps, woodSteps;
+    AudioClip swordSwing1, swordSwing2, sandSteps, stoneSteps, woodSteps;
 
     [SerializeField]
     AudioSource footSteps;
@@ -74,6 +74,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
     #endregion
 
+    public string UnitName
+    {
+        get { return this.unitName; }
+    }
+
     #region Main Methods
     protected virtual void Start()
     {
@@ -103,18 +108,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
             }
 
-            if(canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) > attackRange)
-            {
-                DashAttack();
-            }
-
             if (canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) <= attackRange)
             {
                 if (currentMovementType != MovementType.Stagger)
                 {
                     attack = Random.Range(1, 3);
 
-                    if(health < maxHealth/2 && target.CurrentMovementType == MovementType.Attacking)
+                    if(health < maxHealth/2 && target.CurrentMovementType == MovementType.Attacking && this is RaiderAI)
                     {
                         Dodge();
                     }
@@ -222,6 +222,14 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    protected virtual void Aggro(PlayerControls newTarget)
+    {
+        if (this.initialPos == null)
+            this.initialPos = transform.position;
+        this.target = newTarget;
+        target.EnemyAggro(this, true);
+    }
+
     //Gör att fienden kan bli skadad
     public void TakeDamage(int incomingDamage, DamageType dmgType)
     {
@@ -278,12 +286,13 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         nav.isStopped = true;
         previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;
-        lightAttack = Random.Range(1, 4);
+        int maxAttack = (this is RaiderAI ? 4 : 3);
+        lightAttack = Random.Range(1, maxAttack);
 
         attackColliderActivationSpeed = 0.5f;
         attackColliderDeactivationSpeed = 1.0f;
 
-        StartCoroutine("ActivateAttackCollider");
+        StartCoroutine(ActivateAttackCollider(lightAttack));
 
         if (lightAttack == 1)
         {
@@ -293,7 +302,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             anim.SetTrigger("LightAttack2");
         }
-        else if (lightAttack == 2)
+        else if (lightAttack == 3)
         {
             anim.SetTrigger("LightAttack3");
         }
@@ -306,19 +315,14 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     public virtual void HeavyAttack()
     {
-        return;
+        LightAttack();
     }
 
     protected virtual void Dodge()
     {
         return;
     }
-
-    protected virtual void DashAttack()
-    {
-        return;
-    }
-
+    
     protected void LoseAggro()
     {
         target.EnemyAggro(this, false);
@@ -363,14 +367,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Coroutines
-    protected virtual void Aggro(PlayerControls newTarget)
-    {
-        if (this.initialPos == null)
-            this.initialPos = transform.position;
-        this.target = newTarget;
-        target.EnemyAggro(this, true);
-        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
-    }
 
     protected IEnumerator AttackCooldown()
     {
@@ -380,7 +376,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         canAttack = true;
     }
 
-    protected IEnumerator ActivateAttackCollider()
+    protected virtual IEnumerator ActivateAttackCollider(int attackNo)
     {
         yield return new WaitForSeconds(attackColliderActivationSpeed);
         weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = true;
