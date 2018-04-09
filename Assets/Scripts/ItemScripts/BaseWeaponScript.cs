@@ -27,9 +27,9 @@ public enum Upgrade
 public class BaseWeaponScript : BaseEquippableObject
 {
     [SerializeField]
-    protected int origninalDamage;
+    protected int origninalLightDamage, originalHeavyDamage;
 
-    protected int damage;
+    protected int lightDamage, heavyDamage;
 
     [SerializeField]
     protected float attackSpeed;
@@ -43,7 +43,7 @@ public class BaseWeaponScript : BaseEquippableObject
     [SerializeField]
     protected AudioClip enemyHit1, enemyHit2, enemyHit3, swing1, swing2, thrust;
 
-    protected bool canAttack = true;
+    protected bool canAttack = true, heavy = false;
 
     protected MovementType previousMovement;
 
@@ -52,6 +52,8 @@ public class BaseWeaponScript : BaseEquippableObject
     protected float currentSpeed;
 
     protected int upgradeLevel = 0;
+
+    protected Collider myColl;
 
     public int UpgradeLevel
     {
@@ -94,9 +96,24 @@ public class BaseWeaponScript : BaseEquippableObject
     protected void Awake()
     {
         base.Start();
+        this.myColl = GetComponent<Collider>();
         this.currentSpeed = attackSpeed;
-        this.damage = origninalDamage;
+        this.lightDamage = origninalLightDamage;
+        this.heavyDamage = originalHeavyDamage;
         this.equipper = GetComponentInParent<IKillable>();
+    }
+
+    public void Attack(float attackTime, bool heavy)
+    {
+        this.heavy = heavy;
+        StartCoroutine(AttackMove(attackTime));
+    }
+
+    protected IEnumerator AttackMove(float attackTime)
+    {
+        myColl.enabled = true;
+        yield return new WaitForSeconds(attackTime);
+        myColl.enabled = false;
     }
 
     public IEnumerator AttackCooldown()
@@ -126,14 +143,15 @@ public class BaseWeaponScript : BaseEquippableObject
     public void ApplyUpgrade(Upgrade upgrade)
     {
         print(this.dmgType);
-        print(this.damage);
+        print(this.lightDamage);
         if (this.currentUpgrade != Upgrade.DamageUpgrade)
             this.upgradeLevel = 0;
         this.currentUpgrade = upgrade;
         if (upgrade == Upgrade.DamageUpgrade && upgradeLevel < 3)
         {
             upgradeLevel++;
-            this.damage += damage / 2;
+            this.lightDamage += lightDamage / 2;
+            this.heavyDamage += heavyDamage / 2;
         }
         else
         {
@@ -156,16 +174,18 @@ public class BaseWeaponScript : BaseEquippableObject
                     print("Nu blev nåt fel här");
                     break;
             }
-            this.damage = origninalDamage;
+            this.lightDamage = origninalLightDamage;
+            this.heavyDamage = originalHeavyDamage;
         }
         print("upgrade applied!");
         print(this.dmgType);
-        print(this.damage);
+        print(this.lightDamage);
     }
 
     //Deals damage to an object with IKillable on it.
     public virtual void DealDamage(IKillable target)
     {
+        int damage = (heavy == true ? heavyDamage : lightDamage);
         target.TakeDamage(damage, dmgType);
     }
 
