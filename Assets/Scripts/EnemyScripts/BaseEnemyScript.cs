@@ -34,7 +34,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     AudioClip swordSwing1, swordSwing2, raiderHowl, sandSteps, stoneSteps, woodSteps;
 
     [SerializeField]
-    AudioSource leftFoot, rightFoot;
+    AudioSource footSteps;
     #endregion
 
     #region Non-Serialized Variables
@@ -93,7 +93,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         if (alive && target != null)
         {
@@ -103,11 +103,21 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
             }
 
+            if(canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) > attackRange)
+            {
+                DashAttack();
+            }
+
             if (canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) <= attackRange)
             {
                 if (currentMovementType != MovementType.Stagger)
                 {
                     attack = Random.Range(1, 3);
+
+                    if(health < maxHealth/2 && target.CurrentMovementType == MovementType.Attacking)
+                    {
+                        Dodge();
+                    }
 
                     if (attack == 1)
                     {
@@ -171,6 +181,33 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
+    #region Sounds
+    void Footstep()
+    {
+        if (!nav.isStopped)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Sand")
+                {
+                    footSteps.PlayOneShot(sandSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Stone")
+                {
+                    footSteps.PlayOneShot(stoneSteps);
+                }
+                else if (hit.collider.gameObject.tag == "Wood")
+                {
+                    footSteps.PlayOneShot(woodSteps);
+                }
+            }
+        }
+    }
+    #endregion
+
+    #region Combat
     //Får fienden att anfalla spelaren när spelaren kommer tillräckligt nära
     protected void OnTriggerEnter(Collider other)
     {
@@ -230,13 +267,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    protected IEnumerator Invulnerability()
-    {
-        invulnerable = true;
-        yield return new WaitForSeconds(invulnerabilityTime);
-        invulnerable = false;
-    }
-
     //Låter fienden attackera
     public void LightAttack()
     {
@@ -274,105 +304,19 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         StartCoroutine("AttackCooldown");
     }
 
-    public void HeavyAttack()
+    public virtual void HeavyAttack()
     {
-        if (!alive)
-        {
-            return;
-        }
-
-        nav.isStopped = true;
-        previousMovementType = currentMovementType;
-        this.currentMovementType = MovementType.Attacking;
-        heavyAttack = Random.Range(1, 3);
-
-        attackColliderActivationSpeed = 1.0f;
-        attackColliderDeactivationSpeed = 1.5f;
-
-        StartCoroutine("ActivateAttackCollider");
-
-        if (heavyAttack == 1)
-        {
-            anim.SetTrigger("HeavyAttack1");
-        }
-        else if (heavyAttack == 2)
-        {
-            anim.SetTrigger("HeavyAttack2");
-        }
-
-        weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
-        StartCoroutine("AttackCooldown");
+        return;
     }
 
-    void FootstepRight()
+    protected virtual void Dodge()
     {
-        if (!nav.isStopped)
-        {
-            RaycastHit hit;
-
-            if (Physics.Raycast(transform.position, Vector3.down, out hit))
-            {
-                if (hit.collider.gameObject.tag == "Sand")
-                {
-                    rightFoot.PlayOneShot(sandSteps);
-                }
-                else if (hit.collider.gameObject.tag == "Stone")
-                {
-                    rightFoot.PlayOneShot(stoneSteps);
-                }
-                else if (hit.collider.gameObject.tag == "Wood")
-                {
-                    rightFoot.PlayOneShot(woodSteps);
-                }
-            }
-        }
+        return;
     }
 
-    void FootstepLeft()
+    protected virtual void DashAttack()
     {
-        if (!nav.isStopped)
-        {
-            RaycastHit hit;
-
-            if (Physics.Raycast(transform.position, Vector3.down, out hit))
-            {
-                if (hit.collider.gameObject.tag == "Sand")
-                {
-                    leftFoot.PlayOneShot(sandSteps);
-                }
-                else if (hit.collider.gameObject.tag == "Stone")
-                {
-                    leftFoot.PlayOneShot(stoneSteps);
-                }
-                else if (hit.collider.gameObject.tag == "Wood")
-                {
-                    leftFoot.PlayOneShot(woodSteps);
-                }
-            }
-        }
-    }
-
-    protected IEnumerator AttackCooldown()
-    {
-        canAttack = false;
-        yield return new WaitForSeconds(attackSpeed);
-        currentMovementType = previousMovementType;
-        canAttack = true;
-    }
-
-    protected IEnumerator ActivateAttackCollider()
-    {
-        yield return new WaitForSeconds(attackColliderActivationSpeed);
-        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = true;
-        yield return new WaitForSeconds(attackColliderDeactivationSpeed);
-        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
-    }
-
-    protected IEnumerator LoseAggroTimer()
-    {
-        losingAggro = true;
-        yield return new WaitForSeconds(loseAggroTime);
-        LoseAggro();
+        return;
     }
 
     protected void LoseAggro()
@@ -416,7 +360,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         alive = false;
         Death();
     }
+    #endregion
 
+    #region Coroutines
     protected virtual void Aggro(PlayerControls newTarget)
     {
         if (this.initialPos == null)
@@ -424,6 +370,29 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         this.target = newTarget;
         target.EnemyAggro(this, true);
         SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
+    }
+
+    protected IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackSpeed);
+        currentMovementType = previousMovementType;
+        canAttack = true;
+    }
+
+    protected IEnumerator ActivateAttackCollider()
+    {
+        yield return new WaitForSeconds(attackColliderActivationSpeed);
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = true;
+        yield return new WaitForSeconds(attackColliderDeactivationSpeed);
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
+    }
+
+    protected IEnumerator LoseAggroTimer()
+    {
+        losingAggro = true;
+        yield return new WaitForSeconds(loseAggroTime);
+        LoseAggro();
     }
 
     protected IEnumerator Burn(float burnDuration, int burnDamage)
@@ -463,4 +432,12 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;
     }
+
+    protected IEnumerator Invulnerability()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityTime);
+        invulnerable = false;
+    }
+    #endregion
 }
