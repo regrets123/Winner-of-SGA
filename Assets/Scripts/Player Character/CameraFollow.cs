@@ -176,7 +176,17 @@ public class CameraFollow : MonoBehaviour, IPausable
                         lockOn = true;
                         lookAtMe = target;
                         lockOnSprite = Instantiate(lockOnSpritePrefab, lookAtMe.transform, false);
-                        lockOnSprite.transform.position += (Vector3.up * 0.4f);
+                        float spriteOffset;
+                        switch (target.UnitName)
+                        {
+                            case "Guardian":
+                                spriteOffset = 1.3f;
+                                break;
+                            default:
+                                spriteOffset = 0.4f;
+                                break;
+                        }
+                        lockOnSprite.transform.position += (Vector3.up * spriteOffset);
                     }
                 }
             }

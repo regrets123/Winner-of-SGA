@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RaiderAI : BaseEnemyScript
 {
+    [SerializeField]
+    AudioClip raiderHowl;
+
     public override void HeavyAttack()
     {
         if (!alive)
@@ -40,5 +43,10 @@ public class RaiderAI : BaseEnemyScript
         StartCoroutine("Invulnerability");
         nav.Move(target.transform.position + transform.position);
     }
-	
+
+    protected override void Aggro(PlayerControls newTarget)
+    {
+        base.Aggro(newTarget);
+        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
+    }
 }
