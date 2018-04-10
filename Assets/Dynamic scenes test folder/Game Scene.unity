@@ -462,7 +462,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -488,6 +488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   efxSource: {fileID: 1484018695}
   musicSource: {fileID: 1484018694}
+  environmentSource: {fileID: 0}
   lowPitchedRange: 0.95
   highPitchedRange: 1.05
 --- !u!4 &1484018697
