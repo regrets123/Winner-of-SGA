@@ -6,24 +6,31 @@ using UnityEngine.SceneManagement;
 public class LoadTrigger : MonoBehaviour
 {
     [SerializeField]
-    string loadName, unloadName;
+    string [] loadNames, unloadNames;
 
 	private void OnTriggerEnter(Collider col)
     {
-        if(loadName != "")
+        if (col.gameObject.tag == "Player")
         {
-            DynamicSceneManager.instance.Load(loadName);
-        }
+            if (loadNames != null)
+            {
+                foreach (string scene in loadNames)
+                    DynamicSceneManager.instance.Load(scene);
+            }
 
-        if(unloadName != "")
-        {
-            StartCoroutine("UnloadScene");
+            if (unloadNames != null)
+            {
+                StartCoroutine("UnloadScene");
+            }
         }
     }
 
     IEnumerator UnloadScene()
     {
         yield return new WaitForSeconds(0.1f);
-        DynamicSceneManager.instance.UnLoad(unloadName);
+        foreach (string scene in unloadNames)
+        {
+            DynamicSceneManager.instance.UnLoad(scene);
+        }
     }
 }
