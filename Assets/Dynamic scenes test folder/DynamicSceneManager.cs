@@ -6,15 +6,30 @@ using UnityEngine.SceneManagement;
 public class DynamicSceneManager : MonoBehaviour
 {
 
+    [SerializeField]
+    private string StartingArea;
+    [SerializeField]
+    private string FirstProps;
+    [SerializeField]
+    private string TerrainScene;
+    [SerializeField]
+    private string Canyons;
+    [SerializeField]
+    private string TempleMonument;
+
+
     public static DynamicSceneManager instance { get; set; }
 
     // Use this for initialization
     private void Awake()
     {
         instance = this;
-        Load("Player Scene");
-        Load("Dynamic Scene 1");
-        Load("Dynamic Scene 2");
+        Load("Player_Final");
+        Load(StartingArea);
+        Load(FirstProps);
+        Load(TerrainScene);
+        Load(Canyons);
+        Load(TempleMonument);
     }
 
     public void Load(string sceneName)
