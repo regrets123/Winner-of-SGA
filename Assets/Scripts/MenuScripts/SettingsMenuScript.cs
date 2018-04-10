@@ -84,13 +84,13 @@ public class SettingsMenuScript : MonoBehaviour
 
     public void SetCamSensitivity()
     {
-       /* if(this.sensitivitySlider == null)
+        if (sensitivitySlider == null)
         {
-            this.sensitivitySlider = GameObject.Find("SensitivitySlider").GetComponent<Slider>();
-        }*/
-        this.camSensitivity = sensitivitySlider.value;
+            sensitivitySlider = GameObject.Find("SensitivitySlider").GetComponent<Slider>();
+        }
+        camSensitivity = sensitivitySlider.value;
         if (camFollow != null)
-            camFollow.InputSensitivity = this.camSensitivity;
+            camFollow.InputSensitivity = camSensitivity;
     }
 
     public void SetSFXVolume(float SFXVolume)
