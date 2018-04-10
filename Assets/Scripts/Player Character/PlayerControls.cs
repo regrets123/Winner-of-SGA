@@ -577,23 +577,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    public void EnemyAggro(BaseEnemyScript enemy, bool aggroing)
-    {
-        if (aggroing)
-        {
-            enemiesAggroing.Add(enemy);
-        }
-        else
-        {
-            enemiesAggroing.Remove(enemy);
-        }
-        if (enemiesAggroing.Count > 0)
-        {
-            aggroIndicator.SetActive(true);
-        }
-        else
-            aggroIndicator.SetActive(false);
-    }
+
 
     //Code for equipping different weapons
     public void EquipWeapon(GameObject weaponToEquip)
@@ -661,6 +645,24 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             StartCoroutine("Invulnerability");
         }
+    }
+
+    public void EnemyAggro(BaseEnemyScript enemy, bool aggroing)
+    {
+        if (aggroing)
+        {
+            enemiesAggroing.Add(enemy);
+        }
+        else
+        {
+            enemiesAggroing.Remove(enemy);
+        }
+        if (enemiesAggroing.Count > 0)
+        {
+            aggroIndicator.SetActive(true);
+        }
+        else
+            aggroIndicator.SetActive(false);
     }
 
     //Sets the current movement type as attacking and which attack move thats used
@@ -1179,7 +1181,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (currentMovementType != MovementType.Stagger)
             previousMovementType = currentMovementType;
         currentMovementType = MovementType.Stagger;
-        //anim.SetTrigger("Stagger");
+        anim.SetTrigger("Stagger");
         poiseReset = poiseCooldown;
         yield return new WaitForSeconds(staggerTime);
         currentMovementType = previousMovementType;
