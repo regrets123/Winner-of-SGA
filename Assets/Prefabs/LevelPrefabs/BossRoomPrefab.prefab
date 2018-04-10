@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 23906057264969526}
   - component: {fileID: 95224844861423594}
   - component: {fileID: 64328744105482648}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_PlatformRock3_AM
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 33287584522856192}
   - component: {fileID: 23602279497929018}
   - component: {fileID: 95442748496927792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone2_Temple_TL (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,7 +949,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4467227996829414}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1078,9 +1078,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4085998086137210}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BossRoomPrefab
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1153,7 +1153,7 @@ GameObject:
   - component: {fileID: 33415710458053066}
   - component: {fileID: 23349850633483748}
   - component: {fileID: 95010259073072928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1513,7 +1513,7 @@ GameObject:
   - component: {fileID: 33106311992471138}
   - component: {fileID: 23794870072756610}
   - component: {fileID: 95822495913454610}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1683,7 +1683,7 @@ GameObject:
   - component: {fileID: 33471326606022734}
   - component: {fileID: 23017923015288862}
   - component: {fileID: 64516280528188864}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -1774,7 +1774,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4315813236952258}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1811,7 +1811,7 @@ GameObject:
   - component: {fileID: 33062440159311152}
   - component: {fileID: 23507128675364964}
   - component: {fileID: 95936113441904942}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2168,7 +2168,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4894367026687722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2202,7 +2202,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4905501794998306}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2258,7 +2258,7 @@ GameObject:
   - component: {fileID: 33742128786131034}
   - component: {fileID: 23294599732298218}
   - component: {fileID: 95775609650322088}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2333,7 +2333,7 @@ GameObject:
   - component: {fileID: 33544981474684514}
   - component: {fileID: 23952803438812256}
   - component: {fileID: 95228268783870244}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2446,7 +2446,7 @@ GameObject:
   - component: {fileID: 33966946233730720}
   - component: {fileID: 23016958658050312}
   - component: {fileID: 95507223335611132}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2635,7 +2635,7 @@ GameObject:
   - component: {fileID: 33854945269019576}
   - component: {fileID: 23617914607406528}
   - component: {fileID: 95316139335765928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2748,7 +2748,7 @@ GameObject:
   - component: {fileID: 33822455252476296}
   - component: {fileID: 23833884809928778}
   - component: {fileID: 95378828074770186}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2861,7 +2861,7 @@ GameObject:
   - component: {fileID: 33985446335382648}
   - component: {fileID: 23919923237468730}
   - component: {fileID: 95038288954515920}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2917,7 +2917,7 @@ GameObject:
   - component: {fileID: 33459419283101030}
   - component: {fileID: 23678302545324426}
   - component: {fileID: 64693387628288136}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_HalfPillar_SF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2970,7 +2970,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4152665763072530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3308,7 +3308,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4568716790005974}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3623,7 +3623,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4642087509308044}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3660,7 +3660,7 @@ GameObject:
   - component: {fileID: 33091283961289706}
   - component: {fileID: 23383423116931148}
   - component: {fileID: 64203756941651618}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_CrackedPillar_SF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3697,7 +3697,7 @@ GameObject:
   - component: {fileID: 33287789873285880}
   - component: {fileID: 23093452651378516}
   - component: {fileID: 95804694940921550}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3772,7 +3772,7 @@ GameObject:
   - component: {fileID: 33978571882538264}
   - component: {fileID: 23490536554736718}
   - component: {fileID: 95814893090198726}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3844,7 +3844,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4419719816253416}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4219,7 +4219,7 @@ GameObject:
   - component: {fileID: 33373468963558812}
   - component: {fileID: 23603515462006934}
   - component: {fileID: 95949060587339072}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4424,7 +4424,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4406624807136352}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4461,7 +4461,7 @@ GameObject:
   - component: {fileID: 33481990380474876}
   - component: {fileID: 23269805359299666}
   - component: {fileID: 95117014906358106}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone2_Temple_TL (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4536,7 +4536,7 @@ GameObject:
   - component: {fileID: 33690666107688938}
   - component: {fileID: 65082350787620394}
   - component: {fileID: 23532117291047666}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -4574,7 +4574,7 @@ GameObject:
   - component: {fileID: 23129310935847228}
   - component: {fileID: 95507329575875766}
   - component: {fileID: 64188632121017656}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_PlatformRock3_AM (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4592,7 +4592,7 @@ GameObject:
   - component: {fileID: 33888358395412354}
   - component: {fileID: 23954669778886536}
   - component: {fileID: 95598858907796570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone2_Temple_TL (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4629,7 +4629,7 @@ GameObject:
   - component: {fileID: 33232843982371668}
   - component: {fileID: 23250074797954292}
   - component: {fileID: 95507982566647568}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4647,7 +4647,7 @@ GameObject:
   - component: {fileID: 33229682640696024}
   - component: {fileID: 23792122282226852}
   - component: {fileID: 95428769408909322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone2_Temple_TL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4722,7 +4722,7 @@ GameObject:
   - component: {fileID: 33357741485158958}
   - component: {fileID: 23776234691433312}
   - component: {fileID: 95540800650817694}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4778,7 +4778,7 @@ GameObject:
   - component: {fileID: 33878707486719144}
   - component: {fileID: 23311647897645536}
   - component: {fileID: 95734281073343564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4796,7 +4796,7 @@ GameObject:
   - component: {fileID: 33723494684059268}
   - component: {fileID: 23788248573480602}
   - component: {fileID: 64288851823862530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_LeaningPillar_SF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4909,7 +4909,7 @@ GameObject:
   - component: {fileID: 33673997085886350}
   - component: {fileID: 23538146273480314}
   - component: {fileID: 95365847678707136}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5098,7 +5098,7 @@ GameObject:
   - component: {fileID: 33922776731713240}
   - component: {fileID: 23176401452345710}
   - component: {fileID: 95543967103810490}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Stone_Temple_TL (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
