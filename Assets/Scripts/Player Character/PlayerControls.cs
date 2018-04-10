@@ -352,6 +352,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.stamina = maxStamina;
         currentMovementType = MovementType.Idle;
         pM = FindObjectOfType<PauseManager>();
+        if (pM == null)
+            return;
         pM.Pausables.Add(this);
         inventory = gameObject.AddComponent<InventoryManager>();
         slopeLimit = charController.slopeLimit;
