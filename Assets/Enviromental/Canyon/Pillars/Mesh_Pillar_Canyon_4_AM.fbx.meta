@@ -1,18 +1,16 @@
 fileFormatVersion: 2
-guid: c693a950856b67d41826dae8592f16c9
-timeCreated: 1521445835
+guid: 1b6dabc9d4eb0f341ac7bae4aafe66e0
+timeCreated: 1523363141
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: polySurface2
     400000: //RootNode
-    400002: polySurface2
-    2100000: Texture_Lower_2_AM
-    2300000: polySurface2
-    3300000: polySurface2
-    4300000: polySurface2
+    2100000: Texture_Canyon_4_AM
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: pCube1
     9500000: //RootNode
   externalObjects: {}
   materials:

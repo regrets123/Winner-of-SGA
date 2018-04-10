@@ -24,7 +24,6 @@ public class DynamicSceneManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Load("Player_Final");
         Load(StartingArea);
         Load(FirstProps);
         Load(TerrainScene);
