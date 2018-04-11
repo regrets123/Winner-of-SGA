@@ -35,10 +35,13 @@ public class MainMenuScript : MonoBehaviour
 
     ActiveMenu activeMenu;
 
+    AudioSource buttonSound;
+
     void Start()
     {
         currentButtons = mainMenuButtons;
         SelectNewButton(0);
+        buttonSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -104,6 +107,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void NewMenu(int newIndex)
     {
+        buttonSound.Play();
         currentIndex = 0;
         ActiveMenu newActiveMenu = (ActiveMenu)newIndex;
         this.activeMenu = (activeMenu == newActiveMenu ? ActiveMenu.None : newActiveMenu);
@@ -123,6 +127,7 @@ public class MainMenuScript : MonoBehaviour
 
             case ActiveMenu.Settings:
                 currentButtons = null;
+                selectedButton.transform.localScale = new Vector3(1f, 1f, 1f);
                 selectedButton = applySettingsButton;
                 break;
         }
