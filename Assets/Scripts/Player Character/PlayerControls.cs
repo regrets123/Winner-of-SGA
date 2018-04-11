@@ -998,34 +998,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Sound Events
-    void FootstepRight()
-    {
-        if (charController.isGrounded && grounded && move != Vector3.zero)
-        {
-            RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, Vector3.down, out hit))
-            {
-                if (hit.collider.gameObject.tag == "Sand")
-                {
-                    rightFoot.volume = footStepsVolume;
-                    rightFoot.PlayOneShot(sandSteps);
-                }
-                else if (hit.collider.gameObject.tag == "Stone")
-                {
-                    rightFoot.volume = footStepsVolume;
-                    rightFoot.PlayOneShot(stoneSteps);
-                }
-                else if (hit.collider.gameObject.tag == "Wood")
-                {
-                    rightFoot.volume = footStepsVolume;
-                    rightFoot.PlayOneShot(woodSteps);
-                }
-            }
-        }
-    }
-
-    void FootstepLeft()
+    void Footsteps()
     {
         if (charController.isGrounded && grounded && move != Vector3.zero)
         {

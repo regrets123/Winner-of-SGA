@@ -52,7 +52,6 @@ public class LoadMenuScript : MonoBehaviour
         settings.Indent = true;
         XmlWriter writer = XmlWriter.Create(Application.dataPath + "/SaveToLoad.xml", settings);
         refXML.Save(writer);
-        print(refXML.InnerText);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Father_Scene");
     }
 }

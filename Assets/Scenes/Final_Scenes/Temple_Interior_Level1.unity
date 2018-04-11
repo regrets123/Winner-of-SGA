@@ -65,7 +65,7 @@ LightmapSettings:
     m_CompAOExponentDirect: 0
     m_Padding: 2
     m_LightmapParameters: {fileID: 0}
-    m_LightmapsBakeMode: 1
+    m_LightmapsBakeMode: 0
     m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
@@ -14118,7 +14118,7 @@ Transform:
   - {fileID: 2121249549}
   - {fileID: 1203660794}
   m_Father: {fileID: 903999820}
-  m_RootOrder: 29
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &245666792
 GameObject:
@@ -18487,7 +18487,7 @@ Transform:
   - {fileID: 909369761}
   - {fileID: 902284232}
   m_Father: {fileID: 903999820}
-  m_RootOrder: 36
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &323448871
 Prefab:
@@ -22715,7 +22715,7 @@ Transform:
   - {fileID: 520633190}
   - {fileID: 1786587643}
   m_Father: {fileID: 903999820}
-  m_RootOrder: 47
+  m_RootOrder: 46
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &410806199 stripped
 Transform:
@@ -43518,7 +43518,7 @@ Transform:
   - {fileID: 193157254}
   - {fileID: 1371564985}
   m_Father: {fileID: 903999820}
-  m_RootOrder: 38
+  m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &841432911
 Prefab:
@@ -47361,27 +47361,27 @@ Transform:
   - {fileID: 1719088445}
   - {fileID: 654912461}
   - {fileID: 635177043}
+  - {fileID: 245081930}
   - {fileID: 1021347668}
   - {fileID: 833210787}
-  - {fileID: 245081930}
+  - {fileID: 1596129446}
   - {fileID: 636394870}
   - {fileID: 463658201}
-  - {fileID: 1596129446}
+  - {fileID: 322912720}
   - {fileID: 231635152}
   - {fileID: 1977900913}
   - {fileID: 943606847}
-  - {fileID: 322912720}
-  - {fileID: 898218873}
   - {fileID: 837451298}
+  - {fileID: 898218873}
+  - {fileID: 1210281362}
   - {fileID: 588104539}
   - {fileID: 4066403}
   - {fileID: 1346844733}
   - {fileID: 400595643}
   - {fileID: 1221795650}
-  - {fileID: 1210281362}
   - {fileID: 1666567740}
-  - {fileID: 404462078}
   - {fileID: 409609273}
+  - {fileID: 404462078}
   - {fileID: 1722270665}
   m_Father: {fileID: 1065516552}
   m_RootOrder: 73
@@ -61427,7 +61427,7 @@ Transform:
   - {fileID: 1307095856}
   - {fileID: 582328376}
   m_Father: {fileID: 903999820}
-  m_RootOrder: 44
+  m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1212236169
 Prefab:
@@ -80374,7 +80374,7 @@ Transform:
   - {fileID: 1482034052}
   - {fileID: 517187746}
   m_Father: {fileID: 903999820}
-  m_RootOrder: 32
+  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1598107253
 Prefab:
