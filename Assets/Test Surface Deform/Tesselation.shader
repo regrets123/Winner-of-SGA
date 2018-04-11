@@ -2,9 +2,11 @@
 	Properties 
 	{
 		_Tess ("Tessellation", Range(1,32)) = 4
-		_Color ("Color", Color) = (1,1,1,1)
+		_SandColor ("Sand Color", Color) = (1,1,1,1)
+		_SandTex ("Sand (RGB)", 2D) = "white" {}
+		_GroundColor ("Ground Color", Color) = (1,1,1,1)
+		_GroundTex ("Ground (RGB)", 2D) = "white" {}
 		_Splat ("SplatMap", 2D) = "black" {}
-		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Displacement ("Displacement", Range(0, 1.0)) = 0.3
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
@@ -47,15 +49,19 @@
 				v.vertex.xyz += v.normal*_Displacement;
             }
 
-		sampler2D _MainTex;
+		sampler2D _GroundTex;
+		fixed4 _GroundColor;
+		sampler2D _SandTex;
+		fixed4 _SandColor;
 
 		struct Input {
-			float2 uv_MainTex;
+			float2 uv_GroundTex;
+			float2 uv_SandTex;
+			float2 uv_Splat;
 		};
 
 		half _Glossiness;
 		half _Metallic;
-		fixed4 _Color;
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -66,7 +72,10 @@
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			// Albedo comes from a texture tinted by color
-			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+			half amount = tex2Dlod(_Splat, float4(IN.uv_Splat,0,0)).r;
+			fixed4 c = lerp(tex2D (_SandTex, IN.uv_SandTex) * _SandColor, tex2D (_GroundTex, IN.uv_GroundTex) * _GroundColor, amount);
+			
+			//fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
