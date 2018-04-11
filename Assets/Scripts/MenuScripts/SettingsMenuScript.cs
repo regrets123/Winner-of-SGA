@@ -34,7 +34,6 @@ public class SettingsMenuScript : MonoBehaviour
         if (File.Exists(Application.dataPath + "/Settings.xml"))
         {
             settingsXML = new XmlDocument();
-            print("settings finns");
             settingsXML.Load(Application.dataPath + "/Settings.xml");
             xNav = settingsXML.CreateNavigator();
             SetMusicVolume(float.Parse(xNav.SelectSingleNode("/Settings/Volumes/@Music").Value));
