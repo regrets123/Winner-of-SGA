@@ -98,7 +98,6 @@ public class SaveManager : MonoBehaviour
         XPathNodeIterator nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
         XPathNodeIterator upgrades = xNav.Select("/SavedState/PlayerInfo/Inventory/Upgrades//Upgrade");
         XPathNodeIterator favorites = xNav.Select("/SavedState/PlayerInfo/Inventory/Favorites//Favorite/@Name");
-        print(nodes.Count + " nodes");
         foreach (XPathNavigator node in nodes)
         {
             print(node.Value);
