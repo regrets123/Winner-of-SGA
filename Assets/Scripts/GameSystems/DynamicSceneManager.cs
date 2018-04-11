@@ -17,7 +17,6 @@ public class DynamicSceneManager : MonoBehaviour
     [SerializeField]
     private string TempleMonument;
 
-
     public static DynamicSceneManager instance { get; set; }
 
     // Use this for initialization
@@ -29,7 +28,9 @@ public class DynamicSceneManager : MonoBehaviour
         Load(TerrainScene);
         Load(Canyons);
         Load(TempleMonument);
+        Application.backgroundLoadingPriority = ThreadPriority.Low;
     }
+
 
     public void Load(string sceneName)
     {
