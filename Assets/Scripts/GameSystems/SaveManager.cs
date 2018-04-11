@@ -161,7 +161,6 @@ public class SaveManager : MonoBehaviour
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").Value));
         player.transform.position = newPos;
         player.transform.rotation = newRot;
-        print("player moved");
     }
 
     void MoveCamera()
@@ -170,7 +169,6 @@ public class SaveManager : MonoBehaviour
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").Value));
         camBase.transform.position = newPos;
         camBase.transform.rotation = newRot;
-        print("camera moved");
     }
 
     public void SaveGame()
