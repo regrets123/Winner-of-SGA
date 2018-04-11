@@ -74,6 +74,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     float jumpSpeed;
 
     [SerializeField]
+    float jumpCooldown;
+
+    [SerializeField]
     int rotspeed;
 
     [Space(10)]
@@ -253,7 +256,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     List<DamageType> resistances = new List<DamageType>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
-        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false;
+        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true;
     #endregion
 
     #region Properties
@@ -877,7 +880,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
 
         //If the player character is on the ground you can jump
-        if (charController.isGrounded)
+        if (charController.isGrounded && canJump)
         {
             if (Input.GetButtonDown("Jump") && grounded && iM.CurrentInputMode == InputMode.Playing && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging
                 && currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
@@ -892,6 +895,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     {
                         jumpMomentum = true;
                     }
+                    canJump = false;
                     yVelocity = jumpSpeed;
                     anim.SetTrigger("Jump");
                     currentMovementType = MovementType.Jumping;
@@ -903,7 +907,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
         {
-            if (Input.GetButtonDown("Dodge") && currentMovementType != MovementType.Jumping)
+            if (Input.GetButtonDown("Dodge") && currentMovementType != MovementType.Jumping && canJump)
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
@@ -969,6 +973,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
         if (!wasGrounded && charController.isGrounded && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Dashing)  //När spelaren landar efter ett hopp
         {
+            StartCoroutine("JumpCooldown");
+
             Landing();
 
             anim.SetBool("Falling", false);
@@ -988,6 +994,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             currentMovementType = MovementType.Sprinting;
         }
         wasGrounded = charController.isGrounded;
+        anim.SetBool("Land", charController.isGrounded);
     }
 
     float CalculateSpeed(Vector3 velocity)
@@ -1103,7 +1110,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (!dead)
         {
             canDodge = false;
+            canJump = false;
             yield return new WaitForSeconds(dodgeCooldown);
+            canJump = true;
             canDodge = true;
         }
     }
@@ -1134,7 +1143,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             yield return new WaitForSeconds(0.4f);
             if (weaponToEquip != null)
             {
-                //SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
+                SoundManager.instance.RandomizeSfx(swordUnsheathe, swordUnsheathe);
                 EquipWeapon(weaponToEquip);
             }
             else if (currentWeapon != null)
@@ -1195,6 +1204,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         yield return new WaitForSeconds(1);
         staminaRegWait = false;
         staminaRegenerating = true;
+    }
+
+    IEnumerator JumpCooldown()
+    {
+        yield return new WaitForSeconds(jumpCooldown);
+        canJump = true;
     }
 
     #endregion
