@@ -31,15 +31,9 @@ public class SettingsMenuScript : MonoBehaviour
     void Awake()
     {
         camFollow = cam.GetComponent<CameraFollow>();
-        if (sensitivitySlider == null)
-        {
-            this.sensitivitySlider = GameObject.Find("SensitivitySlider").GetComponent<Slider>();
-        }
-
         if (File.Exists(Application.dataPath + "/Settings.xml"))
         {
             settingsXML = new XmlDocument();
-            print("settings finns");
             settingsXML.Load(Application.dataPath + "/Settings.xml");
             xNav = settingsXML.CreateNavigator();
             SetMusicVolume(float.Parse(xNav.SelectSingleNode("/Settings/Volumes/@Music").Value));
@@ -55,8 +49,6 @@ public class SettingsMenuScript : MonoBehaviour
             startingBrightness = brightnessSlider.value;
             sensitivitySlider.value = float.Parse(xNav.SelectSingleNode("/Settings/Camera/@Sensitivity").Value);
             camSensitivity = sensitivitySlider.value;
-            print(sensitivitySlider.value);
-            print(camSensitivity);
             startingSense = sensitivitySlider.value;
         }
         else
@@ -67,7 +59,6 @@ public class SettingsMenuScript : MonoBehaviour
             xNav = settingsXML.CreateNavigator();
         }
         RenderSettings.ambientLight = new Color(brightnessSlider.value, brightnessSlider.value, brightnessSlider.value, 1);
-        print(this.sensitivitySlider);
     }
 
     public void SetMusicVolume(float musicVolume)
@@ -80,15 +71,11 @@ public class SettingsMenuScript : MonoBehaviour
     {
         mainMixer.SetFloat("Environmental", environmentalVolume);
         this.environmentalVolume = environmentalVolume;
-    }
+    }   
 
-    public void SetCamSensitivity()
+    public void SetCamSensitivity(float sense)
     {
-        if (sensitivitySlider == null)
-        {
-            sensitivitySlider = GameObject.Find("SensitivitySlider").GetComponent<Slider>();
-        }
-        camSensitivity = sensitivitySlider.value;
+        camSensitivity = sense;
         if (camFollow != null)
             camFollow.InputSensitivity = camSensitivity;
     }
@@ -129,7 +116,6 @@ public class SettingsMenuScript : MonoBehaviour
         SetMusicVolume(startingMusic);
         SetEnvironmentalVolume(startingEnvironmental);
         sensitivitySlider.value = startingSense;
-        SetCamSensitivity();
         settingsMenu.SetActive(false);
     }
 
