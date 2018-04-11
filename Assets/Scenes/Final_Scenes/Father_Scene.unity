@@ -243,6 +243,51 @@ Prefab:
       propertyPath: aggroIndicator
       value: 
       objectReference: {fileID: 383657009}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: swordSheathe
+      value: 
+      objectReference: {fileID: 8300000, guid: afacaa63e8061e2448d9e947748a7050, type: 3}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: swordUnsheathe
+      value: 
+      objectReference: {fileID: 8300000, guid: ae5e765b70e29a64882a8490a371b1b4, type: 3}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: lightAttack1
+      value: 
+      objectReference: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: lightAttack2
+      value: 
+      objectReference: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: lightAttack3
+      value: 
+      objectReference: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: dodgeCooldown
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: dodgeLength
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: dodgeSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506183074169894, guid: e209d60cd00070445a2e7f6d834c654e,
+        type: 2}
+      propertyPath: jumpCooldown
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0
