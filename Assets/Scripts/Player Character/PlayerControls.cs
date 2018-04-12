@@ -44,6 +44,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     float staminaRegen;
 
     [SerializeField]
+    float staminaRegenWait;
+
+    [SerializeField]
     float invulnerablityTime;
 
     [SerializeField]
@@ -377,30 +380,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
-            /*
-            if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 1f && move != Vector3.zero)
+            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Dashing/* && currentMovementType != MovementType.Dodging*/ && currentMovementType != MovementType.Sprinting && currentMovementType != MovementType.SuperJumping && stamina < maxStamina)
             {
-                stamina -= 0.01f;
-                staminaBar.value = stamina;
-                sprinting = true;
-            }
-            else if (charController.isGrounded && stamina < maxStamina && !Input.GetButton("Sprint"))
-            {
-                stamina += staminaRegen;
-                staminaBar.value = stamina;
-
-                if (stamina > maxStamina)
-                {
-                    stamina = maxStamina;
-                }
-            }
-            */
-            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Sprinting && currentMovementType != MovementType.SuperJumping && stamina < maxStamina)
-            {
-                if (staminaRegenerating )
+                if (staminaRegenerating)
                 {
                     stamina += staminaRegen;
-                    staminaBar.value = stamina;
 
                     if (stamina > maxStamina)
                     {
@@ -414,17 +398,19 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else
             {
+                print("yoo");
                 StopCoroutine("StaminaRegenerationWait");
                 staminaRegenerating = false;
                 staminaRegWait = false;
                 if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
                 {
+                    print("spriiiiiint");
                     stamina -= 0.1f;
-                    staminaBar.value = stamina;
                     sprinting = true;
 
                 }
             }
+            staminaBar.value = stamina;
             if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
                 PlayerMovement(sprinting);
@@ -911,10 +897,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (stamina >= dodgeCost && canDodge)
                 {
+                    stamina -= dodgeCost;
+                    staminaBar.value = stamina;
                     anim.SetTrigger("Dodge");
                     StartCoroutine("Dodge");
                     StartCoroutine("DodgeCooldown");
-                    stamina -= dodgeCost;
                 }
             }
         }
@@ -1125,6 +1112,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             currentMovementType = MovementType.Dodging;
             yield return new WaitForSeconds(dodgeLength);
             currentMovementType = MovementType.Running;
+            print("dodgeDone");
             dodgeDir = null;
         }
     }
@@ -1203,7 +1191,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     IEnumerator StaminaRegenerationWait()
     {
         staminaRegWait = true;
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(staminaRegenWait);
         staminaRegWait = false;
         staminaRegenerating = true;
     }
