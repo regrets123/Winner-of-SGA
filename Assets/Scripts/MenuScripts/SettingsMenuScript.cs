@@ -34,7 +34,6 @@ public class SettingsMenuScript : MonoBehaviour
         if (File.Exists(Application.dataPath + "/Settings.xml"))
         {
             settingsXML = new XmlDocument();
-            print("settings finns");
             settingsXML.Load(Application.dataPath + "/Settings.xml");
             xNav = settingsXML.CreateNavigator();
             SetMusicVolume(float.Parse(xNav.SelectSingleNode("/Settings/Volumes/@Music").Value));
@@ -72,7 +71,7 @@ public class SettingsMenuScript : MonoBehaviour
     {
         mainMixer.SetFloat("Environmental", environmentalVolume);
         this.environmentalVolume = environmentalVolume;
-    }   
+    }
 
     public void SetCamSensitivity(float sense)
     {
@@ -89,10 +88,7 @@ public class SettingsMenuScript : MonoBehaviour
 
     public void ApplySettings()
     {
-        if (xNav == null)
-        {
-            print("bajsmacka");
-        }
+        GetComponent<AudioSource>().Play();
         startingSense = sensitivitySlider.value;
         startingMusic = musicVolume;
         startingFX = SFXVolume;
@@ -105,8 +101,8 @@ public class SettingsMenuScript : MonoBehaviour
         xNav.SelectSingleNode("/Settings/Camera/@Sensitivity").SetValue(sensitivitySlider.value.ToString());
         XmlWriterSettings writerSettings = new XmlWriterSettings();
         writerSettings.Indent = true;
-        XmlWriter writer = XmlWriter.Create(Application.dataPath + "/Settings.xml", writerSettings);
-        settingsXML.Save(writer);
+        using (XmlWriter writer = XmlWriter.Create(Application.dataPath + "/Settings.xml", writerSettings))
+            settingsXML.Save(writer);
     }
 
     public void GoBack()
