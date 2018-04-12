@@ -1131,8 +1131,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     IEnumerator NonMovingInteract()
     {
+        canJump = false;
         yield return new WaitForSeconds(interactTime);
         currentMovementType = MovementType.Idle;
+        canJump = true;
     }
 
     IEnumerator SheathingTimer()
