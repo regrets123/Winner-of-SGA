@@ -12,6 +12,9 @@ public class MenuManager : MonoBehaviour
 
     InventoryManager iM;
 
+    [SerializeField]
+    Color inactiveColor, activeColor;
+
     public void ToggleMenu(GameObject menuToToggle)
     {
         menuToToggle.SetActive(!menuToToggle.activeSelf);
@@ -26,6 +29,7 @@ public class MenuManager : MonoBehaviour
     {
         Application.Quit();
     }
+
 
     public void Glow(Outline o)
     {
@@ -54,4 +58,17 @@ public class MenuManager : MonoBehaviour
     {
         o.enabled = false;
     }
+
+    public void ToggleColor(Text textToChange)
+    {
+        if (textToChange.color == activeColor)
+        {
+            textToChange.color = inactiveColor;
+        }
+        else
+        {
+            textToChange.color = activeColor;
+        }
+    }
+    
 }
