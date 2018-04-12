@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CreditsText : MonoBehaviour {
 
-    public Text title;
+    public Image title;
     public GameObject mainMenu;
     public Canvas canvas;
     
@@ -51,7 +51,7 @@ public class CreditsText : MonoBehaviour {
         mainMenu.SetActive(true);
     }
 
-    public IEnumerator FadeInText(Text title, float t)
+    public IEnumerator FadeInText(Image title, float t)
     {
         title.color = new Color(title.color.r, title.color.g, title.color.b, 0);
         while (title.color.a < 1.0f)
