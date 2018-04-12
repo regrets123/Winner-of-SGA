@@ -1616,6 +1616,16 @@ GameObject:
   m_PrefabParentObject: {fileID: 1535168579039462, guid: 04cb31017c8aa424c8da6968bd2f6390,
     type: 2}
   m_PrefabInternal: {fileID: 383657008}
+--- !u!1 &383657014 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1024616962105358, guid: 04cb31017c8aa424c8da6968bd2f6390,
+    type: 2}
+  m_PrefabInternal: {fileID: 383657008}
+--- !u!1 &383657015 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1136093490968260, guid: 04cb31017c8aa424c8da6968bd2f6390,
+    type: 2}
+  m_PrefabInternal: {fileID: 383657008}
 --- !u!1 &419828533
 GameObject:
   m_ObjectHideFlags: 0
@@ -3567,6 +3577,16 @@ Prefab:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 383657013}
+    - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: settingsMenu
+      value: 
+      objectReference: {fileID: 383657015}
+    - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: deathScreen
+      value: 
+      objectReference: {fileID: 383657014}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114771681752574162}
   - component: {fileID: 114820794684758158}
   - component: {fileID: 114233649274650742}
+  - component: {fileID: 114922668391650850}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -65,6 +66,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 0}
+  settingsMenu: {fileID: 0}
+  deathScreen: {fileID: 0}
 --- !u!114 &114820794684758158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -87,3 +90,19 @@ MonoBehaviour:
   - {fileID: 1545474234521034, guid: f18a71b55ab124b4abd8a4c4e62c2f83, type: 2}
   - {fileID: 1861016634959722, guid: 2663b5cbab058674ba6fff41ea049cae, type: 2}
   - {fileID: 1831796699156086, guid: 32abd1e735d84da4a93e30707010d586, type: 2}
+--- !u!114 &114922668391650850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1030292128368146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80317b7136f6d004382c56e93f12e202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingArea: Starting_Desert_Final
+  FirstProps: Starting_Props_Final
+  TerrainScene: Terrain_Scene_Final
+  Canyons: Canyons_Final
+  TempleMonument: Desert_Final
