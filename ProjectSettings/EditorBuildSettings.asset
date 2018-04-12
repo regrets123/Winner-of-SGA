@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Final_Scenes/Canvas_Final.unity
-    guid: 4cc3730cf146dcd4c8c69b9766c404fb
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Final_Scenes/Father_Scene.unity
     guid: 754cc078fa9c47c4899afc29f82d1a89
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Final_Scenes/Player_Final.unity
     guid: 6a67537ec21b89c44bec6c95955b602e
   - enabled: 1
@@ -41,3 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Final_Scenes/Terrain_Scene_Final.unity
     guid: abeb253a7ff5da647afe310b313d7475
+  - enabled: 1
+    path: Assets/Scenes/Final_Scenes/Canyon_Props_Final.unity
+    guid: 730123eb824ddb64893bbf08eccb4419
+  - enabled: 1
+    path: Assets/Scenes/Final_Scenes/Desert_Props.unity
+    guid: 7d877d258b0baa8489f564d57d85d6b4
