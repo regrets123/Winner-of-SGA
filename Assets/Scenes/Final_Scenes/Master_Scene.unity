@@ -974,6 +974,23 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 82518824256873840, guid: 973e88b5e49437b4f9b10df2fb39a830,
+        type: 2}
+      propertyPath: m_Volume
+      value: 0.256
+      objectReference: {fileID: 0}
+    - target: {fileID: 82518824256873840, guid: 973e88b5e49437b4f9b10df2fb39a830,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243194291578708598, guid: c95e06c410817fa43aac5146289c8119,
+        type: 2}
+    - target: {fileID: 82191067567013144, guid: 973e88b5e49437b4f9b10df2fb39a830,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243571499241607084, guid: c95e06c410817fa43aac5146289c8119,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 973e88b5e49437b4f9b10df2fb39a830, type: 2}
   m_IsPrefabParent: 0

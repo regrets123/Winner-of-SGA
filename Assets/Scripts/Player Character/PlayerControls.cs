@@ -395,7 +395,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
             */
-            if (currentMovementType == MovementType.Idle && stamina < maxStamina)
+            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Dashing && currentMovementType != MovementType.Dodging && currentMovementType != MovementType.Sprinting && currentMovementType != MovementType.SuperJumping && stamina < maxStamina)
             {
                 if (staminaRegenerating )
                 {
@@ -1203,7 +1203,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     IEnumerator StaminaRegenerationWait()
     {
         staminaRegWait = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.25f);
         staminaRegWait = false;
         staminaRegenerating = true;
     }
