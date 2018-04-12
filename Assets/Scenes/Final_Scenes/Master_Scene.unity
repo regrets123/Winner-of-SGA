@@ -409,8 +409,6 @@ MonoBehaviour:
   loadNames:
   - Desert_Final
   - Temple_Exterior_Final
-  - 
-  - 
   unloadNames: []
 --- !u!23 &341446266
 MeshRenderer:
@@ -511,7 +509,6 @@ MonoBehaviour:
   loadNames: []
   unloadNames:
   - Temple_Interior_Level1
-  - 
 --- !u!23 &341448909
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -786,9 +783,6 @@ MonoBehaviour:
   loadNames: []
   unloadNames:
   - Temple_Interior_Level2
-  - 
-  - 
-  - 
 --- !u!23 &419828536
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -888,9 +882,6 @@ MonoBehaviour:
   loadNames: []
   unloadNames:
   - Desert_Final
-  - 
-  - 
-  - 
 --- !u!23 &536683231
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -983,6 +974,23 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 82518824256873840, guid: 973e88b5e49437b4f9b10df2fb39a830,
+        type: 2}
+      propertyPath: m_Volume
+      value: 0.256
+      objectReference: {fileID: 0}
+    - target: {fileID: 82518824256873840, guid: 973e88b5e49437b4f9b10df2fb39a830,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243194291578708598, guid: c95e06c410817fa43aac5146289c8119,
+        type: 2}
+    - target: {fileID: 82191067567013144, guid: 973e88b5e49437b4f9b10df2fb39a830,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243571499241607084, guid: c95e06c410817fa43aac5146289c8119,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 973e88b5e49437b4f9b10df2fb39a830, type: 2}
   m_IsPrefabParent: 0
@@ -1012,7 +1020,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 731665480}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 170.5, y: -57.100006, z: 53.7}
+  m_LocalPosition: {x: 164.2, y: -57.100006, z: 48}
   m_LocalScale: {x: 5, y: 70.920975, z: 41.78585}
   m_Children: []
   m_Father: {fileID: 1918003306}
@@ -1033,8 +1041,6 @@ MonoBehaviour:
   unloadNames:
   - Desert_Final
   - Temple_Exterior_Final
-  - 
-  - 
 --- !u!23 &731665483
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1134,13 +1140,7 @@ MonoBehaviour:
   loadNames:
   - Terrain_Scene_Final
   - Temple_Exterior_Final
-  - 
-  - 
-  unloadNames:
-  - 
-  - 
-  - 
-  - 
+  unloadNames: []
 --- !u!23 &798058580
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1240,8 +1240,6 @@ MonoBehaviour:
   loadNames:
   - Desert_Final
   - Temple_Exterior_Final
-  - 
-  - 
   unloadNames: []
 --- !u!23 &986066566
 MeshRenderer:
@@ -1431,8 +1429,6 @@ MonoBehaviour:
   unloadNames:
   - Temple_Exterior_Final
   - Terrain_Scene_Final
-  - 
-  - 
 --- !u!23 &1190113083
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1632,9 +1628,6 @@ MonoBehaviour:
   loadNames: []
   unloadNames:
   - Desert_Final
-  - 
-  - 
-  - 
 --- !u!23 &1498857874
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1838,14 +1831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadNames:
   - Temple_Interior_Level2
-  - 
-  - 
-  - 
-  unloadNames:
-  - 
-  - 
-  - 
-  - 
+  unloadNames: []
 --- !u!23 &1820934229
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2059,11 +2045,7 @@ MonoBehaviour:
   loadNames:
   - Temple_Interior_Level1
   - Desert_Final
-  - 
-  - 
-  unloadNames:
-  - 
-  - 
+  unloadNames: []
 --- !u!23 &2131340524
 MeshRenderer:
   m_ObjectHideFlags: 0
