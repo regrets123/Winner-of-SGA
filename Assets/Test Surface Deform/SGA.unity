@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 342709690}
   m_Layer: 0
   m_Name: Surface Deform Terrain
-  m_TagString: Untagged
+  m_TagString: Sand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -554,9 +554,8 @@ MonoBehaviour:
   drawShader: {fileID: 4800000, guid: 78dea1c9516a6a649bc5a40777abc2ba, type: 3}
   rightFoot: {fileID: 1629751880}
   leftFoot: {fileID: 1629751881}
-  terrain: {fileID: 342709689}
-  brushSize: 0.5
-  brushStrength: 2
+  brushSize: 0.35
+  brushStrength: 3
 --- !u!1001 &1974644299
 Prefab:
   m_ObjectHideFlags: 0

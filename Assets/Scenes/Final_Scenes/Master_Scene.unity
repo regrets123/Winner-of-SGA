@@ -4796,11 +4796,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114820794684758158, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
-        type: 2}
-      propertyPath: camBase
-      value: 
-      objectReference: {fileID: 1158883198}
     - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
         type: 2}
       propertyPath: pauseMenu
@@ -4816,30 +4811,14 @@ Prefab:
       propertyPath: deathScreen
       value: 
       objectReference: {fileID: 383657014}
+    - target: {fileID: 114820794684758158, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: camBase
+      value: 
+      objectReference: {fileID: 1158883198}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &2127704157 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1030292128368146, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
-    type: 2}
-  m_PrefabInternal: {fileID: 2127704156}
---- !u!114 &2127704158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2127704157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80317b7136f6d004382c56e93f12e202, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartingArea: Starting_Desert_Final
-  FirstProps: Starting_Props_Final
-  TerrainScene: Terrain_Scene_Final
-  Canyons: Canyons_Final
-  TempleMonument: Desert_Final
 --- !u!1 &2131340521
 GameObject:
   m_ObjectHideFlags: 0
