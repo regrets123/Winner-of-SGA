@@ -6,7 +6,7 @@
 		_Coordinate("Coordinate", Vector) = (0,0,0,0)
 		_Color("DrawColor", Color) = (1,0,0,0)
 		_Size("Size", Range(1, 500)) = 1
-		_Strength("Strength", Range(0, 2)) = 1
+		_Strength("Strength", Range(0, 5)) = 1
 	}
 	SubShader
 	{

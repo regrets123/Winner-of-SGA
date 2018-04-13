@@ -398,7 +398,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else
             {
-                print("yoo");
                 StopCoroutine("StaminaRegenerationWait");
                 staminaRegenerating = false;
                 staminaRegWait = false;
