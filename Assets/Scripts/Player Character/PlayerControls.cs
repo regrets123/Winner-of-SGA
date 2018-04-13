@@ -555,11 +555,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     Destroy(currentAbility.gameObject);
                 currentAbility = Instantiate(equipment).GetComponent<BaseEquippableObject>() as BaseAbilityScript;
                 currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
+                inventory.EquippedAbilityImage.sprite = equipment.GetComponent<BaseAbilityScript>().InventoryIcon;
                 break;
 
             case EquipableType.Weapon:
                 this.weaponToEquip = equipment;
                 SheatheAndUnsheathe();
+                inventory.EquippedWeaponImage.sprite = equipment.GetComponent<BaseWeaponScript>().InventoryIcon;
                 break;
 
             default:
