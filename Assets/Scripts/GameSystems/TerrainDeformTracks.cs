@@ -5,30 +5,48 @@ using UnityEngine;
 public class TerrainDeformTracks : MonoBehaviour
 {
     [SerializeField]
-    Shader drawShader;
+    Shader drawShader, reverseShader;
     [SerializeField]
-    GameObject rightFoot, leftFoot;
+    GameObject rightFoot, leftFoot, footstepRemover;
     [SerializeField, Range(0, 500)]
     float brushSize;
-    [SerializeField, Range(0, 5)]
+    [SerializeField, Range(-5, 5)]
     float brushStrength;
 
     private RenderTexture splatMap;
-    private Material sandMaterial, drawMaterial;
+    private Material sandMaterial, drawMaterial, fadeMat;
     private RaycastHit hit;
     RenderTexture temp;
+    Vector4 footstepCoordinate;
+
+    List<FootstepsRemoval> removeSteps = new List<FootstepsRemoval>();
+
+    public List<FootstepsRemoval> RemoveSteps
+    {
+        get { return this.removeSteps; }
+    }
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         drawMaterial = new Material(drawShader);
+        //fadeMat = new Material(reverseShader);
         drawMaterial.SetVector("_Color", Color.red);
-	}
+        //fadeMat.SetVector("_Color", Color.black);
+    }
+
+    //void Update()
+    //{
+    //    foreach(FootstepsRemoval step in removeSteps)
+    //    {
+    //        step.Fade();
+    //    }
+    //}
 
     void RightFootDeform()
     {
-       
-        if(Physics.Raycast(rightFoot.gameObject.transform.position, Vector3.down, out hit))
+
+        if (Physics.Raycast(rightFoot.gameObject.transform.position, Vector3.down, out hit))
         {
             if (hit.transform.CompareTag("Sand"))
             {
@@ -37,17 +55,26 @@ public class TerrainDeformTracks : MonoBehaviour
                     sandMaterial = hit.transform.GetComponent<Terrain>().materialTemplate;
                     sandMaterial.SetTexture("_Splat", splatMap = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat));
                 }
-                drawMaterial.SetVector("_Coordinate", new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0, 0));
+                drawMaterial.SetVector("_Coordinate", footstepCoordinate = new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0, 0));
                 drawMaterial.SetFloat("_Strength", brushStrength);
                 drawMaterial.SetFloat("_Size", brushSize);
                 temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
                 Graphics.Blit(splatMap, temp);
                 Graphics.Blit(temp, splatMap, drawMaterial);
-                Material fadeMat = drawMaterial;
-                fadeMat.SetFloat("_Strength", drawMaterial.GetFloat("_Strength") * -0.001f);
-                //fadeMat.SetVector("_Color", Color.black);
-                FootstepsRemoval fader = new FootstepsRemoval(splatMap, temp, drawMaterial.GetVector("_Coordinate"), fadeMat);
-                RenderTexture.ReleaseTemporary(temp);                
+                //drawMaterial.SetVector("_Color", Color.black);
+                //
+                //FootstepsRemoval fader = new FootstepsRemoval(this, splatMap, temp, footstepCoordinate, fadeMat, brushStrength);
+                //drawMaterial.SetVector("_Color", Color.red);
+
+                ////fadeMat.SetFloat("_Strength", drawMaterial.GetFloat("_Strength") * -0.001f);
+                ////fadeMat.SetVector("_Color", Color.black);
+
+                //FootstepsRemoval remover = Instantiate((Resources.Load("FootprintRemover") as GameObject).GetComponent<FootstepsRemoval>());
+                //remover.RemovePrint(this, splatMap, temp, footstepCoordinate, fadeMat, brushStrength);
+
+                RenderTexture.ReleaseTemporary(temp);
+
+                Instantiate(footstepRemover, hit.transform.position, hit.transform.rotation);
             }
         }
     }
@@ -63,18 +90,42 @@ public class TerrainDeformTracks : MonoBehaviour
                     sandMaterial = hit.transform.GetComponent<Terrain>().materialTemplate;
                     sandMaterial.SetTexture("_Splat", splatMap = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat));
                 }
-                drawMaterial.SetVector("_Coordinate", new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0, 0));
+                drawMaterial.SetVector("_Coordinate", footstepCoordinate = new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0, 0));
                 drawMaterial.SetFloat("_Strength", brushStrength);
                 drawMaterial.SetFloat("_Size", brushSize);
                 temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
                 Graphics.Blit(splatMap, temp);
                 Graphics.Blit(temp, splatMap, drawMaterial);
-                Material fadeMat = drawMaterial;
-                fadeMat.SetFloat("_Strength", drawMaterial.GetFloat("_Strength") * -0.001f);
-                //fadeMat.SetVector("_Color", Color.black);
-                FootstepsRemoval fader = new FootstepsRemoval(splatMap, temp, drawMaterial.GetVector("_Coordinate"), fadeMat);
+
+                //drawMaterial.SetVector("_Color", Color.black);
+                //Material fadeMat = new Material(drawShader);
+                //FootstepsRemoval fader = new FootstepsRemoval(this, splatMap, temp, footstepCoordinate, fadeMat, brushStrength);
+                //drawMaterial.SetVector("_Color", Color.red);
+
+                ////fadeMat.SetFloat("_Strength", drawMaterial.GetFloat("_Strength") * -0.001f);
+                ////fadeMat.SetVector("_Color", Color.black);
+
+                //FootstepsRemoval remover = Instantiate((Resources.Load("FootprintRemover") as GameObject).GetComponent<FootstepsRemoval>());
+                //remover.RemovePrint(this, splatMap, temp, footstepCoordinate, fadeMat, brushStrength);
+
                 RenderTexture.ReleaseTemporary(temp);
+
+                Instantiate(footstepRemover, hit.transform.position, hit.transform.rotation);
             }
         }
     }
+
+    //IEnumerator RemoveFootstep()
+    //{
+    //    yield return new WaitForSeconds(3);
+    //    drawMaterial.SetVector("_Coordinate", footstepCoordinate);
+    //    drawMaterial.SetVector("_Color", Color.black);
+    //    drawMaterial.SetFloat("_Strength", brushStrength);
+    //    drawMaterial.SetFloat("_Size", brushSize);
+    //    temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
+    //    Graphics.Blit(splatMap, temp);
+    //    Graphics.Blit(temp, splatMap, drawMaterial);
+    //    drawMaterial.SetVector("_Color", Color.red);
+    //}
+
 }
