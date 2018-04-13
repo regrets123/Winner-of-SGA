@@ -55,7 +55,7 @@ public class MainMenuScript : MonoBehaviour
                 {
                     if (goBackButton.gameObject.activeInHierarchy)
                     {
-                        NewMenu(0);
+                        //NewMenu(0);
                         goBackButton.onClick.Invoke();
                         break;
                     }
@@ -107,7 +107,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void NewMenu(int newIndex)
     {
-       /* buttonSound.Play();
+        buttonSound.Play();
         currentIndex = 0;
         ActiveMenu newActiveMenu = (ActiveMenu)newIndex;
         this.activeMenu = (activeMenu == newActiveMenu ? ActiveMenu.None : newActiveMenu);
@@ -130,19 +130,19 @@ public class MainMenuScript : MonoBehaviour
                 selectedButton.transform.localScale = new Vector3(1f, 1f, 1f);
                 selectedButton = applySettingsButton;
                 break;
-        }*/
+        }
     }
 
     public void SelectNewButton(int newIndex)
     {
-        /*if (activeMenu == ActiveMenu.Credits)
+        if (activeMenu == ActiveMenu.Credits)
             return;
         Button newSelectedButton = currentButtons[newIndex];
         if (selectedButton != null)
             selectedButton.transform.localScale = new Vector3(1f, 1f, 1f);
         selectedButton = newSelectedButton;
         currentIndex = newIndex;
-        selectedButton.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);*/
+        selectedButton.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
     }
 
     IEnumerator MenuCooldown()
