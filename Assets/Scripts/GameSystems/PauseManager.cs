@@ -14,7 +14,7 @@ public interface IPausable
 public class PauseManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject pauseMenu;
+    GameObject pauseMenu, settingsMenu, deathScreen;
 
     InputManager iM;
 
@@ -49,6 +49,10 @@ public class PauseManager : MonoBehaviour
             if (playerInventory.InventoryMenu.activeSelf)
             {
                 playerInventory.HideInventory();
+            }
+            else if (settingsMenu.activeInHierarchy || deathScreen.activeInHierarchy)
+            {
+                return;
             }
             else
                 PauseAndUnpause(false);
