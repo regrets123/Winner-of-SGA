@@ -403,7 +403,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 staminaRegWait = false;
                 if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
                 {
-                    print("spriiiiiint");
                     stamina -= 0.1f;
                     sprinting = true;
 
@@ -578,7 +577,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             return;
         if (currentWeapon != null)
         {
-            print("destroying");
             Destroy(currentWeapon.gameObject);
         }
         this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
@@ -1113,7 +1111,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             currentMovementType = MovementType.Dodging;
             yield return new WaitForSeconds(dodgeLength);
             currentMovementType = MovementType.Running;
-            print("dodgeDone");
             dodgeDir = null;
         }
     }
