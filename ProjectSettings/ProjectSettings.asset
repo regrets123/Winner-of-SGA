@@ -11,7 +11,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: GrainCo
+  companyName: Red Marker Entertainment
   productName: Grain
   defaultCursor: {fileID: 2800000, guid: cdd2c0053a895ba4fbe3b7d7b9d3dbe8, type: 3}
   cursorHotspot: {x: 0, y: 0}
@@ -79,7 +79,7 @@ PlayerSettings:
   deferSystemGesturesMode: 0
   hideHomeButton: 0
   submitAnalytics: 1
-  usePlayerLog: 1
+  usePlayerLog: 0
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   resizableWindow: 0
@@ -258,7 +258,8 @@ PlayerSettings:
     height: 180
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
-  resolutionDialogBanner: {fileID: 0}
+  resolutionDialogBanner: {fileID: 2800000, guid: 0dc569d1e03d7d0458a3c07fb70194cb,
+    type: 3}
   m_BuildTargetIcons:
   - m_BuildTarget: 
     m_Icons:
