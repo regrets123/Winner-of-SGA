@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114614103169677700}
   - component: {fileID: 135853196362651670}
   m_Layer: 0
-  m_Name: HoundMouth
+  m_Name: HoundLeftClaw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

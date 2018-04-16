@@ -105,6 +105,9 @@ public class BaseWeaponScript : BaseEquippableObject
 
     public void Attack(float attackTime, bool heavy)
     {
+        if (!canAttack)
+            return;
+        print("ATTAAAAAAACK");
         this.heavy = heavy;
         StartCoroutine(AttackMove(attackTime));
     }
