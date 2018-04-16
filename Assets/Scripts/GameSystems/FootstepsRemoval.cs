@@ -4,53 +4,54 @@ using UnityEngine;
 
 public class FootstepsRemoval : MonoBehaviour
 {
-//    RenderTexture splatMap, temp;
+    //    RenderTexture splatMap, temp;
 
-//    Vector4 coord;
+    //    Vector4 coord;
 
-//    Material fadeMat;
+    //    Material fadeMat;
 
-//    float startTime, brushStrength;
+    [SerializeField]
+    float startTime;
 
-//    TerrainDeformTracks deformer;
+    //    TerrainDeformTracks deformer;
 
 
-//    public void RemovePrint(TerrainDeformTracks deformer, RenderTexture splatMap, RenderTexture temp, Vector4 coord, Material fadeMat, float brushStrength)
-//    {
-//        startTime = Time.time;
-//        this.splatMap = splatMap;
-//        this.coord = coord;
-//        this.fadeMat = fadeMat;
-//        this.temp = temp;
-//        this.brushStrength = brushStrength;
-//        this.deformer = deformer;
-//        fadeMat.SetVector("_Coordinate", coord);
-//        fadeMat.SetFloat("_Strength", brushStrength);
-//        deformer.RemoveSteps.Add(this);
-//    }
+    //    public void RemovePrint(TerrainDeformTracks deformer, RenderTexture splatMap, RenderTexture temp, Vector4 coord, Material fadeMat, float brushStrength)
+    //    {
+    //        startTime = Time.time;
+    //        this.splatMap = splatMap;
+    //        this.coord = coord;
+    //        this.fadeMat = fadeMat;
+    //        this.temp = temp;
+    //        this.brushStrength = brushStrength;
+    //        this.deformer = deformer;
+    //        fadeMat.SetVector("_Coordinate", coord);
+    //        fadeMat.SetFloat("_Strength", brushStrength);
+    //        deformer.RemoveSteps.Add(this);
+    //    }
 
-//    void Update()
-//    {
-//        if (Time.time < startTime + 1f)
-//        {
-//            return;
-//        }
-//        else if (Time.time < startTime + 15f)
-//        {
-//            Debug.Log("FootprintRemoved");
-//            fadeMat.SetVector("_Coordinate", coord);
-//            fadeMat.SetFloat("_Strength", brushStrength);
-//            Graphics.Blit(splatMap, temp);
-//            Graphics.Blit(splatMap, temp, fadeMat);
-//            RenderTexture.ReleaseTemporary(temp);
-//        }
-//        else
-//        {
-//            deformer.RemoveSteps.Remove(this);
-//            Destroy(this);
-//        }
+    //    void Update()
+    //    {
+    //        if (Time.time < startTime + 1f)
+    //        {
+    //            return;
+    //        }
+    //        else if (Time.time < startTime + 15f)
+    //        {
+    //            Debug.Log("FootprintRemoved");
+    //            fadeMat.SetVector("_Coordinate", coord);
+    //            fadeMat.SetFloat("_Strength", brushStrength);
+    //            Graphics.Blit(splatMap, temp);
+    //            Graphics.Blit(splatMap, temp, fadeMat);
+    //            RenderTexture.ReleaseTemporary(temp);
+    //        }
+    //        else
+    //        {
+    //            deformer.RemoveSteps.Remove(this);
+    //            Destroy(this);
+    //        }
 
-//    }
+    //    }
 
     //void update()
     //{
@@ -73,8 +74,15 @@ public class FootstepsRemoval : MonoBehaviour
     //RenderTexture temp;
     //Vector4 footstepCoordinate;
 
-    //void Start()
-    //{
+    void Update()
+    {
+        startTime -= Time.deltaTime;
+
+        if (startTime < 1)
+        {
+            Destroy(this);
+        }
+    }
     //    drawMaterial = new Material(reverseShader);
     //    drawMaterial.SetVector("_Color", Color.black);
     //}
