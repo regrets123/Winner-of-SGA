@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 /*By Andreas Nilsson && Björn Andersson*/
 
-
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {

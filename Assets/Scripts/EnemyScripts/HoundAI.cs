@@ -44,13 +44,36 @@ public class HoundAI : BaseEnemyScript
             LightAttack();
             return;
         }
-        previousMovementType = currentMovementType;
-        this.currentMovementType = MovementType.Attacking;
-        weapon2.GetComponent<BaseWeaponScript>().Attack(1f, true);
-        weapon2.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
-        StartCoroutine("AttackCooldown");
+        StartCoroutine("JumpAttack");
     }
 
+
+    protected IEnumerator JumpAttack()
+    {
+        if (alive && target != null)
+        {
+            previousMovementType = MovementType.Idle;
+            this.currentMovementType = MovementType.Attacking;
+            attackColliderActivationSpeed = 0.5f;
+            attackColliderDeactivationSpeed = 1.0f;
+            nav.isStopped = true;
+            yield return new WaitForSeconds(0.5f);
+            nav.isStopped = false;
+            attackColliderActivationSpeed = 0.2f;
+            attackColliderDeactivationSpeed = 4f;
+            StartCoroutine(ActivateAttackCollider(1));
+            anim.SetTrigger("JumpAttack");
+            Vector3 targetPosition = target.gameObject.transform.position;
+            float originalSpeed = nav.speed;
+            nav.speed = nav.speed * 4;
+            nav.destination = targetPosition;
+            weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
+            StartCoroutine("AttackCooldown");
+            yield return new WaitForSeconds(1.5f);
+            nav.speed = originalSpeed;
+            nav.destination = target.gameObject.transform.position;
+        }
+    }
     IEnumerator AggroHowl(PlayerControls newTarget)
     {
         transform.LookAt(newTarget.transform);
