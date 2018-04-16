@@ -43,6 +43,9 @@ public class SaveManager : MonoBehaviour
     [SerializeField]
     GameObject[] allItems;
 
+    [SerializeField]
+    Material saveMat;
+
     XmlDocument currentGame;
 
     XPathNavigator xNav;
@@ -151,7 +154,8 @@ public class SaveManager : MonoBehaviour
             }
         }
         inputManager.SetInputMode(InputMode.Playing);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("Master_Scene", LoadSceneMode.Single);
     }
 
     void MovePlayer()

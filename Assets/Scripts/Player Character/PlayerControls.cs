@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 /*By Andreas Nilsson && Björn Andersson*/
 
-
 //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 public interface IKillable
 {
@@ -615,6 +614,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 case DamageType.Frost:
                     StopCoroutine("Freeze");
                     StartCoroutine(Freeze(5f));
+                    break;
+
+                case DamageType.AutoStagger:
+                    StartCoroutine("Stagger");
                     break;
             }
             health -= finalDamage;

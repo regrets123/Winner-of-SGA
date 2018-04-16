@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114614103169677700}
   - component: {fileID: 135853196362651670}
   m_Layer: 0
-  m_Name: HoundMouth
+  m_Name: HoundRightClaw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,11 +55,11 @@ MonoBehaviour:
   inventoryIcon: {fileID: 0}
   objectName: 
   myType: 0
-  origninalLightDamage: 2
-  originalHeavyDamage: 5
-  attackSpeed: 3
+  origninalLightDamage: 20
+  originalHeavyDamage: 50
+  attackSpeed: 10
   attacks: 
-  dmgType: 0
+  dmgType: 5
   enemyHit1: {fileID: 0}
   enemyHit2: {fileID: 0}
   enemyHit3: {fileID: 0}
@@ -76,5 +76,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum DamageType
 {
-    Physical, Frost, Fire, Falling, Leech
+    Physical, Frost, Fire, Falling, Leech, AutoStagger
 }
 
 public enum AttackMoves
@@ -105,6 +105,8 @@ public class BaseWeaponScript : BaseEquippableObject
 
     public void Attack(float attackTime, bool heavy)
     {
+        if (!canAttack)
+            return;
         this.heavy = heavy;
         StartCoroutine(AttackMove(attackTime));
     }

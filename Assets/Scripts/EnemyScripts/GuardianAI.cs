@@ -62,7 +62,5 @@ public class GuardianAI : BaseEnemyScript
         weaponToAttackWith.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = true;
         yield return new WaitForSeconds(attackColliderDeactivationSpeed);
         weaponToAttackWith.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
-
-
     }
 }

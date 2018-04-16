@@ -95,7 +95,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             this.weapon = Instantiate(weapon, weaponPos);
         }
-        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<Collider>().enabled = false;
     }
 
     protected virtual void Update()
@@ -280,7 +280,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     //Låter fienden attackera
-    public void LightAttack()
+    public virtual void LightAttack()
     {
         if (!alive)
         {
@@ -383,9 +383,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected virtual IEnumerator ActivateAttackCollider(int attackNo)
     {
         yield return new WaitForSeconds(attackColliderActivationSpeed);
-        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = true;
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<Collider>().enabled = true;
         yield return new WaitForSeconds(attackColliderDeactivationSpeed);
-        weapon.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
+        weapon.GetComponent<BaseWeaponScript>().GetComponent<Collider>().enabled = false;
     }
 
     protected IEnumerator LoseAggroTimer()
