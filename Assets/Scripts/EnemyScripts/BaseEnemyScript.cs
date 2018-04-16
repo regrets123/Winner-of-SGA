@@ -231,7 +231,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     //Gör att fienden kan bli skadad
-    public void TakeDamage(int incomingDamage, DamageType dmgType)
+    public virtual void TakeDamage(int incomingDamage, DamageType dmgType)
     {
         if (!alive || invulnerable)
         {

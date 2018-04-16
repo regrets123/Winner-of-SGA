@@ -111,6 +111,16 @@ public class InventoryManager : MonoBehaviour
         set { this.collectionIndex = value; }
     }
 
+    public Image EquippedAbilityImage
+    {
+        get { return this.EquippedAbilityImage; }
+    }
+
+    public Image EquippedWeaponImage
+    {
+        get { return this.EquippedWeaponImage; }
+    }
+
     private void Awake()
     {
         menuManager = FindObjectOfType<MenuManager>();
@@ -140,6 +150,8 @@ public class InventoryManager : MonoBehaviour
         equippableName = GameObject.Find("Equipable Name").GetComponent<Text>();
         upgradeName = GameObject.Find("UpgradeName").GetComponent<Text>();
         upgradeInfo = GameObject.Find("UpgradeInfo").GetComponent<Text>();
+        equippedAbilityImage.sprite = defaultIcon;
+        equippedWeaponImage.sprite = defaultIcon;
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
             inventoryButtons[i] = GameObject.Find("Slot " + (i + 1).ToString()).GetComponent<Button>();

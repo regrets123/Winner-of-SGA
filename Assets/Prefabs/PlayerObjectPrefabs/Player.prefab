@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 114506183074169894}
   - component: {fileID: 54638681638676476}
   - component: {fileID: 95175534038653584}
+  - component: {fileID: 114830466429944492}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1490,6 +1491,24 @@ MonoBehaviour:
   lifeForceBar: {fileID: 0}
   aggroIndicator: {fileID: 0}
   deathScreen: {fileID: 1024616962105358, guid: 04cb31017c8aa424c8da6968bd2f6390,
+    type: 2}
+--- !u!114 &114830466429944492
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1221588347252058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db91627d60ae81f44b9ee390761f8c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawShader: {fileID: 4800000, guid: 78dea1c9516a6a649bc5a40777abc2ba, type: 3}
+  rightFoot: {fileID: 0}
+  leftFoot: {fileID: 0}
+  brushSize: 0.35
+  brushStrength: 3
+  footstepRemover: {fileID: 1490501576799920, guid: be189c06594215d4f9ca09cacf995ae8,
     type: 2}
 --- !u!137 &137506988087896688
 SkinnedMeshRenderer:

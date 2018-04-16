@@ -343,8 +343,7 @@ public class SaveManager : MonoBehaviour
                 saveNumber++;
             }
         }
-        print(path);
-        UnityEngine.ScreenCapture.CaptureScreenshot(path);
+        ScreenCapture.CaptureScreenshot(path);
         return path;
     }
 

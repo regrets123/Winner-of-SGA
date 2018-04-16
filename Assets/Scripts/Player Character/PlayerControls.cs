@@ -398,13 +398,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             }
             else
             {
-                print("yoo");
                 StopCoroutine("StaminaRegenerationWait");
                 staminaRegenerating = false;
                 staminaRegWait = false;
                 if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
                 {
-                    print("spriiiiiint");
                     stamina -= 0.1f;
                     sprinting = true;
 
@@ -555,11 +553,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     Destroy(currentAbility.gameObject);
                 currentAbility = Instantiate(equipment).GetComponent<BaseEquippableObject>() as BaseAbilityScript;
                 currentRune.sprite = equipment.GetComponent<BaseAbilityScript>().MyRune;
+                inventory.EquippedAbilityImage.sprite = equipment.GetComponent<BaseAbilityScript>().InventoryIcon;
                 break;
 
             case EquipableType.Weapon:
                 this.weaponToEquip = equipment;
                 SheatheAndUnsheathe();
+                inventory.EquippedWeaponImage.sprite = equipment.GetComponent<BaseWeaponScript>().InventoryIcon;
                 break;
 
             default:
@@ -577,7 +577,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             return;
         if (currentWeapon != null)
         {
-            print("destroying");
             Destroy(currentWeapon.gameObject);
         }
         this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
@@ -1112,7 +1111,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             currentMovementType = MovementType.Dodging;
             yield return new WaitForSeconds(dodgeLength);
             currentMovementType = MovementType.Running;
-            print("dodgeDone");
             dodgeDir = null;
         }
     }

@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 342709690}
   m_Layer: 0
   m_Name: Surface Deform Terrain
-  m_TagString: Untagged
+  m_TagString: Sand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -228,7 +228,8 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114922668391650850, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &870536684
@@ -517,7 +518,8 @@ Prefab:
       propertyPath: aggroIndicator
       value: 
       objectReference: {fileID: 1484604810}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114830466429944492, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: e209d60cd00070445a2e7f6d834c654e, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1629751879 stripped
@@ -552,11 +554,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawShader: {fileID: 4800000, guid: 78dea1c9516a6a649bc5a40777abc2ba, type: 3}
+  reverseShader: {fileID: 4800000, guid: e78693591d44eb34d83650ba4635086b, type: 3}
   rightFoot: {fileID: 1629751880}
   leftFoot: {fileID: 1629751881}
-  terrain: {fileID: 342709689}
-  brushSize: 0.5
-  brushStrength: 2
+  footstepRemover: {fileID: 1760132364915190, guid: a7d29c221f53f564aa44d632f81b1ea5,
+    type: 2}
+  brushSize: 0.35
+  brushStrength: 3
 --- !u!1001 &1974644299
 Prefab:
   m_ObjectHideFlags: 0
