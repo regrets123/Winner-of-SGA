@@ -16534,72 +16534,45 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1822077971}
     m_Modifications:
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalPosition.x
       value: 88.98
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalPosition.y
       value: 31.99
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalPosition.z
       value: -5.33
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalRotation.x
       value: -0.0008311492
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalRotation.y
       value: 0.40272012
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalRotation.z
       value: 0.0022443642
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_LocalRotation.w
       value: -0.9153201
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+    - target: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
       propertyPath: m_RootOrder
       value: 40
       objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 69b005ae1e3a4bf4d85175a5b26f4d9c, type: 2}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 312.503
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.59102
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.9984203
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -0.27400002
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
-      propertyPath: m_Name
-      value: Mesh_table_TL (6)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+  m_ParentPrefab: {fileID: 100100000, guid: 3a5868e814659df4fa8383730271f99c, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &2114085033 stripped
 Transform:
-  m_PrefabParentObject: {fileID: 400000, guid: 08737deed7db506479c0a1228d7353c9, type: 3}
+  m_PrefabParentObject: {fileID: 4963948528667230, guid: 3a5868e814659df4fa8383730271f99c,
+    type: 2}
   m_PrefabInternal: {fileID: 2114085032}
 --- !u!1001 &2116454886
 Prefab:
