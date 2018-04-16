@@ -164,7 +164,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -191,7 +191,8 @@ MonoBehaviour:
   inventoryIcon: {fileID: 21300000, guid: 22a0848bf1e7836418d46ba67995227b, type: 3}
   objectName: Sword00
   myType: 0
-  origninalDamage: 10
+  origninalLightDamage: 0
+  originalHeavyDamage: 0
   attackSpeed: 0.3
   attacks: 
   dmgType: 0

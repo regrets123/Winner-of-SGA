@@ -616,6 +616,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                     StopCoroutine("Freeze");
                     StartCoroutine(Freeze(5f));
                     break;
+
+                case DamageType.AutoStagger:
+                    StartCoroutine("Stagger");
+                    break;
             }
             health -= finalDamage;
             healthBar.value = health;
