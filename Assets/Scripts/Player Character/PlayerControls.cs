@@ -447,7 +447,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 StartCoroutine("NonMovingInteract");
             }
 
-            if (currentWeapon.CanAttack && charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack
+            if (currentWeapon != null && currentWeapon.CanAttack && charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking || currentMovementType != MovementType.Stagger))
             {
                 if (Input.GetAxisRaw("Fire2") < -0.5)

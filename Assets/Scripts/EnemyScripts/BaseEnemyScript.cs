@@ -112,7 +112,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && target != null)
         {
-            if (currentMovementType != MovementType.Attacking && (!(this is FamineBossAI) || !(this as FamineBossAI).Consuming))
+            if (currentMovementType != MovementType.Attacking/* && (!(this is FamineBossAI) || !(this as FamineBossAI).Consuming)*/)
             {
                 gameObject.transform.LookAt(target.transform);
                 gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
@@ -148,7 +148,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             {
                 if (currentMovementType != MovementType.Stagger && currentMovementType != MovementType.Attacking)
                 {
-                    if (!(this is FamineBossAI) || (!(this as FamineBossAI).Enraged || !(this as FamineBossAI).Consuming))
+                    //if (!(this is FamineBossAI) || (!(this as FamineBossAI).Enraged || !(this as FamineBossAI).Consuming))
                     {
                         nav.isStopped = false;
                         nav.SetDestination(target.transform.position);
@@ -185,14 +185,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             return;
 
         nav.isStopped = !nav.isStopped;
-        if (pausing)
-        {
-
-        }
-        else
-        {
-
-        }
     }
 
     #region Sounds
@@ -227,6 +219,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && other.gameObject.tag == "Player")
         {
+            print("prutt"); 
             if (target == null)
                 Aggro(other.gameObject.GetComponent<PlayerControls>());
             else if (target == other.gameObject.GetComponent<PlayerControls>())
@@ -238,8 +231,11 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected virtual void Aggro(PlayerControls newTarget)
     {
+        print("aggro");
         if (this.initialPos == null)
             this.initialPos = transform.position;
+        if (newTarget == null)
+            return;
         this.target = newTarget;
         target.EnemyAggro(this, true);
         enemyCanvas.enabled = true;
@@ -300,8 +296,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             return;
         }
-
-        nav.isStopped = true;
+        StartCoroutine(FreezeNav(2f));
         previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;
         int maxAttack = (this is RaiderAI ? 4 : 3);
@@ -344,6 +339,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected void LoseAggro()
     {
         target.EnemyAggro(this, false);
+        print("aggroloss");
         target = null;
         losingAggro = false;
         nav.SetDestination(initialPos);
@@ -367,6 +363,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         alive = false;
         anim.SetTrigger("Death");
+        print("deadson");
         this.target = null;
         nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
@@ -406,7 +403,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         losingAggro = true;
         yield return new WaitForSeconds(loseAggroTime);
+        print("weird");
         LoseAggro();
+    }
+
+    protected IEnumerator FreezeNav(float freezeTime)
+    {
+        nav.isStopped = true;
+        print("freeze");
+        yield return new WaitForSeconds(freezeTime);
+        nav.isStopped = false;
     }
 
     protected IEnumerator Burn(float burnDuration, int burnDamage)
