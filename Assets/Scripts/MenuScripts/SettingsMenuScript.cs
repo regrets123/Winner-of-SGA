@@ -76,8 +76,9 @@ public class SettingsMenuScript : MonoBehaviour
     public void SetCamSensitivity(float sense)
     {
         camSensitivity = sense;
-        if (camFollow != null)
-            camFollow.InputSensitivity = camSensitivity;
+        if (camFollow == null)
+            camFollow = FindObjectOfType<CameraFollow>();
+        camFollow.InputSensitivity = camSensitivity;
     }
 
     public void SetSFXVolume(float SFXVolume)

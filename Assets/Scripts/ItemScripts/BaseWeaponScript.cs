@@ -93,7 +93,7 @@ public class BaseWeaponScript : BaseEquippableObject
         set { if (this.equipper == null) this.equipper = value; }
     }
 
-    protected void Awake()
+    protected override void Start()
     {
         base.Start();
         this.myColl = GetComponent<Collider>();
@@ -101,6 +101,7 @@ public class BaseWeaponScript : BaseEquippableObject
         this.lightDamage = origninalLightDamage;
         this.heavyDamage = originalHeavyDamage;
         this.equipper = GetComponentInParent<IKillable>();
+        myColl.enabled = false;
     }
 
     public void Attack(float attackTime, bool heavy)

@@ -258,7 +258,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     List<DamageType> resistances = new List<DamageType>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
-        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true;
+        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false;
     #endregion
 
     #region Properties
@@ -379,7 +379,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         {
             //A sprint function which drains the stamina float upon activation
             bool sprinting = false;
-            if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Dashing/* && currentMovementType != MovementType.Dodging*/ && currentMovementType != MovementType.Sprinting && currentMovementType != MovementType.SuperJumping && stamina < maxStamina)
+            if (!Input.GetButton("Sprint") && currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Dashing/* && currentMovementType != MovementType.Dodging*/ && currentMovementType != MovementType.Sprinting && currentMovementType != MovementType.SuperJumping && stamina < maxStamina)
             {
                 if (staminaRegenerating)
                 {
@@ -558,7 +558,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             case EquipableType.Weapon:
                 this.weaponToEquip = equipment;
                 SheatheAndUnsheathe();
-                inventory.EquippedWeaponImage.sprite = equipment.GetComponent<BaseWeaponScript>().InventoryIcon;
+                //inventory.EquippedWeaponImage.sprite = equipment.GetComponent<BaseWeaponScript>().InventoryIcon;
                 break;
 
             default:
@@ -619,6 +619,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 case DamageType.AutoStagger:
                     StartCoroutine("Stagger");
                     break;
+
+                case DamageType.Falling:
+                    if (fallInvulerability)
+                        return;
+                    break;
             }
             health -= finalDamage;
             healthBar.value = health;
@@ -663,6 +668,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
+            this.currentWeapon.Attack(1f, false);
             this.currentWeapon.StartCoroutine("AttackCooldown");
 
             attackCooldown = 0.5f;
@@ -712,7 +718,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
             this.currentWeapon.StartCoroutine("AttackCooldown");
-
+            this.currentWeapon.Attack(1.5f, true);
             attackCooldown = 0.5f;
 
             currentWeapon.CurrentSpeed = 0.5f;
@@ -1150,6 +1156,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         invulnerable = true;
         yield return new WaitForSeconds(invulnerablityTime);
         invulnerable = false;
+    }
+
+    public IEnumerator PreventFallDamage()
+    {
+        fallInvulerability = true;
+        yield return new WaitForSeconds(5f);
+        fallInvulerability = false;
+
     }
 
     IEnumerator Stagger()

@@ -78,7 +78,6 @@ public class FamineBossAI : BaseEnemyScript
     protected override void Aggro(PlayerControls newTarget)
     {
         base.Aggro(newTarget);
-        this.TakeDamage(450, DamageType.Physical);
     }
 
     void MagicAttack()

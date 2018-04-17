@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
@@ -14,7 +15,10 @@ public interface IPausable
 public class PauseManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject pauseMenu, settingsMenu, deathScreen;
+    GameObject pauseMenu, settingsMenu, deathScreen, confirmQuitMenu;
+
+    [SerializeField]
+    Button[] goBackButtons;
 
     InputManager iM;
 
@@ -50,12 +54,18 @@ public class PauseManager : MonoBehaviour
             {
                 playerInventory.HideInventory();
             }
-            else if (settingsMenu.activeInHierarchy || deathScreen.activeInHierarchy)
+            else //if (settingsMenu.activeInHierarchy || deathScreen.activeInHierarchy || confirmQuitMenu.activeInHierarchy)
             {
-                return;
+                foreach (Button goBackButton in goBackButtons)
+                {
+                    if (goBackButton.gameObject.activeInHierarchy)
+                    {
+                        goBackButton.onClick.Invoke();
+                        return;
+                    }
+                }
             }
-            else
-                PauseAndUnpause(false);
+            PauseAndUnpause(false);
         }
     }
 

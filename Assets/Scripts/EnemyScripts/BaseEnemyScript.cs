@@ -102,7 +102,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && target != null)
         {
-            if (currentMovementType != MovementType.Attacking && !(this as FamineBossAI).Consuming)
+            if (currentMovementType != MovementType.Attacking && (!(this is FamineBossAI) || !(this as FamineBossAI).Consuming))
             {
                 gameObject.transform.LookAt(target.transform);
                 gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
