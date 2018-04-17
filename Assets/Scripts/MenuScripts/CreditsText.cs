@@ -19,7 +19,7 @@ public class CreditsText : MonoBehaviour {
 
     private bool timeToScroll;
 
-    void Start()
+    void Awake()
     {
         canvasTransform = canvas.GetComponent<RectTransform>();
         textPosition = this.gameObject.transform.position;
@@ -44,6 +44,8 @@ public class CreditsText : MonoBehaviour {
 
     }
 
+    /* Resettar texten och tar tillbaka den till sin usprungliga position. Vi kontrollerar om det är endscreen eller inte för att veta var vi ska återvända. */
+
     public void Reset()
     {
         timeToScroll = false;
@@ -58,6 +60,8 @@ public class CreditsText : MonoBehaviour {
         mainMenu.SetActive(true);
         }
     }
+
+    /* Tonar in titeln och börjar därefter rulla upp texten. */
 
     public IEnumerator FadeInText(Image title, float t)
     {
