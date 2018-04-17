@@ -69,7 +69,9 @@ MonoBehaviour:
   settingsMenu: {fileID: 0}
   deathScreen: {fileID: 0}
   confirmQuitMenu: {fileID: 0}
-  goBackButtons: []
+  goBackButtons:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114820794684758158
 MonoBehaviour:
   m_ObjectHideFlags: 1
