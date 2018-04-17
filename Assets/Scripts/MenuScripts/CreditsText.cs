@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /*By Johanna Pettersson*/
 
@@ -53,7 +54,7 @@ public class CreditsText : MonoBehaviour {
         this.gameObject.transform.parent.gameObject.SetActive(false);
         if (isEndScreen)
         {
-            print("Load Main Menu");
+            SceneManager.LoadScene(0);
         }
         else if (!isEndScreen)
         {
