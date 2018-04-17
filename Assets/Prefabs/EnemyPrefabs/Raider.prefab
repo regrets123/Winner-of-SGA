@@ -1320,7 +1320,7 @@ MonoBehaviour:
   unitName: 
   aggroCenter: {fileID: 1524618943842578}
   soul: {fileID: 1157158949442700, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
-  weapon: {fileID: 0}
+  weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
   weaponPos: {fileID: 4093958588651162}
   resistances: 
   swordSwing1: {fileID: 0}

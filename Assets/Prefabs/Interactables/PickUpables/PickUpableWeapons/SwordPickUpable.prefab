@@ -172,7 +172,8 @@ MonoBehaviour:
   inventoryIcon: {fileID: 21300000, guid: 22a0848bf1e7836418d46ba67995227b, type: 3}
   objectName: Sword00
   myType: 0
-  origninalDamage: 10
+  origninalLightDamage: 5
+  originalHeavyDamage: 10
   attackSpeed: 0.3
   attacks: 
   dmgType: 0
