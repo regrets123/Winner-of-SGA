@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
@@ -35,6 +36,12 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     AudioSource footSteps;
+
+    [SerializeField]
+    Slider healthBar;
+
+    [SerializeField]
+    Canvas enemyCanvas;
     #endregion
 
     #region Non-Serialized Variables
@@ -91,6 +98,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         aggroBubble = aggroCenter.AddComponent<SphereCollider>();
         aggroBubble.isTrigger = true;
         aggroBubble.radius = aggroRange;
+        
+        enemyCanvas.enabled = false;
+
         if (this.weapon != null)
         {
             this.weapon = Instantiate(weapon, weaponPos);
@@ -228,6 +238,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             return;
         this.target = newTarget;
         target.EnemyAggro(this, true);
+        enemyCanvas.enabled = true;
+        healthBar.value = health;
     }
 
     //Gör att fienden kan bli skadad
@@ -259,6 +271,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 FindObjectOfType<PlayerControls>().Leech(damage);
                 break;
         }
+
+        healthBar.value = health;
 
         if (incomingDamage < health && poise < incomingDamage)
         {
