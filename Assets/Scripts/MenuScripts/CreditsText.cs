@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class CreditsText : MonoBehaviour {
 
     public Image title;
+    public bool isEndScreen;
     public GameObject mainMenu;
     public Canvas canvas;
     
@@ -48,7 +49,14 @@ public class CreditsText : MonoBehaviour {
         timeToScroll = false;
         this.gameObject.transform.position = textPosition;
         this.gameObject.transform.parent.gameObject.SetActive(false);
+        if (isEndScreen)
+        {
+            print("Load Main Menu");
+        }
+        else if (!isEndScreen)
+        {
         mainMenu.SetActive(true);
+        }
     }
 
     public IEnumerator FadeInText(Image title, float t)
