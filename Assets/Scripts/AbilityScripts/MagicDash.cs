@@ -17,6 +17,23 @@ public class MagicDash : BaseAbilityScript
             StartCoroutine("Dash");
     }
 
+    protected override void Update()
+    {
+        if ((player.CurrentMovementType == MovementType.Idle
+           || player.CurrentMovementType == MovementType.Sprinting //Låter spelaren använda abilities när den inte attackerar, dodgar eller liknande
+           || player.CurrentMovementType == MovementType.Walking
+           || player.CurrentMovementType == MovementType.Jumping)
+           && Input.GetButtonDown("Ability")
+           && !coolingDown && !player.Dead)
+        {
+            if (player.Stamina >= abilityCost)
+            {
+                player.StaminaBar.value = player.Stamina;
+                UseAbility();
+            }
+        }
+    }
+
     //Enumerator smooths out the dash so it doesn't happen instantaneously
     IEnumerator Dash()
     {
