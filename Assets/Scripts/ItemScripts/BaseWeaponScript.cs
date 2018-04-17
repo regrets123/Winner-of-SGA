@@ -102,7 +102,6 @@ public class BaseWeaponScript : BaseEquippableObject
         this.heavyDamage = originalHeavyDamage;
         this.equipper = GetComponentInParent<IKillable>();
         myColl.enabled = false;
-        print("tja");
     }
 
     public void Attack(float attackTime, bool heavy)

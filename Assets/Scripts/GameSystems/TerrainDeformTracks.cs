@@ -45,7 +45,7 @@ public class TerrainDeformTracks : MonoBehaviour
 
     void RightFootDeform()
     {
-
+        return;
         if (Physics.Raycast(rightFoot.gameObject.transform.position, Vector3.down, out hit))
         {
             if (hit.transform.CompareTag("Sand"))
@@ -81,6 +81,7 @@ public class TerrainDeformTracks : MonoBehaviour
 
     void LeftFootDeform()
     {
+        return;
         if (Physics.Raycast(leftFoot.gameObject.transform.position, Vector3.down, out hit))
         {
             if (hit.transform.CompareTag("Sand"))
