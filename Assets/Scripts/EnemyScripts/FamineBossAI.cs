@@ -12,6 +12,14 @@ public class FamineBossAI : BaseEnemyScript
     [SerializeField]
     Text bossNameText;
 
+    [SerializeField]
+    GameObject blackHole;
+
+    [SerializeField]
+    Transform vortexPos;
+
+    GameObject consumeObj;
+
     float gapCloser, consumeTime = 5f;
 
     bool enraged = false, enraging = false, consuming = false, teleporting = false;
@@ -151,8 +159,10 @@ public class FamineBossAI : BaseEnemyScript
     {
         transform.LookAt(target.transform);
         transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
+        yield return new WaitForSeconds(1);
+        consumeObj = Instantiate(blackHole, vortexPos);
         yield return new WaitForSeconds(consumeTime);
-        print("im full");
+        Destroy(consumeObj);
         anim.SetBool("Consume", false);
         nav.isStopped = false;
         consuming = false;
