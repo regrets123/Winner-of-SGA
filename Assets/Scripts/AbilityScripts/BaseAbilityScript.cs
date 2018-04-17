@@ -7,11 +7,11 @@ using UnityEngine;
 public class BaseAbilityScript : BaseEquippableObject
 {
     [SerializeField]
-    int abilityCost;
+    protected int abilityCost;
 
     [SerializeField]
     protected Sprite myRune;
-    
+
     protected static bool coolingDown = false;
 
     public static bool CoolingDown
@@ -40,7 +40,7 @@ public class BaseAbilityScript : BaseEquippableObject
             && Input.GetButtonDown("Ability")
             && !coolingDown && !player.Dead)
         {
-            if(player.LifeForce >= abilityCost)
+            if (player.LifeForce >= abilityCost)
             {
                 player.LifeForce -= abilityCost;
                 player.LifeforceBar.value = player.LifeForce;

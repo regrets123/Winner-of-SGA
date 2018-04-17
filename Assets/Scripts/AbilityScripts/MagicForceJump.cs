@@ -22,6 +22,23 @@ public class MagicForceJump : BaseAbilityScript
             player.CurrentMovementType = MovementType.SuperJumping;
         }
     }
+    
+    protected override void Update()
+    {
+        if ((player.CurrentMovementType == MovementType.Idle
+           || player.CurrentMovementType == MovementType.Sprinting //Låter spelaren använda abilities när den inte attackerar, dodgar eller liknande
+           || player.CurrentMovementType == MovementType.Walking
+           || player.CurrentMovementType == MovementType.Jumping)
+           && Input.GetButtonDown("Ability")
+           && !coolingDown && !player.Dead)
+        {
+            if (player.Stamina >= abilityCost)
+            {
+                player.StaminaBar.value = player.Stamina;
+                UseAbility();
+            }
+        }
+    }
 
     IEnumerator SuperJump()
     {   
