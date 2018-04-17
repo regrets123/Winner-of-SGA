@@ -258,7 +258,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     List<DamageType> resistances = new List<DamageType>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
-        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true;
+        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false;
     #endregion
 
     #region Properties
@@ -618,6 +618,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
                 case DamageType.AutoStagger:
                     StartCoroutine("Stagger");
+                    break;
+
+                case DamageType.Falling:
+                    if (fallInvulerability)
+                        return;
                     break;
             }
             health -= finalDamage;
@@ -1150,6 +1155,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         invulnerable = true;
         yield return new WaitForSeconds(invulnerablityTime);
         invulnerable = false;
+    }
+
+    public IEnumerator PreventFallDamage()
+    {
+        fallInvulerability = true;
+        yield return new WaitForSeconds(5f);
+        fallInvulerability = false;
+
     }
 
     IEnumerator Stagger()
