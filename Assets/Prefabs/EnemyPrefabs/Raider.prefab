@@ -441,13 +441,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4521169204941066}
   - component: {fileID: 33058830240290060}
-  - component: {fileID: 65341556985848224}
   - component: {fileID: 23531129289882858}
   - component: {fileID: 114790663261842922}
   - component: {fileID: 54430677038322988}
   - component: {fileID: 195973933157369832}
   - component: {fileID: 95539748641690940}
   - component: {fileID: 114302446448114786}
+  - component: {fileID: 65707385250627410}
   m_Layer: 0
   m_Name: Raider
   m_TagString: Enemy
@@ -868,7 +868,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728055315802404}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 5.9374847, y: 0.66, z: 33.49}
+  m_LocalPosition: {x: 96.33229, y: 230.42, z: 134.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4083037441165562}
@@ -1264,7 +1264,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!65 &65341556985848224
+--- !u!65 &65707385250627410
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1274,7 +1274,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
+  m_Size: {x: 1.0000002, y: 1.5, z: 1.0000002}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!95 &95539748641690940
 Animator:
@@ -1325,8 +1325,8 @@ MonoBehaviour:
   invulnerabilityTime: 1
   attackSpeed: 1
   loseAggroTime: 15
-  loseAggroDistance: 15
-  maxAggroFollow: 20
+  loseAggroDistance: 1000
+  maxAggroFollow: 1000
   maxPoise: 5
   staggerTime: 1
   poiseCooldown: 3
@@ -1334,7 +1334,7 @@ MonoBehaviour:
   attackColliderDeactivationSpeed: 1
   maxHealth: 15
   lifeForce: 10
-  unitName: 
+  unitName: Raider
   aggroCenter: {fileID: 1524618943842578}
   soul: {fileID: 1157158949442700, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
   weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}

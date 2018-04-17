@@ -14,7 +14,7 @@ public class RaiderAI : BaseEnemyScript
             return;
         }
 
-        nav.isStopped = true;
+        StartCoroutine(FreezeNav(2f));
         previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;
         heavyAttack = Random.Range(1, 3);
@@ -22,7 +22,7 @@ public class RaiderAI : BaseEnemyScript
         attackColliderActivationSpeed = 1.0f;
         attackColliderDeactivationSpeed = 1.5f;
 
-        StartCoroutine("ActivateAttackCollider");
+        StartCoroutine(ActivateAttackCollider(heavyAttack));
 
         if (heavyAttack == 1)
         {

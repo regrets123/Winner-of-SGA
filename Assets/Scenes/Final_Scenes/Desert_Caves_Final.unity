@@ -112,7 +112,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 337e9e9b1a071bc4484bce5d254bf7bc, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 1c069ee9ef9c33c418b28d9ddc95715c, type: 2}
 --- !u!4 &2564718 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4226404313872312, guid: 99b23e8e87c763041b58ab44ddc93788,
