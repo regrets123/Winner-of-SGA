@@ -191,8 +191,8 @@ public class SaveManager : MonoBehaviour
     public void SaveGame(GameObject savePoint)
     {
         string spritePath = Screenshot();
-        usedSavePoints.Add(Array.IndexOf(savePoints, savePoint) + 1);
-        savePoint.GetComponent<SavePointScript>().Reskin(saveMat);
+        //usedSavePoints.Add(Array.IndexOf(savePoints, savePoint) + 1);
+        //savePoint.GetComponent<SavePointScript>().Reskin(saveMat);
         GetInfoToSave();   //Matar in all info som ska sparas i den virtuella XML-filen
         if (currentSave == null)
         {
@@ -243,7 +243,7 @@ public class SaveManager : MonoBehaviour
         SavePlayerResources();
         SaveCamTransform();
         SaveInventory();
-        SaveUsedSavePoints();
+        //SaveUsedSavePoints();
     }
 
     void SaveUsedSavePoints()
@@ -381,5 +381,17 @@ public class SaveManager : MonoBehaviour
         }
         ScreenCapture.CaptureScreenshot(path);
         return path;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            SaveGame(player.gameObject);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            ReloadGame();
+        }
     }
 }
