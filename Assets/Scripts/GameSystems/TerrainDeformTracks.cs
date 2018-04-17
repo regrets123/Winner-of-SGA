@@ -45,7 +45,6 @@ public class TerrainDeformTracks : MonoBehaviour
 
     void RightFootDeform()
     {
-
         if (Physics.Raycast(rightFoot.gameObject.transform.position, Vector3.down, out hit))
         {
             if (hit.transform.CompareTag("Sand"))
