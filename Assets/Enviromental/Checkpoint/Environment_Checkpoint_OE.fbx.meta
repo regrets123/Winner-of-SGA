@@ -1,17 +1,16 @@
 fileFormatVersion: 2
-guid: 578cc566e7f247a4a9e5da7eae86da8a
-timeCreated: 1521645896
+guid: b7ae67bb9745f3f4194cd73cccb0f476
+timeCreated: 1523880911
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Texture_PlatformRock_3
+    2100000: Material_Checkpoint_Lit_OE
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pCube7
-    9500000: //RootNode
+    4300000: Checkpoint
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -86,7 +85,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

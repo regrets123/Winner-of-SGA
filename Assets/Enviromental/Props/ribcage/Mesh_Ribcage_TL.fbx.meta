@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 61848f87f8c5a99499a81fa3147c61e8
-timeCreated: 1521645896
+guid: df37b9c8dfd079b44b0f2e8c7957acea
+timeCreated: 1523880912
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Texture_Platform_Top1
+    2100000: lambert1
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pCube14
+    4300000: Mesh_Ribcage_TL
     9500000: //RootNode
   externalObjects: {}
   materials:

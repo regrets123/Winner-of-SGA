@@ -10,7 +10,7 @@ public class SandstormFollow : MonoBehaviour
     float effectFollowSpeed;
 	
 	// Update is called once per frame
-	void Update ()
+	void LateUpdate ()
     {
         Transform target = effectFollowObj.transform;
 

@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: ab665a35afd8ba04fbe905ceb252ff73
-timeCreated: 1521645897
+guid: 438d979db93fb8c459cfc2d87aede646
+timeCreated: 1523883237
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Texture_PlatformRock_2
+    2100000: lambert1
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pCube11
+    4300000: pCube12
     9500000: //RootNode
   externalObjects: {}
   materials:
