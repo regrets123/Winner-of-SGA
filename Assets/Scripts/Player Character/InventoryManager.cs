@@ -113,12 +113,12 @@ public class InventoryManager : MonoBehaviour
 
     public Image EquippedAbilityImage
     {
-        get { return this.EquippedAbilityImage; }
+        get { return this.equippedAbilityImage; }
     }
 
     public Image EquippedWeaponImage
     {
-        get { return this.EquippedWeaponImage; }
+        get { return this.equippedWeaponImage; }
     }
 
     private void Awake()
@@ -321,21 +321,24 @@ public class InventoryManager : MonoBehaviour
         {
             if (!equippingFavorite)
             {
+                bool controllerInput = Input.GetAxisRaw("NextInventoryRow") == 0f ? false : true;
+                if (!controllerInput)
+                    controllerInput = Input.GetAxisRaw("NextItem") == 0f ? false : true;
                 if (Input.GetAxisRaw("NextInventoryRow") > 0f || Input.GetKeyDown(KeyCode.Alpha1))
                 {
-                    EquipFavorite(0);
+                    EquipFavorite(0, controllerInput);
                 }
                 else if (Input.GetAxisRaw("NextInventoryRow") < 0f || Input.GetKeyDown(KeyCode.Alpha3))
                 {
-                    EquipFavorite(2);
+                    EquipFavorite(2, controllerInput);
                 }
                 else if (Input.GetAxisRaw("NextItem") > 0f || Input.GetKeyDown(KeyCode.Alpha2))
                 {
-                    EquipFavorite(1);
+                    EquipFavorite(1, controllerInput);
                 }
                 else if (Input.GetAxisRaw("NextItem") < 0f || Input.GetKeyDown(KeyCode.Alpha4))
                 {
-                    EquipFavorite(3);
+                    EquipFavorite(3, controllerInput);
                 }
             }
             if (Input.GetButtonDown("UnEquip"))
@@ -345,7 +348,10 @@ public class InventoryManager : MonoBehaviour
         }
         if (Input.GetKeyDown("r"))
         {
-            player.Equip(null);
+            if (player.CurrentWeapon != null)
+                player.Equip(null);
+            else if (player.LastEquippedWeapon != null)
+                player.Equip(player.LastEquippedWeapon);
         }
     }
 
@@ -364,13 +370,15 @@ public class InventoryManager : MonoBehaviour
         return allFavorites;
     }
 
-    void EquipFavorite(int favoriteIndex)
+    void EquipFavorite(int favoriteIndex, bool controllerInput)
     {
         print("Favorite: " + favoriteIndex);
         if (inventory[3] == null || inventory[3].Count <= favoriteIndex || inventory[3][favoriteIndex] == null)
             return;
         player.Equip(inventory[3][favoriteIndex]);
         StartCoroutine(DisplayEquippedFavorite(favoriteIndex));
+        if (controllerInput)
+            StartCoroutine("HighlightControllerInput");
     }
 
     IEnumerator DisplayEquippedFavorite(int favoriteIndex)
@@ -432,12 +440,6 @@ public class InventoryManager : MonoBehaviour
         menuManager.Glow(inventoryButtons[collectionIndex].GetComponent<Outline>());
     }
 
-    void EquipFavorite(int index, bool controllerInput)
-    {
-        player.Equip(inventory[3][index]);
-        if (controllerInput)
-            StartCoroutine("HighlightControllerInput");
-    }
 
     IEnumerator HighlightControllerInput()
     {
