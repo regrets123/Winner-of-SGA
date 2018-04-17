@@ -239,7 +239,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     CameraFollow cameraFollow;
 
-    GameObject weaponToEquip;
+    GameObject weaponToEquip, lastEquippedWeapon;
 
     ClimbableScript currentClimbable;
 
@@ -284,6 +284,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public BaseAbilityScript CurrentAbility
     {
         get { return this.currentAbility; }
+    }
+
+    public GameObject LastEquippedWeapon
+    {
+        get { return this.lastEquippedWeapon; }
     }
 
     public Slider LifeforceBar
@@ -442,25 +447,21 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 StartCoroutine("NonMovingInteract");
             }
 
-            if (charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack
+            if (currentWeapon.CanAttack && charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking || currentMovementType != MovementType.Stagger))
             {
                 if (Input.GetAxisRaw("Fire2") < -0.5)
                 {
                     if (!attacked)
                     {
-                        currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
                         HeavyAttack();
-                        currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
                         attacked = true;
                     }
                 }
 
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
                     LightAttack();
-                    currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = false;
                 }
             }
 
@@ -558,7 +559,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             case EquipableType.Weapon:
                 this.weaponToEquip = equipment;
                 SheatheAndUnsheathe();
-                //inventory.EquippedWeaponImage.sprite = equipment.GetComponent<BaseWeaponScript>().InventoryIcon;
+                lastEquippedWeapon = equipment;
+                inventory.EquippedWeaponImage.sprite = equipment.GetComponent<BaseWeaponScript>().InventoryIcon;
                 break;
 
             default:
@@ -580,6 +582,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
         this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
         this.currentWeapon.Equipper = this;
+        print("mmkay");
     }
 
     public void UnEquipWeapon()
