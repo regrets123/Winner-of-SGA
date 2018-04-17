@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 114506183074169894}
   - component: {fileID: 54638681638676476}
   - component: {fileID: 95175534038653584}
-  - component: {fileID: 114830466429944492}
+  - component: {fileID: 114871824916010086}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1444,20 +1444,20 @@ MonoBehaviour:
   maxStamina: 100
   maxLifeForce: 20
   maxPoise: 21
-  staminaRegen: 1
-  staminaRegenWait: 0
+  staminaRegen: 0.2
+  staminaRegenWait: 0.5
   invulnerablityTime: 0.8
   staggerTime: 1
   poiseCooldown: 2
   armor: 0
   leechPercentage: 0
-  moveSpeed: 0.7
-  sprintSpeed: 3
+  moveSpeed: 1
+  sprintSpeed: 4
   jumpSpeed: 2
-  jumpCooldown: 0
+  jumpCooldown: 1
   rotspeed: 2
   dodgeCost: 20
-  dodgeCooldown: 0.67
+  dodgeCooldown: 1.3
   dodgeLength: 0.4
   dodgeSpeed: 1.5
   attackMoveLength: 0.2
@@ -1467,11 +1467,11 @@ MonoBehaviour:
   slopeLimit: 40
   slideFriction: -0.2
   safeFallDistance: 100
-  swordSheathe: {fileID: 8300000, guid: e323755ba9eadf2418e71e952d928af4, type: 3}
-  swordUnsheathe: {fileID: 8300000, guid: 018080c26ab6f2f42b519fee92ace10e, type: 3}
-  lightAttack1: {fileID: 8300000, guid: b39c723b6d1e1724692ea89092cb097c, type: 3}
-  lightAttack2: {fileID: 8300000, guid: 6c85a0138632937498d329cf694a500b, type: 3}
-  lightAttack3: {fileID: 0}
+  swordSheathe: {fileID: 8300000, guid: afacaa63e8061e2448d9e947748a7050, type: 3}
+  swordUnsheathe: {fileID: 8300000, guid: ae5e765b70e29a64882a8490a371b1b4, type: 3}
+  lightAttack1: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+  lightAttack2: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+  lightAttack3: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
   heavyAttack1: {fileID: 0}
   heavyAttack2: {fileID: 0}
   sandSteps: {fileID: 8300000, guid: 657d210845851964baf17973fc28c7f9, type: 3}
@@ -1492,7 +1492,7 @@ MonoBehaviour:
   aggroIndicator: {fileID: 0}
   deathScreen: {fileID: 1024616962105358, guid: 04cb31017c8aa424c8da6968bd2f6390,
     type: 2}
---- !u!114 &114830466429944492
+--- !u!114 &114871824916010086
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1504,12 +1504,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawShader: {fileID: 4800000, guid: 78dea1c9516a6a649bc5a40777abc2ba, type: 3}
-  rightFoot: {fileID: 0}
-  leftFoot: {fileID: 0}
-  brushSize: 0.35
-  brushStrength: 3
-  footstepRemover: {fileID: 1490501576799920, guid: be189c06594215d4f9ca09cacf995ae8,
-    type: 2}
+  rightFoot: {fileID: 1332511525497420}
+  leftFoot: {fileID: 1317825622598138}
+  brushSize: 0
+  brushStrength: 0
 --- !u!137 &137506988087896688
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

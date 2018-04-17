@@ -1666,49 +1666,49 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114350759234308010, guid: 04cb31017c8aa424c8da6968bd2f6390,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 789337183}
     - target: {fileID: 114531073019158934, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: cam
       value: 
       objectReference: {fileID: 1716050378}
+    - target: {fileID: 114350759234308010, guid: 04cb31017c8aa424c8da6968bd2f6390,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 789337183}
     - target: {fileID: 224456043515403194, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 224456043515403194, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224646614837140968, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 224646614837140968, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224724491579377112, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 224724491579377112, guid: 04cb31017c8aa424c8da6968bd2f6390,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1024616962105358, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
+    - target: {fileID: 1343605449595066, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 04cb31017c8aa424c8da6968bd2f6390, type: 2}
@@ -1977,6 +1977,16 @@ Prefab:
       propertyPath: cameraFollowObj
       value: 
       objectReference: {fileID: 1386578704}
+    - target: {fileID: 114951520643432290, guid: 40c96716f362dd948a43916c702e22e0,
+        type: 2}
+      propertyPath: cameraMoveSpeed
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 114951520643432290, guid: 40c96716f362dd948a43916c702e22e0,
+        type: 2}
+      propertyPath: inputSensitivity
+      value: 150
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 40c96716f362dd948a43916c702e22e0, type: 2}
   m_IsPrefabParent: 0

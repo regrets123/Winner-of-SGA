@@ -5,7 +5,7 @@ using UnityEngine;
 public class TerrainDeformTracks : MonoBehaviour
 {
     [SerializeField]
-    Shader drawShader, reverseShader;
+    Shader drawShader;
     [SerializeField]
     GameObject rightFoot, leftFoot;
     [SerializeField, Range(0, 500)]
@@ -19,12 +19,12 @@ public class TerrainDeformTracks : MonoBehaviour
     RenderTexture temp;
     Vector4 footstepCoordinate;
 
-    List<FootstepsRemoval> removeSteps = new List<FootstepsRemoval>();
+    //List<FootstepsRemoval> removeSteps = new List<FootstepsRemoval>();
 
-    public List<FootstepsRemoval> RemoveSteps
-    {
-        get { return this.removeSteps; }
-    }
+    //public List<FootstepsRemoval> RemoveSteps
+    //{
+    //    get { return this.removeSteps; }
+    //}
 
     // Use this for initialization
     void Start()
