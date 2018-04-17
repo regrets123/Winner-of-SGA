@@ -17,8 +17,6 @@
     <Position X="" Y="" Z=""/>
     <Rotation X="" Y="" Z="" W=""/>
   </CameraTransform>
-  <SpawnsToRemove>
-  </SpawnsToRemove>
   <UsedSavePoints>
   </UsedSavePoints>
   <TrapsToRemove>

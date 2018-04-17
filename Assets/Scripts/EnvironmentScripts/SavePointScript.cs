@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SavePointScript : MonoBehaviour {
+/*By Björn Andersson*/
 
-
-
-    private void OnTriggerEnter(Collider other)
+public class SavePointScript : MonoBehaviour, IInteractable
+{
+    public void Reskin(Material newMat)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            SaveManager saver = FindObjectOfType<SaveManager>();
-            saver.SaveGame();
-        }
+        GetComponent<Renderer>().material = newMat;
+    }
+
+    public void Interact(PlayerControls player)
+    {
+        SaveManager saver = FindObjectOfType<SaveManager>();
+        saver.SaveGame(this.gameObject);
     }
 }

@@ -291,6 +291,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         get { return this.lastEquippedWeapon; }
     }
 
+    public Slider StaminaBar
+    {
+        get { return this.staminaBar; }
+    }
+
     public Slider LifeforceBar
     {
         get { return lifeForceBar; }
