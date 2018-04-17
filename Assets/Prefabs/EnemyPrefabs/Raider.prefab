@@ -446,6 +446,8 @@ GameObject:
   - component: {fileID: 114790663261842922}
   - component: {fileID: 54430677038322988}
   - component: {fileID: 195973933157369832}
+  - component: {fileID: 95539748641690940}
+  - component: {fileID: 114302446448114786}
   m_Layer: 0
   m_Name: Raider
   m_TagString: Enemy
@@ -521,7 +523,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4083037441165562}
-  - component: {fileID: 95284959004776268}
   m_Layer: 0
   m_Name: Char_Raider_SF
   m_TagString: Untagged
@@ -1275,13 +1276,13 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!95 &95284959004776268
+--- !u!95 &95539748641690940
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1789798192940006}
+  m_GameObject: {fileID: 1728055315802404}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1897b61b87ac93c4eb35978d748d6dff, type: 3}
   m_Controller: {fileID: 9100000, guid: fada50b566392214ab797d6406f6edea, type: 2}
@@ -1292,6 +1293,22 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114302446448114786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728055315802404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db91627d60ae81f44b9ee390761f8c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawShader: {fileID: 4800000, guid: 78dea1c9516a6a649bc5a40777abc2ba, type: 3}
+  rightFoot: {fileID: 1899969927270426}
+  leftFoot: {fileID: 1973590275150108}
+  brushSize: 0
+  brushStrength: 0
 --- !u!114 &114790663261842922
 MonoBehaviour:
   m_ObjectHideFlags: 1
