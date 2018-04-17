@@ -102,7 +102,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && target != null)
         {
-            if (currentMovementType != MovementType.Attacking)
+            if (currentMovementType != MovementType.Attacking && !(this as FamineBossAI).Consuming)
             {
                 gameObject.transform.LookAt(target.transform);
                 gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
@@ -114,7 +114,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 {
                     attack = Random.Range(1, 3);
 
-                    if(health < maxHealth/2 && target.CurrentMovementType == MovementType.Attacking && this is RaiderAI)
+                    if (health < maxHealth / 2 && target.CurrentMovementType == MovementType.Attacking && this is RaiderAI)
                     {
                         Dodge();
                     }
@@ -138,8 +138,12 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             {
                 if (currentMovementType != MovementType.Stagger && currentMovementType != MovementType.Attacking)
                 {
-                    nav.isStopped = false;
-                    nav.SetDestination(target.transform.position);
+                    if (!(this is FamineBossAI) || (!(this as FamineBossAI).Enraged || !(this as FamineBossAI).Consuming))
+                    {
+                        nav.isStopped = false;
+                        nav.SetDestination(target.transform.position);
+                    }
+                    
                 }
             }
             if (!losingAggro && Vector3.Distance(transform.position, target.transform.position) > loseAggroDistance)
@@ -322,7 +326,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         return;
     }
-    
+
     protected void LoseAggro()
     {
         target.EnemyAggro(this, false);

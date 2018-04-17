@@ -7,7 +7,7 @@ public class TerrainDeformTracks : MonoBehaviour
     [SerializeField]
     Shader drawShader, reverseShader;
     [SerializeField]
-    GameObject rightFoot, leftFoot, footstepRemover;
+    GameObject rightFoot, leftFoot;
     [SerializeField, Range(0, 500)]
     float brushSize;
     [SerializeField, Range(-5, 5)]
@@ -74,7 +74,7 @@ public class TerrainDeformTracks : MonoBehaviour
 
                 RenderTexture.ReleaseTemporary(temp);
 
-                Instantiate(footstepRemover, hit.transform.position, hit.transform.rotation);
+                //Instantiate(footstepRemover, hit.transform.position, hit.transform.rotation);
             }
         }
     }
@@ -110,7 +110,7 @@ public class TerrainDeformTracks : MonoBehaviour
 
                 RenderTexture.ReleaseTemporary(temp);
 
-                Instantiate(footstepRemover, hit.transform.position, hit.transform.rotation);
+                //Instantiate(footstepRemover, hit.transform.position, hit.transform.rotation);
             }
         }
     }
