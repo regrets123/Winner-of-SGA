@@ -232,6 +232,48 @@ Prefab:
     - {fileID: 114922668391650850, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &844283467
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091185591534970, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f18b8f53bd1f81e47935db9cfcefd708, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &870536684
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,7 +596,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawShader: {fileID: 4800000, guid: 78dea1c9516a6a649bc5a40777abc2ba, type: 3}
-  reverseShader: {fileID: 4800000, guid: e78693591d44eb34d83650ba4635086b, type: 3}
   rightFoot: {fileID: 1629751880}
   leftFoot: {fileID: 1629751881}
   brushSize: 0
