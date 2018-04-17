@@ -100,6 +100,13 @@ public class SaveManager : MonoBehaviour
         MoveCamera();
         LoadInventory();
         ReskinSavePoints();
+        if (File.Exists(Application.dataPath + "/Settings.xml"))
+        {
+            XmlDocument settingsDoc = new XmlDocument();
+            settingsDoc.LoadXml(Application.dataPath + "/Settings.xml");
+            FindObjectOfType<SettingsMenuScript>().SetCamSensitivity(int.Parse(settingsDoc.SelectSingleNode("/Settings/Camer/@Sensitivity").Value));
+
+        }
     }
 
     void ReskinSavePoints()
