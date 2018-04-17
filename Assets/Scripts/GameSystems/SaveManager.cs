@@ -46,6 +46,11 @@ public class SaveManager : MonoBehaviour
     [SerializeField]
     Material saveMat;
 
+    [SerializeField]
+    GameObject[] savePoints;
+
+    List<int> usedSavePoints = new List<int>();
+
     XmlDocument currentGame;
 
     XPathNavigator xNav;
@@ -94,6 +99,16 @@ public class SaveManager : MonoBehaviour
         MovePlayer();
         MoveCamera();
         LoadInventory();
+        ReskinSavePoints();
+    }
+
+    void ReskinSavePoints()
+    {
+        XPathNodeIterator nodes = xNav.Select("/SavedState/UsedSavePoints//SavePoint/@Index");
+        foreach (XPathNavigator node in nodes)
+        {
+            savePoints[int.Parse(node.Value)].GetComponent<SavePointScript>().Reskin(saveMat);
+        }
     }
 
     void LoadInventory()
@@ -103,7 +118,6 @@ public class SaveManager : MonoBehaviour
         XPathNodeIterator favorites = xNav.Select("/SavedState/PlayerInfo/Inventory/Favorites//Favorite/@Name");
         foreach (XPathNavigator node in nodes)
         {
-            print(node.Value);
             foreach (GameObject item in allItems)
             {
                 if (node.Value == item.GetComponent<BaseEquippableObject>().ObjectName)
@@ -155,7 +169,7 @@ public class SaveManager : MonoBehaviour
         }
         inputManager.SetInputMode(InputMode.Playing);
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        SceneManager.LoadScene("Master_Scene", LoadSceneMode.Single);
+        SceneManager.LoadScene("Master_Scene");
     }
 
     void MovePlayer()
@@ -174,9 +188,11 @@ public class SaveManager : MonoBehaviour
         camBase.transform.rotation = newRot;
     }
 
-    public void SaveGame()
+    public void SaveGame(GameObject savePoint)
     {
         string spritePath = Screenshot();
+        usedSavePoints.Add(Array.IndexOf(savePoints, savePoint) + 1);
+        savePoint.GetComponent<SavePointScript>().Reskin(saveMat);
         GetInfoToSave();   //Matar in all info som ska sparas i den virtuella XML-filen
         if (currentSave == null)
         {
@@ -227,6 +243,22 @@ public class SaveManager : MonoBehaviour
         SavePlayerResources();
         SaveCamTransform();
         SaveInventory();
+        SaveUsedSavePoints();
+    }
+
+    void SaveUsedSavePoints()
+    {
+        XPathNavigator savePointsNode = xNav.SelectSingleNode("/SavedState/UsedSavePoints");
+        XmlNodeList oldSavePoints = currentGame.SelectNodes("//SavePoint");
+        if (oldSavePoints.Count > 0)
+            for (int i = oldSavePoints.Count - 1; i > -1; i--)
+            {
+                oldSavePoints[i].ParentNode.RemoveChild(oldSavePoints[i]);
+            }
+        foreach (int index in usedSavePoints)
+        {
+            savePointsNode.AppendChild("<SavePoint Index=\"" + index + "\"/>");
+        }
     }
 
     void SavePlayerResources()      //Sparar spelarens resurser till XML
@@ -280,7 +312,7 @@ public class SaveManager : MonoBehaviour
                 allOldFavorites[i].ParentNode.RemoveChild(allOldFavorites[i]);
             }
         }
-        foreach(string favName in player.Inventory.ReportFavorites())
+        foreach (string favName in player.Inventory.ReportFavorites())
         {
             favoritesNode.AppendChild("<Favorite Name =\"" + favName + "\"/>");
         }
@@ -349,17 +381,5 @@ public class SaveManager : MonoBehaviour
         }
         ScreenCapture.CaptureScreenshot(path);
         return path;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))  //Temporary
-        {
-            SaveGame();
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
-        {
-            ReloadGame();
-        }
     }
 }
