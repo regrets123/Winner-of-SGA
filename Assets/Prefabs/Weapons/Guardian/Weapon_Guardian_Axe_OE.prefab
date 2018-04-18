@@ -111,8 +111,8 @@ MonoBehaviour:
   inventoryIcon: {fileID: 0}
   objectName: Guardian Axe
   myType: 0
-  origninalLightDamage: 0
-  originalHeavyDamage: 0
+  origninalLightDamage: 15
+  originalHeavyDamage: 25
   attackSpeed: 1
   attacks: 
   dmgType: 0
