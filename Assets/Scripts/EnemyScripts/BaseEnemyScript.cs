@@ -126,11 +126,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 {
                     attack = Random.Range(1, 3);
 
-                    if (health < maxHealth / 2 && target.CurrentMovementType == MovementType.Attacking && this is RaiderAI)
-                    {
-                        Dodge();
-                    }
-
                     if (attack == 1)
                     {
                         LightAttack();

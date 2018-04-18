@@ -39,13 +39,6 @@ public class RaiderAI : BaseEnemyScript
         StartCoroutine("AttackCooldown");
     }
 
-    protected override void Dodge()         //Ger raidern möjlighet att undvika spelarens attacker
-    {
-        anim.SetTrigger("Dodge");
-        StartCoroutine("Invulnerability");
-        nav.Move(target.transform.position + transform.position);
-    }
-
     protected override void Aggro(PlayerControls newTarget)
     {
         base.Aggro(newTarget);
