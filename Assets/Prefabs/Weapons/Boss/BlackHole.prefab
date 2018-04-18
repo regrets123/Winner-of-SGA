@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1b3eef69247ad4c8aea5030161d782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackHoleDamage: 50
+  blackHoleDamage: 10
 --- !u!135 &135258176295495550
 SphereCollider:
   m_ObjectHideFlags: 1
