@@ -14,7 +14,7 @@ public class LoadTrigger : MonoBehaviour
         {
             if (loadNames != null)
             {
-                Application.backgroundLoadingPriority = ThreadPriority.High;
+                Application.backgroundLoadingPriority = ThreadPriority.Low;
                 foreach (string scene in loadNames)
                     
                 DynamicSceneManager.instance.Load(scene);
@@ -29,7 +29,7 @@ public class LoadTrigger : MonoBehaviour
 
     IEnumerator UnloadScene()
     {
-        Application.backgroundLoadingPriority = ThreadPriority.High;
+        Application.backgroundLoadingPriority = ThreadPriority.Low;
         yield return new WaitForSeconds(0.1f);
         foreach (string scene in unloadNames)
         {

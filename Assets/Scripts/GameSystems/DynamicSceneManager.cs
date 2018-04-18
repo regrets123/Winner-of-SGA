@@ -28,7 +28,7 @@ public class DynamicSceneManager : MonoBehaviour
         Load(TerrainScene);
         Load(Canyons);
         Load(TempleMonument);
-        Application.backgroundLoadingPriority = ThreadPriority.High;
+        Application.backgroundLoadingPriority = ThreadPriority.Low;
     }
 
 
