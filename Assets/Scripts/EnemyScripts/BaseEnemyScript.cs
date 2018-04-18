@@ -98,6 +98,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         aggroBubble = aggroCenter.AddComponent<SphereCollider>();
         aggroBubble.isTrigger = true;
         aggroBubble.radius = aggroRange;
+
+        healthBar.maxValue = maxHealth;
         
         enemyCanvas.enabled = false;
 
@@ -219,7 +221,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && other.gameObject.tag == "Player")
         {
-            print("prutt"); 
             if (target == null)
                 Aggro(other.gameObject.GetComponent<PlayerControls>());
             else if (target == other.gameObject.GetComponent<PlayerControls>())
@@ -249,10 +250,10 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             return;
         }
-
+        print("ouchie");
         int damage = ModifyDamage(incomingDamage, dmgType);
         this.health -= damage;
-        this.healthBar.value = health;
+        healthBar.value = health;
 
         poise -= incomingDamage;
 
@@ -273,7 +274,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 break;
         }
 
-        healthBar.value = health;
 
         if (incomingDamage < health && poise < incomingDamage)
         {
