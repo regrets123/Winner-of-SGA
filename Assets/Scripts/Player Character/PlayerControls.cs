@@ -415,7 +415,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 staminaRegWait = false;
                 if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
                 {
-                    stamina -= 1f;
+                    stamina -= 0.5f;
                     sprinting = true;
 
                 }
