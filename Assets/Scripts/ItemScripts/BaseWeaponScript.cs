@@ -206,7 +206,6 @@ public class BaseWeaponScript : BaseEquippableObject
             {
                 return;
             }
-            print("Hit by " + this.objectName);
             DealDamage(targetToHit);
             SoundManager.instance.RandomizeSfx(enemyHit1, enemyHit2, enemyHit3);
         }

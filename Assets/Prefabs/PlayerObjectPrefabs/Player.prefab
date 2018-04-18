@@ -1452,8 +1452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee44ae33297a6704eb37b5498ea50e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 200
   maxStamina: 100
+  leechAmount: 0
   maxLifeForce: 20
   maxPoise: 21
   staminaRegen: 0.2
