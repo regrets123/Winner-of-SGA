@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*By Andreas Nilsson*/
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : MonoBehaviour, IPausable
 {
     [SerializeField]
     AudioSource efxSource, musicSource, environmentSource;
@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
     {
+        FindObjectOfType<PauseManager>().Pausables.Add(this);
 		if(instance == null)
         {
             instance = this;
@@ -28,6 +29,22 @@ public class SoundManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 	}
+
+    public void PauseMe(bool pausing)
+    {
+        if (pausing)
+        {
+            efxSource.Pause();
+            musicSource.Pause();
+            environmentSource.Pause();
+        }
+        else
+        {
+            efxSource.UnPause();
+            musicSource.UnPause();
+            environmentSource.UnPause();
+        }
+    }
 
     public void PlaySingle(AudioClip clip)
     {
