@@ -126,7 +126,6 @@ public class InventoryManager : MonoBehaviour
         if (FindObjectOfType<PlayerControls>().Inventory != null)
         {
             print("jnb");
-            return;
             Destroy(this);
         }
         menuManager = FindObjectOfType<MenuManager>();

@@ -606,6 +606,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         else
         {
             int finalDamage = ModifyDamage(incomingDamage, dmgType);
+
             if (finalDamage <= 0)
             {
                 return;
@@ -1171,13 +1172,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     IEnumerator Stagger()
     {
-        if (currentMovementType != MovementType.Stagger)
-            previousMovementType = currentMovementType;
         currentMovementType = MovementType.Stagger;
         anim.SetTrigger("Stagger");
         poiseReset = poiseCooldown;
         yield return new WaitForSeconds(staggerTime);
-        currentMovementType = previousMovementType;
+        currentMovementType = MovementType.Idle;
     }
 
     protected IEnumerator Burn(float burnDuration, int burnDamage)      //Gör så att spelaren tar eldskada under en viss tid
