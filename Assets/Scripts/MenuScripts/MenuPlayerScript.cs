@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Björn Andersson*/
+
 public class MenuPlayerScript : MonoBehaviour
 {
-    
-    // Use this for initialization
     void Start()
     {
-        GetComponent<Animator>().SetFloat("Speed", 0f);
+        GetComponent<Animator>().SetFloat("Speed", 0f);     //Ser till så att spelarmodellen i huvudmenyn endast gör sin idle animation
     }
 
 }
