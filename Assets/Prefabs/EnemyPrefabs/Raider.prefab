@@ -1696,7 +1696,7 @@ MonoBehaviour:
   attackSpeed: 1
   loseAggroTime: 15
   loseAggroDistance: 100
-  maxAggroFollow: 1000
+  maxAggroFollow: 10000
   maxPoise: 5
   staggerTime: 1
   poiseCooldown: 3
@@ -1710,14 +1710,25 @@ MonoBehaviour:
   weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
   weaponPos: {fileID: 4093958588651162}
   resistances: 
-  swordSwing1: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
-  swordSwing2: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+  lightAttack1: {fileID: 0}
+  lightAttack2: {fileID: 0}
   sandSteps: {fileID: 8300000, guid: 657d210845851964baf17973fc28c7f9, type: 3}
   stoneSteps: {fileID: 8300000, guid: bfa7a3bd9aee30f43afddf08d5570f61, type: 3}
   woodSteps: {fileID: 8300000, guid: fc2f1ec432dc517489f5e953ab3f3341, type: 3}
+  chargeAttack: {fileID: 0}
+  aggro: {fileID: 0}
+  death: {fileID: 0}
+  bossTeleportDisappear: {fileID: 0}
+  bossTeleportAppear: {fileID: 0}
+  bossMagicAttack: {fileID: 0}
+  bossEnrage: {fileID: 0}
   footSteps: {fileID: 82584542803357442}
+  attacks: {fileID: 0}
+  otherSFX: {fileID: 0}
   healthBar: {fileID: 114339121851666688}
   enemyCanvas: {fileID: 223157574680674336}
+  lowPitchedRange: 0.95
+  highPitchedRange: 1.05
   raiderHowl: {fileID: 8300000, guid: 7348e3a85168bcd4fb2b6fae8b1ea0c7, type: 3}
 --- !u!114 &114821051596134668
 MonoBehaviour:

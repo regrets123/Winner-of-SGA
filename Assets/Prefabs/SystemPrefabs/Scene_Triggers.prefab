@@ -1229,7 +1229,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.41, y: 1.71, z: 1.97}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65967578232862436
 BoxCollider:
@@ -1343,7 +1343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadNames:
-  - Temple_Interior_Level2
+  - Temple_Interior_Level_2
   unloadNames: []
 --- !u!114 &114677256386891346
 MonoBehaviour:
@@ -1356,9 +1356,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af1a5d27677e3aa4aa9d3c53a7099067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadNames: []
+  loadNames:
+  - Core_Bossroom
   unloadNames:
-  - Temple_Interior_Level2
+  - Temple_Interior_Level_2
 --- !u!114 &114704735445187076
 MonoBehaviour:
   m_ObjectHideFlags: 1

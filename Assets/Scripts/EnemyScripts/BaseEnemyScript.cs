@@ -230,9 +230,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     protected virtual void Aggro(PlayerControls newTarget)       //Får fienden att bli aggressiv mot spelaren
     {
-        print("aggro");
         if (this.initialPos == null)
-            this.initialPos = transform.position;
+            this.initialPos = this.transform.position;
         if (newTarget == null)
             return;
         this.target = newTarget;

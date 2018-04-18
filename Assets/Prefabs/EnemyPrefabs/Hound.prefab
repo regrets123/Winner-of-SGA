@@ -2007,7 +2007,7 @@ MonoBehaviour:
   attackSpeed: 0.5
   loseAggroTime: 100
   loseAggroDistance: 100
-  maxAggroFollow: 1000
+  maxAggroFollow: 10000
   maxPoise: 0
   staggerTime: 0
   poiseCooldown: 0
@@ -2021,14 +2021,18 @@ MonoBehaviour:
   weapon: {fileID: 1497449546904528, guid: ea83b3415b10b9443835cc46993efa50, type: 2}
   weaponPos: {fileID: 4376710816015364}
   resistances: 
-  swordSwing1: {fileID: 8300000, guid: b793377018983f4458b7064ef2585dce, type: 3}
-  swordSwing2: {fileID: 8300000, guid: 3f2af07bf22158e4abb9637ae64a3f23, type: 3}
+  lightAttack1: {fileID: 0}
+  lightAttack2: {fileID: 0}
   sandSteps: {fileID: 8300000, guid: 657d210845851964baf17973fc28c7f9, type: 3}
   stoneSteps: {fileID: 8300000, guid: bfa7a3bd9aee30f43afddf08d5570f61, type: 3}
   woodSteps: {fileID: 8300000, guid: fc2f1ec432dc517489f5e953ab3f3341, type: 3}
-  houndJumpAttack: {fileID: 8300000, guid: f6fe769c0dc0f4a449f9ddc359998db8, type: 3}
-  howl: {fileID: 8300000, guid: 55f4883ca6dad424396c9cd3b504f1e8, type: 3}
+  chargeAttack: {fileID: 0}
+  aggro: {fileID: 0}
   death: {fileID: 8300000, guid: e69a69e6beada9747bda5095fa09f2c5, type: 3}
+  bossTeleportDisappear: {fileID: 0}
+  bossTeleportAppear: {fileID: 0}
+  bossMagicAttack: {fileID: 0}
+  bossEnrage: {fileID: 0}
   footSteps: {fileID: 82911489056533366}
   attacks: {fileID: 82307148379071146}
   otherSFX: {fileID: 82522092537624842}
