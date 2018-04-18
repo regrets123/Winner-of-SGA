@@ -61,6 +61,8 @@ public class SettingsMenuScript : MonoBehaviour
         RenderSettings.ambientLight = new Color(brightnessSlider.value, brightnessSlider.value, brightnessSlider.value, 1);
     }
 
+    /* När vi ändrar ljudvolymen använder vi oss av mainmixern. */
+
     public void SetMusicVolume(float musicVolume)
     {
         mainMixer.SetFloat("Music", musicVolume);
@@ -73,6 +75,12 @@ public class SettingsMenuScript : MonoBehaviour
         this.environmentalVolume = environmentalVolume;
     }
 
+    public void SetSFXVolume(float SFXVolume)
+    {
+        mainMixer.SetFloat("SFX", SFXVolume);
+        this.SFXVolume = SFXVolume;
+    }
+
     public void SetCamSensitivity(float sense)
     {
         camSensitivity = sense;
@@ -80,12 +88,6 @@ public class SettingsMenuScript : MonoBehaviour
             camFollow = FindObjectOfType<CameraFollow>();
         if (camFollow != null)
             camFollow.InputSensitivity = camSensitivity;
-    }
-
-    public void SetSFXVolume(float SFXVolume)
-    {
-        mainMixer.SetFloat("SFX", SFXVolume);
-        this.SFXVolume = SFXVolume;
     }
 
     public void ApplySettings()
@@ -117,6 +119,8 @@ public class SettingsMenuScript : MonoBehaviour
         sensitivitySlider.value = startingSense;
         settingsMenu.SetActive(false);
     }
+
+    /* Set brightness ändrar ambient light i scenen. Senare kan detta ändras så att allt som kameran ser blir ljusare eller mörkare */
 
     public void SetBrightness()
     {
