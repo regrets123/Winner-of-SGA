@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class FamineBossAI : BaseEnemyScript
 {
-    [SerializeField]
-    Slider healthSlider;
 
     [SerializeField]
     Text bossNameText;
@@ -38,8 +36,7 @@ public class FamineBossAI : BaseEnemyScript
     protected override void Start()
     {
         base.Start();
-        this.healthBar = healthSlider;
-        bossNameText.text = this.name;
+        bossNameText.text = "Faminus";
     }
 
     protected override void Update()
@@ -131,6 +128,7 @@ public class FamineBossAI : BaseEnemyScript
             nav.isStopped = true;
             teleporting = true;
             anim.SetBool("Teleport", true);
+            weapon.GetComponent<Renderer>().enabled = false;
             yield return new WaitForSeconds(2f);
             teleporting = false;
             nav.isStopped = false;
@@ -142,6 +140,7 @@ public class FamineBossAI : BaseEnemyScript
             StartCoroutine("AttackCooldown");
             yield return new WaitForSeconds(2.5f);
             anim.SetBool("Teleport", false);
+            weapon.GetComponent<Renderer>().enabled = true;
             nav.speed = originalSpeed;
             nav.destination = target.gameObject.transform.position;
         }
