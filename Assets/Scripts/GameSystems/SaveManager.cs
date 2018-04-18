@@ -59,11 +59,11 @@ public class SaveManager : MonoBehaviour
 
     InputManager inputManager;
 
-    private void Start()
+    private void Start()  //Startar spelet på olika sätt beroende på om det är ett nytt eller sparat spel
     {
         inputManager = FindObjectOfType<InputManager>();
         currentGame = new XmlDocument();
-        player = FindObjectOfType<PlayerControls>(); //Temporary
+        player = FindObjectOfType<PlayerControls>();
         if (File.Exists(Application.dataPath + "/SaveToLoad.xml"))
         {
             LoadGame();
@@ -75,18 +75,11 @@ public class SaveManager : MonoBehaviour
         }
         if (xNav == null)
             xNav = currentGame.CreateNavigator();
-
-
-
-        /*Exempel för att hitta i XML*/
-        // xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").SetValue(player.transform.position.y.ToString()); //Funkar för att sätta värden
-        //  print(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value); //Funkar för att hitta värden
     }
 
-    //Laddar ett sparat spel
-    void LoadGame()
+
+    void LoadGame()    //Laddar ett sparat spel
     {
-        print("loading game");
         if (currentSave == null)
         {
             XmlDocument pathHolder = new XmlDocument();
@@ -109,7 +102,7 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    void ReskinSavePoints()
+    void ReskinSavePoints()     //Ger använda checkpoints ett nytt material för att indikera att de använts
     {
         XPathNodeIterator nodes = xNav.Select("/SavedState/UsedSavePoints//SavePoint/@Index");
         foreach (XPathNavigator node in nodes)
@@ -118,7 +111,7 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    void LoadInventory()
+    void LoadInventory()    //Laddar in spelarens sparade inventory
     {
         XPathNodeIterator nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
         XPathNodeIterator upgrades = xNav.Select("/SavedState/PlayerInfo/Inventory/Upgrades//Upgrade");
@@ -150,13 +143,12 @@ public class SaveManager : MonoBehaviour
                             break;
                         }
                     }
-                    //Destroy(newItem);
                 }
             }
         }
     }
 
-    public void ReloadGame()
+    public void ReloadGame()        //Laddar spelet från där det senast sparades; om spelet inte sparats får spelaren börja om från början. Används framförallt då spelaren dör.
     {
         if (currentSave != null)
         {
@@ -175,11 +167,10 @@ public class SaveManager : MonoBehaviour
             }
         }
         inputManager.SetInputMode(InputMode.Playing);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         SceneManager.LoadScene("Master_Scene");
     }
 
-    void MovePlayer()
+    void MovePlayer()       //Flyttas spelaren till en sparad position
     {
         Vector3 newPos = new Vector3(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Position/@Z").Value));
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/PlayerInfo/Transform/Rotation/@W").Value));
@@ -187,7 +178,7 @@ public class SaveManager : MonoBehaviour
         player.transform.rotation = newRot;
     }
 
-    void MoveCamera()
+    void MoveCamera()       //Flyttar kameran till en sparad position
     {
         Vector3 newPos = new Vector3(float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Z").Value));
         Quaternion newRot = new Quaternion(float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@X").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Y").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@Z").Value), float.Parse(xNav.SelectSingleNode("/SavedState/CameraTransform/Rotation/@W").Value));
@@ -195,11 +186,11 @@ public class SaveManager : MonoBehaviour
         camBase.transform.rotation = newRot;
     }
 
-    public void SaveGame(GameObject savePoint)
+    public void SaveGame(GameObject savePoint)      //Sparar spelet och byter material på den savepoint som använts för att indikera att den används
     {
         string spritePath = Screenshot();
-        //usedSavePoints.Add(Array.IndexOf(savePoints, savePoint) + 1);
-        //savePoint.GetComponent<SavePointScript>().Reskin(saveMat);
+        usedSavePoints.Add(Array.IndexOf(savePoints, savePoint) + 1);
+        savePoint.GetComponent<SavePointScript>().Reskin(saveMat);
         GetInfoToSave();   //Matar in all info som ska sparas i den virtuella XML-filen
         if (currentSave == null)
         {
@@ -243,17 +234,17 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    void GetInfoToSave()
+    void GetInfoToSave()        //Lagrar all relevant info i currentGame
     {
-        //Lagrar all relevant info i currentGame
+        
         SavePlayerTransform();
         SavePlayerResources();
         SaveCamTransform();
         SaveInventory();
-        //SaveUsedSavePoints();
+        SaveUsedSavePoints();
     }
 
-    void SaveUsedSavePoints()
+    void SaveUsedSavePoints()       //Sparar alla använda savepoints så deras material kan bytas när ett sparat spel laddas
     {
         XPathNavigator savePointsNode = xNav.SelectSingleNode("/SavedState/UsedSavePoints");
         XmlNodeList oldSavePoints = currentGame.SelectNodes("//SavePoint");
@@ -275,7 +266,7 @@ public class SaveManager : MonoBehaviour
         xNav.SelectSingleNode("/SavedState/PlayerInfo/Resources/@LifeForce").SetValue(player.LifeForce.ToString());
     }
 
-    void SaveCamTransform()
+    void SaveCamTransform()         //Sparar kamerans position & rotation till XML
     {
         xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@X").SetValue(Math.Round(camBase.transform.position.x, 4).ToString());
         xNav.SelectSingleNode("/SavedState/CameraTransform/Position/@Y").SetValue(Math.Round(camBase.transform.position.y, 4).ToString());
@@ -332,7 +323,7 @@ public class SaveManager : MonoBehaviour
         {
             for (int i = allOldUpgrades.Count - 1; i > -1; i--)
             {
-                allOldUpgrades[i].ParentNode.RemoveChild(allOldUpgrades[i]);
+                allOldUpgrades[i].ParentNode.RemoveChild(allOldUpgrades[i]);    //Tar bort alla sparade upgrades från XML för att sedan kunna lägga in alla befintliga, för att undvika att spara dubletter eller redan använda upgrades
             }
         }
         upgradesNode = xNav.SelectSingleNode("//Upgrades");
@@ -347,7 +338,6 @@ public class SaveManager : MonoBehaviour
                 if (weaponNames[index] == newUpgrades[index][0])
                 {
                     index++;
-                    print(newName + " " + upgradeLevel);
                     upgradesNode.AppendChild("<Upgrade Weapon=\"" + newUpgrades[i][0] + "\" Name=\"" + newName + "\" Level=\"" + upgradeLevel + "\"/>");
                     break;
                 }
@@ -390,13 +380,9 @@ public class SaveManager : MonoBehaviour
         return path;
     }
 
-    private void Update()
+    private void Update()           //Temporary AF
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            SaveGame(player.gameObject);
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             ReloadGame();
         }
