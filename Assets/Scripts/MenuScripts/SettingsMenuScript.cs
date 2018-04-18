@@ -28,7 +28,7 @@ public class SettingsMenuScript : MonoBehaviour
 
     float musicVolume, SFXVolume, environmentalVolume, camSensitivity, startingEnvironmental, startingMusic, startingFX, startingBrightness, startingSense;
 
-    void Awake()
+    void Awake()        //Ställer in alla settings från värden sparade i XML
     {
         camFollow = cam.GetComponent<CameraFollow>();
         if (File.Exists(Application.dataPath + "/Settings.xml"))
@@ -51,7 +51,7 @@ public class SettingsMenuScript : MonoBehaviour
             camSensitivity = sensitivitySlider.value;
             startingSense = sensitivitySlider.value;
         }
-        else
+        else        //Om inga värden sparats i XML skapas istället en virtuell XML att spara värden i
         {
             TextAsset newSettings = Resources.Load("SettingsXML") as TextAsset;
             settingsXML = new XmlDocument();
@@ -60,28 +60,27 @@ public class SettingsMenuScript : MonoBehaviour
         }
         RenderSettings.ambientLight = new Color(brightnessSlider.value, brightnessSlider.value, brightnessSlider.value, 1);
     }
-
+    
     /* När vi ändrar ljudvolymen använder vi oss av mainmixern. */
-
-    public void SetMusicVolume(float musicVolume)
+    public void SetMusicVolume(float musicVolume)       //Ställer in musikvolymen
     {
         mainMixer.SetFloat("Music", musicVolume);
         this.musicVolume = musicVolume;
     }
 
-    public void SetEnvironmentalVolume(float environmentalVolume)
+    public void SetEnvironmentalVolume(float environmentalVolume)       //Ställer in volymen på alla miljörelaterade ljud
     {
         mainMixer.SetFloat("Environmental", environmentalVolume);
         this.environmentalVolume = environmentalVolume;
     }
-
+    
     public void SetSFXVolume(float SFXVolume)
     {
         mainMixer.SetFloat("SFX", SFXVolume);
         this.SFXVolume = SFXVolume;
     }
-
-    public void SetCamSensitivity(float sense)
+    
+    public void SetCamSensitivity(float sense)          //Ställer in hur snabbt kameran kan röra sig
     {
         camSensitivity = sense;
         if (camFollow == null)
@@ -90,7 +89,7 @@ public class SettingsMenuScript : MonoBehaviour
             camFollow.InputSensitivity = camSensitivity;
     }
 
-    public void ApplySettings()
+    public void ApplySettings()                         //Bekräftar och sparar alla nya värden
     {
         GetComponent<AudioSource>().Play();
         startingSense = sensitivitySlider.value;
@@ -109,7 +108,7 @@ public class SettingsMenuScript : MonoBehaviour
             settingsXML.Save(writer);
     }
 
-    public void GoBack()
+    public void GoBack()                                //Avbryter alla temporära settingsförändringar och återställer dem till deras tidigare värden
     {
         brightnessSlider.value = startingBrightness;
         SetBrightness();
@@ -119,10 +118,9 @@ public class SettingsMenuScript : MonoBehaviour
         sensitivitySlider.value = startingSense;
         settingsMenu.SetActive(false);
     }
-
-    /* Set brightness ändrar ambient light i scenen. Senare kan detta ändras så att allt som kameran ser blir ljusare eller mörkare */
-
-    public void SetBrightness()
+    
+    
+    public void SetBrightness()                         //Ställer in ljusets intensitet
     {
         RenderSettings.ambientLight = new Color(brightnessSlider.value, brightnessSlider.value, brightnessSlider.value, 1);
     }
