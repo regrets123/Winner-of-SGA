@@ -71,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331416610006404}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 3.19, y: -0.1, z: 13.35}
+  m_LocalPosition: {x: -60.26, y: -69.53, z: -76.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4808067044583934}
@@ -184,7 +184,8 @@ MonoBehaviour:
   inventoryIcon: {fileID: 21300000, guid: e0203948798495441962d2096b83df3a, type: 3}
   objectName: Khopesh
   myType: 0
-  origninalDamage: 20
+  origninalLightDamage: 7
+  originalHeavyDamage: 14
   attackSpeed: 1
   attacks: 
   dmgType: 0
@@ -266,7 +267,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -2015252006
+  randomSeed: -309727901
   InitialModule:
     serializedVersion: 3
     enabled: 1

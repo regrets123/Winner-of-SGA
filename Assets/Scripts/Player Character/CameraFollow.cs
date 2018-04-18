@@ -181,6 +181,15 @@ public class CameraFollow : MonoBehaviour, IPausable
                             case "Guardian":
                                 spriteOffset = 1.3f;
                                 break;
+
+                            case "Faminus":
+                                spriteOffset = 2.5f;
+                                break;
+
+                            case "Raider":
+                                spriteOffset = 1f;
+                                break;
+
                             default:
                                 spriteOffset = 0.4f;
                                 break;

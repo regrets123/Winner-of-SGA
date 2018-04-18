@@ -13,6 +13,8 @@ public class SavePointScript : MonoBehaviour, IInteractable
 
     public void Interact(PlayerControls player)         //Sparar spelet då spelaren interagerar med scriptet
     {
+        player.RestoreHealth(1000);
+        player.Stamina = 1000;
         SaveManager saver = FindObjectOfType<SaveManager>();
         saver.SaveGame(this.gameObject);
     }

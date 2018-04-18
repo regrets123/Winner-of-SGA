@@ -320,7 +320,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     public float Stamina
     {
         get { return this.stamina; }
-        set { this.stamina = value; staminaBar.value = stamina; }
+        set { this.stamina = Mathf.Clamp(value, 0f, maxStamina); staminaBar.value = stamina; }
     }
 
     public int Health
