@@ -2105,7 +2105,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -57.98732}
+  m_AnchoredPosition: {x: 0, y: -60}
   m_SizeDelta: {x: 160, y: 112.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1274475032
@@ -2141,7 +2141,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "BJ\xD6RN ANDERSSON\nANDREAS NILSSON"
+  m_Text: "BJ\xD6RN ANDERSSON\nANDREAS NILSSON\nJOHANNA PETTERSSON"
 --- !u!222 &1274475033
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2885,7 +2885,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: fc35f98ca278d814c8df514cafd0604d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c124c2204d938c04680d8544a1dfaadd, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
