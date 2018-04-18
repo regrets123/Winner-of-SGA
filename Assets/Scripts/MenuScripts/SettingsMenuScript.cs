@@ -60,7 +60,8 @@ public class SettingsMenuScript : MonoBehaviour
         }
         RenderSettings.ambientLight = new Color(brightnessSlider.value, brightnessSlider.value, brightnessSlider.value, 1);
     }
-
+    
+    /* När vi ändrar ljudvolymen använder vi oss av mainmixern. */
     public void SetMusicVolume(float musicVolume)       //Ställer in musikvolymen
     {
         mainMixer.SetFloat("Music", musicVolume);
@@ -72,7 +73,13 @@ public class SettingsMenuScript : MonoBehaviour
         mainMixer.SetFloat("Environmental", environmentalVolume);
         this.environmentalVolume = environmentalVolume;
     }
-
+    
+    public void SetSFXVolume(float SFXVolume)
+    {
+        mainMixer.SetFloat("SFX", SFXVolume);
+        this.SFXVolume = SFXVolume;
+    }
+    
     public void SetCamSensitivity(float sense)          //Ställer in hur snabbt kameran kan röra sig
     {
         camSensitivity = sense;
@@ -80,12 +87,6 @@ public class SettingsMenuScript : MonoBehaviour
             camFollow = FindObjectOfType<CameraFollow>();
         if (camFollow != null)
             camFollow.InputSensitivity = camSensitivity;
-    }
-
-    public void SetSFXVolume(float SFXVolume)           //Ställer in volymen på alla ljudeffekter
-    {
-        mainMixer.SetFloat("SFX", SFXVolume);
-        this.SFXVolume = SFXVolume;
     }
 
     public void ApplySettings()                         //Bekräftar och sparar alla nya värden
@@ -117,7 +118,8 @@ public class SettingsMenuScript : MonoBehaviour
         sensitivitySlider.value = startingSense;
         settingsMenu.SetActive(false);
     }
-
+    
+    
     public void SetBrightness()                         //Ställer in ljusets intensitet
     {
         RenderSettings.ambientLight = new Color(brightnessSlider.value, brightnessSlider.value, brightnessSlider.value, 1);

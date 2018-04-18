@@ -14,18 +14,24 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     Color inactiveColor, activeColor;
-
+    
+    
     public void ToggleMenu(GameObject menuToToggle)     //Visar och döljer menyer
+
     {
         menuToToggle.SetActive(!menuToToggle.activeSelf);
     }
 
+
     public void LoadScene(string sceneName)             //Laddar en vald scen
+
     {
         SceneManager.LoadScene(sceneName);
     }
 
+
     public void ExitApplication()                       //Avslutar spelet
+
     {
         Application.Quit();
     }
@@ -60,6 +66,7 @@ public class MenuManager : MonoBehaviour
     }
 
     public void ToggleColor(Text textToChange)      //Byter färg på textelement
+
     {
         if (textToChange.color == activeColor)
         {
