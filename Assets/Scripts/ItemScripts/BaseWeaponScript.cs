@@ -141,6 +141,10 @@ public class BaseWeaponScript : BaseEquippableObject
             print("nu gick nåt åt helvete");
         }
         this.canAttack = true;
+        if (equipper is PlayerControls)
+            (equipper as PlayerControls).CurrentMovementType = MovementType.Idle;
+        else
+            (equipper as BaseEnemyScript).CurrentMovementType = MovementType.Idle;
     }
 
     public void ApplyUpgrade(Upgrade upgrade)       //Uppgraderar vapnet

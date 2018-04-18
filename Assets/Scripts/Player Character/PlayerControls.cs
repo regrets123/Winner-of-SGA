@@ -669,7 +669,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         else
             aggroIndicator.SetActive(false);
     }
-    
+
     public void LightAttack()    //Sets the current movement type as attacking and which attack move thats used
     {
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
@@ -723,8 +723,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
-            this.currentWeapon.StartCoroutine("AttackCooldown");
-            this.currentWeapon.Attack(1.5f, true);
+            currentMovementType = MovementType.Attacking;
+
             attackCooldown = 0.5f;
 
             currentWeapon.CurrentSpeed = 0.5f;
@@ -750,14 +750,22 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 nuOfClicks = 0;
                 attackCooldown = 1f;
             }
-
             SoundManager.instance.RandomizeSfx(heavyAttack1, heavyAttack2);
 
             move = Vector3.zero;
-            move += transform.forward * attackMoveLength;
+            //move += transform.forward * attackMoveLength;
 
             attackCountdown = attackCooldown;
+
+            StartCoroutine("HeavyAttackWait");
         }
+    }
+
+    IEnumerator HeavyAttackWait()
+    {
+        yield return new WaitForSeconds(0.5f);
+        this.currentWeapon.Attack(1.5f, true);
+        this.currentWeapon.StartCoroutine("AttackCooldown");
     }
 
     public void Leech(int damageDealt)      //Om spelaren slåss med ett vapen med leech får denne tillbaka 10% av skadan som liv
@@ -1116,7 +1124,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             canDodge = true;
         }
     }
-       
+
     IEnumerator Dodge()              //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
     {
         if (!dead)
