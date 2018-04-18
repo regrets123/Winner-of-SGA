@@ -93,9 +93,9 @@ BoxCollider:
   m_GameObject: {fileID: 1705096337478230}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 3, z: 1}
+  m_Size: {x: 1, y: 4, z: 2}
   m_Center: {x: -0.0736206, y: 1.5, z: 0.099622086}
 --- !u!82 &82523579108066042
 AudioSource:
@@ -191,9 +191,9 @@ MonoBehaviour:
   inventoryIcon: {fileID: 0}
   objectName: 
   myType: 0
-  origninalLightDamage: 0
-  originalHeavyDamage: 0
-  attackSpeed: 0
+  origninalLightDamage: 20
+  originalHeavyDamage: 30
+  attackSpeed: 2
   attacks: 
   dmgType: 0
   enemyHit1: {fileID: 0}
