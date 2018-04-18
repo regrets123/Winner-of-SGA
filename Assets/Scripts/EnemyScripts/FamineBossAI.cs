@@ -76,6 +76,7 @@ public class FamineBossAI : BaseEnemyScript
     {
         nav.isStopped = true;
         anim.SetTrigger("Enrage");
+        RandomizeOtherSfx(bossEnrage);
         enraged = true;
         StartCoroutine("WaveArms");
     }
@@ -83,6 +84,7 @@ public class FamineBossAI : BaseEnemyScript
     protected override void Aggro(PlayerControls newTarget)
     {
         base.Aggro(newTarget);
+        RandomizeOtherSfx(aggro);
     }
 
     void MagicAttack()      //Låter bossen göra en magic black hole attack
@@ -109,6 +111,7 @@ public class FamineBossAI : BaseEnemyScript
             attackColliderDeactivationSpeed = 4f;
             StartCoroutine(ActivateAttackCollider(1));
             anim.SetTrigger("JumpSlash");
+            RandomizeAttackSfx(chargeAttack);
             Vector3 targetPosition = target.gameObject.transform.position;
             float originalSpeed = nav.speed;
             nav.speed = nav.speed * 4;
@@ -128,6 +131,7 @@ public class FamineBossAI : BaseEnemyScript
             nav.isStopped = true;
             teleporting = true;
             anim.SetBool("Teleport", true);
+            RandomizeOtherSfx(bossTeleportDisappear);
             weapon.GetComponent<Renderer>().enabled = false;
             yield return new WaitForSeconds(2f);
             teleporting = false;
@@ -140,6 +144,7 @@ public class FamineBossAI : BaseEnemyScript
             StartCoroutine("AttackCooldown");
             yield return new WaitForSeconds(2.5f);
             anim.SetBool("Teleport", false);
+            RandomizeOtherSfx(bossTeleportAppear);
             weapon.GetComponent<Renderer>().enabled = true;
             nav.speed = originalSpeed;
             nav.destination = target.gameObject.transform.position;
@@ -160,6 +165,7 @@ public class FamineBossAI : BaseEnemyScript
         transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
         yield return new WaitForSeconds(1);
         consumeObj = Instantiate(blackHole, vortexPos);
+        RandomizeAttackSfx(bossMagicAttack);
         yield return new WaitForSeconds(consumeTime);
         Destroy(consumeObj);
         anim.SetBool("Consume", false);

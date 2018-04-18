@@ -1503,8 +1503,7 @@ MonoBehaviour:
   staminaBar: {fileID: 0}
   lifeForceBar: {fileID: 0}
   aggroIndicator: {fileID: 0}
-  deathScreen: {fileID: 1024616962105358, guid: 04cb31017c8aa424c8da6968bd2f6390,
-    type: 2}
+  deathScreen: {fileID: 0}
 --- !u!137 &137506988087896688
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
