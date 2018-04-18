@@ -10,12 +10,12 @@ public class LoadingManager : MonoBehaviour {
     public GameObject loadingScreen;
     public Text progressText;
 
-    public void LoadScene (int scene)
+    public void LoadScene (string scene)
     {
         StartCoroutine(LoadingScene(scene));
     }
 
-    IEnumerator LoadingScene (int scene)
+    IEnumerator LoadingScene (string scene)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
 
@@ -24,9 +24,12 @@ public class LoadingManager : MonoBehaviour {
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
+
             progressBar.value = progress;
             progressText.text = progress * 100 + "%";
-
+            print(progressBar.value);
+            print(progressText.text);
+            print(operation.progress);
 
             yield return null;
         }
