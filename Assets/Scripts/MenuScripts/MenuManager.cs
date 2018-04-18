@@ -14,30 +14,30 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     Color inactiveColor, activeColor;
+    
+    
+    public void ToggleMenu(GameObject menuToToggle)     //Visar och döljer menyer
 
-    /* Togglar en meny. */
-
-    public void ToggleMenu(GameObject menuToToggle)
     {
         menuToToggle.SetActive(!menuToToggle.activeSelf);
     }
 
-    /* Laddar en scen */
 
-    public void LoadScene(string sceneName)
+    public void LoadScene(string sceneName)             //Laddar en vald scen
+
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    /* Stänger ner applicationen */
 
-    public void ExitApplication()
+    public void ExitApplication()                       //Avslutar spelet
+
     {
         Application.Quit();
     }
 
 
-    public void Glow(Outline o)
+    public void Glow(Outline o)         //Får knappar att lysa
     {
         if (iM == null)
             iM = FindObjectOfType<InventoryManager>();
@@ -60,14 +60,13 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void NoGlow(Outline o)
+    public void NoGlow(Outline o)       //Får knappar att sluta lysa
     {
         o.enabled = false;
     }
 
-    /* Togglar mellan två material på en text */
+    public void ToggleColor(Text textToChange)      //Byter färg på textelement
 
-    public void ToggleColor(Text textToChange)
     {
         if (textToChange.color == activeColor)
         {
