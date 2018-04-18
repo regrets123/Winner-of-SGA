@@ -643,6 +643,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1878301204675706
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4554977020375290}
+  - component: {fileID: 82584542803357442}
+  m_Layer: 0
+  m_Name: Feet_Audiosource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1899969927270426
 GameObject:
   m_ObjectHideFlags: 1
@@ -1021,6 +1037,19 @@ Transform:
   m_Father: {fileID: 4731473301770100}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4554977020375290
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878301204675706}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4621440996584544}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4579538693809320
 Transform:
   m_ObjectHideFlags: 1
@@ -1074,6 +1103,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4579538693809320}
+  - {fileID: 4554977020375290}
   m_Father: {fileID: 4751865588653474}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1407,6 +1437,86 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!82 &82584542803357442
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878301204675706}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95539748641690940
 Animator:
   serializedVersion: 3
@@ -1569,7 +1679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba8e3a6f2f2b8394d8f418a5818782d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraToLookAt: {fileID: 0}
 --- !u!114 &114790663261842922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1601,14 +1710,15 @@ MonoBehaviour:
   weapon: {fileID: 1782538271173224, guid: 0fe944e66f9eb3a419e60b67e8b9a2e8, type: 2}
   weaponPos: {fileID: 4093958588651162}
   resistances: 
-  swordSwing1: {fileID: 0}
-  swordSwing2: {fileID: 0}
-  sandSteps: {fileID: 0}
-  stoneSteps: {fileID: 0}
-  woodSteps: {fileID: 0}
-  footSteps: {fileID: 0}
-  healthBar: {fileID: 0}
-  raiderHowl: {fileID: 0}
+  swordSwing1: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+  swordSwing2: {fileID: 8300000, guid: ebda4a0832e0eee4491fb13d19ecf429, type: 3}
+  sandSteps: {fileID: 8300000, guid: 657d210845851964baf17973fc28c7f9, type: 3}
+  stoneSteps: {fileID: 8300000, guid: bfa7a3bd9aee30f43afddf08d5570f61, type: 3}
+  woodSteps: {fileID: 8300000, guid: fc2f1ec432dc517489f5e953ab3f3341, type: 3}
+  footSteps: {fileID: 82584542803357442}
+  healthBar: {fileID: 114339121851666688}
+  enemyCanvas: {fileID: 223157574680674336}
+  raiderHowl: {fileID: 8300000, guid: 7348e3a85168bcd4fb2b6fae8b1ea0c7, type: 3}
 --- !u!114 &114821051596134668
 MonoBehaviour:
   m_ObjectHideFlags: 1

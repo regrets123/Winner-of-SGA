@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 95175534038653584}
   - component: {fileID: 65617410239928406}
   - component: {fileID: 114081670333068858}
+  - component: {fileID: 65682464742176670}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -895,7 +896,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1221588347252058}
   m_LocalRotation: {x: -0, y: 0.4280247, z: -0, w: 0.90376705}
-  m_LocalPosition: {x: 98.68153, y: 219.88347, z: 118.40307}
+  m_LocalPosition: {x: 98.68, y: 221.6, z: 118.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4354098873767702}
@@ -1265,6 +1266,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!65 &65682464742176670
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1221588347252058}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.5, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!82 &82253484780555648
 AudioSource:
   m_ObjectHideFlags: 1
@@ -1611,7 +1624,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 50
-  m_StepOffset: 0.5
+  m_StepOffset: 0.7
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
