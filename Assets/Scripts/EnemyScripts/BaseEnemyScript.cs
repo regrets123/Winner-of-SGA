@@ -32,16 +32,19 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected DamageType[] resistances;
 
     [SerializeField]
-    protected AudioClip swordSwing1, swordSwing2, sandSteps, stoneSteps, woodSteps;
+    protected AudioClip lightAttack1, lightAttack2, sandSteps, stoneSteps, woodSteps, chargeAttack, aggro, death, bossTeleportDisappear, bossTeleportAppear, bossMagicAttack, bossEnrage;
 
     [SerializeField]
-    protected AudioSource footSteps;
+    protected AudioSource footSteps, attacks, otherSFX;
 
     [SerializeField]
     protected Slider healthBar;
 
     [SerializeField]
     protected Canvas enemyCanvas;
+
+    [SerializeField]
+    float lowPitchedRange = 0.95f, highPitchedRange = 1.05f;
     #endregion
 
     #region Non-Serialized Variables
@@ -316,7 +319,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             anim.SetTrigger("LightAttack3");
         }
 
-        SoundManager.instance.RandomizeSfx(swordSwing1, swordSwing2);
+        SoundManager.instance.RandomizeSfx(lightAttack1, lightAttack2);
 
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
         StartCoroutine("AttackCooldown");
@@ -358,6 +361,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         alive = false;
         anim.SetTrigger("Death");
+        SoundManager.instance.RandomizeSfx(death);
         print("deadson");
         this.target = null;
         nav.isStopped = true;
@@ -451,6 +455,38 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         invulnerable = true;
         yield return new WaitForSeconds(invulnerabilityTime);
         invulnerable = false;
+    }
+    #endregion
+
+    #region Sound
+    public void RandomizeAttackSfx(params AudioClip[] clips)
+    {
+        int randomIndex = Random.Range(0, clips.Length);
+        float randomPitch = Random.Range(lowPitchedRange, highPitchedRange);
+
+        attacks.pitch = randomPitch;
+        attacks.clip = clips[randomIndex];
+        attacks.PlayOneShot(attacks.clip);
+    }
+
+    public void RandomizeOtherSfx(params AudioClip[] clips)
+    {
+        int randomIndex = Random.Range(0, clips.Length);
+        float randomPitch = Random.Range(lowPitchedRange, highPitchedRange);
+
+        otherSFX.pitch = randomPitch;
+        otherSFX.clip = clips[randomIndex];
+        otherSFX.PlayOneShot(otherSFX.clip);
+    }
+
+    public void RandomizeFootstepSfx(params AudioClip[] clips)
+    {
+        int randomIndex = Random.Range(0, clips.Length);
+        float randomPitch = Random.Range(lowPitchedRange, highPitchedRange);
+
+        footSteps.pitch = randomPitch;
+        footSteps.clip = clips[randomIndex];
+        footSteps.PlayOneShot(footSteps.clip);
     }
     #endregion
 }

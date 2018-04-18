@@ -57,7 +57,7 @@ MonoBehaviour:
   myType: 0
   origninalLightDamage: 20
   originalHeavyDamage: 50
-  attackSpeed: 10
+  attackSpeed: 1.5
   attacks: 
   dmgType: 5
   enemyHit1: {fileID: 0}

@@ -45,6 +45,7 @@ public class GuardianAI : BaseEnemyScript
             attackColliderDeactivationSpeed = 4f;
             StartCoroutine(ActivateAttackCollider(1));
             anim.SetTrigger("DashAttack");
+            RandomizeAttackSfx(lightAttack1, lightAttack2);
             Vector3 targetPosition = target.gameObject.transform.position;
             float originalSpeed = nav.speed;
             nav.speed = nav.speed * 4;

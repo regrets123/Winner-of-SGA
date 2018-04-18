@@ -32,6 +32,7 @@ public class HoundAI : BaseEnemyScript
         previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;
         anim.SetTrigger("SwipeAttack");
+        RandomizeAttackSfx(lightAttack1, lightAttack2);
         weapon.GetComponent<BaseWeaponScript>().Attack(0.5f, false);
         weapon.GetComponent<BaseWeaponScript>().StartCoroutine("AttackCooldown");
         StartCoroutine("AttackCooldown");
@@ -63,6 +64,7 @@ public class HoundAI : BaseEnemyScript
             attackColliderDeactivationSpeed = 4f;
             StartCoroutine(ActivateAttackCollider(1));
             anim.SetTrigger("JumpAttack");
+            RandomizeAttackSfx(chargeAttack);
             Vector3 targetPosition = target.gameObject.transform.position;
             float originalSpeed = nav.speed;
             nav.speed = nav.speed * 4;
@@ -79,6 +81,7 @@ public class HoundAI : BaseEnemyScript
         transform.LookAt(newTarget.transform);
         transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
         anim.SetTrigger("Aggro");
+        RandomizeOtherSfx(aggro);
         yield return new WaitForSeconds(howlTime);
         base.Aggro(newTarget);
     }
