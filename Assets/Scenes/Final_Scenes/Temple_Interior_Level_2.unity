@@ -3573,6 +3573,7 @@ Transform:
   - {fileID: 1879565722}
   - {fileID: 473717946}
   - {fileID: 683322457}
+  - {fileID: 2017599962}
   - {fileID: 1028808471}
   - {fileID: 1227349251}
   - {fileID: 1811671352}
@@ -3582,7 +3583,6 @@ Transform:
   - {fileID: 750612994}
   - {fileID: 513578091}
   - {fileID: 1928756404}
-  - {fileID: 2017599962}
   - {fileID: 151408836}
   - {fileID: 1042384463}
   - {fileID: 1656867064}
@@ -75493,7 +75493,7 @@ Transform:
   - {fileID: 470444688}
   - {fileID: 1282466844}
   m_Father: {fileID: 100902615}
-  m_RootOrder: 28
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: -82, z: 0}
 --- !u!1001 &2018695641
 Prefab:
