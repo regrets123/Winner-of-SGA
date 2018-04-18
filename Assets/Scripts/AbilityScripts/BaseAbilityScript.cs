@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class BaseAbilityScript : BaseEquippableObject
+public class BaseAbilityScript : BaseEquippableObject       //Ett script alla magic abilities ärver från
 {
     [SerializeField]
     protected int abilityCost;
@@ -26,9 +26,9 @@ public class BaseAbilityScript : BaseEquippableObject
     }
 
 
-    public virtual void UseAbility()
+    public virtual void UseAbility()                      //Virtuell metod som overrideas av alla abilities så att de faktiskt gör olika saker
     {
-        player.StartCoroutine("AbilityCooldown");
+        player.StartCoroutine("AbilityCooldown");       //Startar en cooldown när spelaren använder en ability
     }
 
     protected virtual void Update()
@@ -40,7 +40,7 @@ public class BaseAbilityScript : BaseEquippableObject
             && Input.GetButtonDown("Ability")
             && !coolingDown && !player.Dead)
         {
-            if (player.LifeForce >= abilityCost)
+            if (player.LifeForce >= abilityCost)    //Drar resurser för att använda abilities
             {
                 player.LifeForce -= abilityCost;
                 player.LifeforceBar.value = player.LifeForce;

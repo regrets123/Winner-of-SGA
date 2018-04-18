@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class RaiderAI : BaseEnemyScript
 {
     [SerializeField]
     AudioClip raiderHowl;
 
-    public override void HeavyAttack()
+    public override void HeavyAttack()      //En heavy attack som tar lång tid att utföra men gör mycket skada
     {
         if (!alive)
         {
@@ -37,7 +39,7 @@ public class RaiderAI : BaseEnemyScript
         StartCoroutine("AttackCooldown");
     }
 
-    protected override void Dodge()
+    protected override void Dodge()         //Ger raidern möjlighet att undvika spelarens attacker
     {
         anim.SetTrigger("Dodge");
         StartCoroutine("Invulnerability");
@@ -47,6 +49,6 @@ public class RaiderAI : BaseEnemyScript
     protected override void Aggro(PlayerControls newTarget)
     {
         base.Aggro(newTarget);
-        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);
+        SoundManager.instance.RandomizeSfx(raiderHowl, raiderHowl);     //Raidern blir aggressiv mot spelaren som alla andra fiender, men gör också ett ljud då detta händer
     }
 }
