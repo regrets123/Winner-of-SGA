@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4466277993555088}
   - component: {fileID: 212426581116582560}
   m_Layer: 0
-  m_Name: DashSprite
+  m_Name: PhysicalUpgradeSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3575,7 +3575,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a72c22a34ea0f374dbe75c2b062cb891, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 61c2e3952b56fef4281500d9a5c39300, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
