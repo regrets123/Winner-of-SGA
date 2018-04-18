@@ -1374,7 +1374,7 @@ MonoBehaviour:
   attackSpeed: 2
   loseAggroTime: 100
   loseAggroDistance: 100
-  maxAggroFollow: 1000
+  maxAggroFollow: 10000
   maxPoise: 30
   staggerTime: 1
   poiseCooldown: 1
@@ -1388,14 +1388,25 @@ MonoBehaviour:
   weapon: {fileID: 1489838229834268, guid: 1ae48ce9673c8c640b6b16995baba2c1, type: 2}
   weaponPos: {fileID: 4521944216435540}
   resistances: 
-  swordSwing1: {fileID: 0}
-  swordSwing2: {fileID: 0}
+  lightAttack1: {fileID: 0}
+  lightAttack2: {fileID: 0}
   sandSteps: {fileID: 0}
   stoneSteps: {fileID: 0}
   woodSteps: {fileID: 0}
+  chargeAttack: {fileID: 0}
+  aggro: {fileID: 0}
+  death: {fileID: 0}
+  bossTeleportDisappear: {fileID: 0}
+  bossTeleportAppear: {fileID: 0}
+  bossMagicAttack: {fileID: 0}
+  bossEnrage: {fileID: 0}
   footSteps: {fileID: 0}
+  attacks: {fileID: 0}
+  otherSFX: {fileID: 0}
   healthBar: {fileID: 114746824061124082}
   enemyCanvas: {fileID: 223005548347363134}
+  lowPitchedRange: 0.95
+  highPitchedRange: 1.05
   weaponPos2: {fileID: 4159697154052830}
   weapon2: {fileID: 1794665721886170, guid: 7e0a7f942b120274f90582e7a85909e5, type: 2}
   myDrop: {fileID: 1698067011944644, guid: 2988bb2c7ead10741999da21ef975642, type: 2}
