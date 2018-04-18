@@ -38,6 +38,7 @@ public class FamineBossAI : BaseEnemyScript
     protected override void Start()
     {
         base.Start();
+        this.healthBar = healthSlider;
         bossNameText.text = this.name;
     }
 
@@ -72,8 +73,6 @@ public class FamineBossAI : BaseEnemyScript
         {
             Enrage();
         }
-
-        //healthSlider.value = health;
     }
 
     void Enrage()       //När bossen tagit tillräckligt mycket skada blir den enraged och gör mer skada
