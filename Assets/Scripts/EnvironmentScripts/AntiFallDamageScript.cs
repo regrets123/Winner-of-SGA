@@ -11,7 +11,7 @@ public class AntiFallDamageScript : MonoBehaviour {
         PlayerControls player = other.GetComponent<PlayerControls>();
         if (player != null)
         {
-            player.StartCoroutine("PreventFallDamage");
+            player.StartCoroutine("PreventFallDamage");     //Hindrar spelaren från att ta fallskada under en viss tid
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Björn Andersson && Andreas Nilsson*/
+
 public class OpenDoor : MonoBehaviour, IInteractable
 {
     [SerializeField]
@@ -28,7 +30,7 @@ public class OpenDoor : MonoBehaviour, IInteractable
         animDoor = doorToOpen.gameObject.GetComponent<Animator>();
     }
 
-    public void Interact(PlayerControls player)
+    public void Interact(PlayerControls player)     //Spelar upp en animation medan spelaren drar i en spak för att öppna en dörr
     {
         playerToMove = player;
         StartCoroutine("MovePlayerToInteract");
@@ -38,14 +40,14 @@ public class OpenDoor : MonoBehaviour, IInteractable
         StartCoroutine("OpenSesame");
     }
 
-    IEnumerator OpenSesame()
+    IEnumerator OpenSesame()        //Öppnar den relevanta dörren
     {
         yield return new WaitForSeconds(5.0f);
         SoundManager.instance.PlaySingle(openGate);
         animDoor.SetTrigger("OpenDoor");
     }
 
-    IEnumerator MovePlayerToInteract()
+    IEnumerator MovePlayerToInteract()      //Flyttar spelaren till rätt position medan animationen spelas
     {
         float t = 0;
 

@@ -82,8 +82,7 @@ public class CameraFollow : MonoBehaviour, IPausable
     {
         get { return lookAtMe; }
     }
-
-    // Use this for initialization
+    
     void Start()
     {
         pM = FindObjectOfType<PauseManager>();
@@ -98,7 +97,7 @@ public class CameraFollow : MonoBehaviour, IPausable
         paused = pausing;
     }
 
-    void LateUpdate()
+    void LateUpdate()       //Får kameran att följa efter spelaren
     {
         if (!playerObj.GetComponent<PlayerControls>().Dead)
         {
@@ -148,7 +147,7 @@ public class CameraFollow : MonoBehaviour, IPausable
         transform.position = Vector3.MoveTowards(transform.position, target.position, step);
     }
 
-    void CameraLockOn()
+    void CameraLockOn()     //Låter kameran fokusera på en fiende framför spelaren
     {
         if (Input.GetButtonDown("LockOn") && targetsLockOnAble != null && !lockOn)
         {
@@ -201,7 +200,7 @@ public class CameraFollow : MonoBehaviour, IPausable
             lockOn = false;
         }
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f && lockOn)
+        if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f && lockOn)          //Låter spelaren välja vilken fiende kameran ska fokusera på
         {
             visibleEnemies.Clear();
 

@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 //By Andreas Nilsson
+
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     List<GameObject> enemiesToSpawn;
     [SerializeField]
     List<Transform> spawnPositions;
-    //[SerializeField]
-    //float respawnTime;
+    [SerializeField]
+    float respawnTime;
 
     //When the player character enters the collider area one or several enemies is spawned in specific locations
     void OnTriggerEnter(Collider other)
@@ -20,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
 
             GetComponent<Collider>().enabled = false;
 
-            //StartCoroutine("Respawn");
+            StartCoroutine("Respawn");
         }
     }
 
@@ -34,12 +36,12 @@ public class EnemySpawner : MonoBehaviour
     }
 
     //Turns of the Collider upon activation and sets it back on after a respawn timer
-    //private IEnumerator Respawn()
-    //{
-    //    GetComponent<Collider>().enabled = false;
+    private IEnumerator Respawn()
+    {
+        GetComponent<Collider>().enabled = false;
 
-    //    yield return new WaitForSeconds(respawnTime);
+        yield return new WaitForSeconds(respawnTime);
 
-    //    GetComponent<Collider>().enabled = true;
-    //}
+        GetComponent<Collider>().enabled = true;
+    }
 }
