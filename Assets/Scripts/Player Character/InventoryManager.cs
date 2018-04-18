@@ -123,6 +123,12 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
+        if (FindObjectOfType<PlayerControls>().Inventory != null)
+        {
+            print("jnb");
+            return;
+            Destroy(this);
+        }
         menuManager = FindObjectOfType<MenuManager>();
         defaultIcon = Resources.Load<Sprite>("EmptySlot");
         this.player = FindObjectOfType<PlayerControls>();
