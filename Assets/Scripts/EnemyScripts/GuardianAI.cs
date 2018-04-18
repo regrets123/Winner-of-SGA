@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class GuardianAI : BaseEnemyScript
 {
     [SerializeField]
@@ -14,7 +16,7 @@ public class GuardianAI : BaseEnemyScript
     {
         base.Start();
 
-        this.weapon2 = Instantiate(weapon2, weaponPos2);
+        this.weapon2 = Instantiate(weapon2, weaponPos2);        //Då Guardian har två vapen instantieras det andra vapnet här
         weapon2.GetComponent<BaseWeaponScript>().GetComponent<BoxCollider>().enabled = false;
     }
 
@@ -28,7 +30,7 @@ public class GuardianAI : BaseEnemyScript
         }
     }
 
-    protected IEnumerator DashAttack()
+    protected IEnumerator DashAttack()       //Låter Guardian göra en dash attack mot spelaren
     {
         if (alive && target != null)
         {
@@ -55,7 +57,7 @@ public class GuardianAI : BaseEnemyScript
         }
     }
 
-    protected override IEnumerator ActivateAttackCollider(int attackNo)
+    protected override IEnumerator ActivateAttackCollider(int attackNo)     //Slår av och på collidern på rätt vapen så att Guardian kan göra skada på spelaren
     {
         GameObject weaponToAttackWith = (attackNo == 1 ? weapon2 : weapon);
         yield return new WaitForSeconds(attackColliderActivationSpeed);

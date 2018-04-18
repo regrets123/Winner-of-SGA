@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class HealthBarRotation : MonoBehaviour {
 
     Camera cameraToLookAt;
@@ -11,7 +13,7 @@ public class HealthBarRotation : MonoBehaviour {
         cameraToLookAt = FindObjectOfType<Camera>();
     }
 
-    void Update()
+    void Update()       //Roterar fienders hälsomätare mot kameran
     {
         Vector3 v = cameraToLookAt.transform.position - transform.position;
         v.x = v.z = 0.0f;

@@ -8,9 +8,8 @@ public class MagicDash : BaseAbilityScript
 {
     [SerializeField]
     float duration;
-
-    //Activated from the BaseAbility script. If the player have enough stamina the ability will activate and drain the staminaCost
-    public override void UseAbility()
+    
+    public override void UseAbility()    //Activated from the BaseAbility script. If the player have enough stamina the ability will activate and drain the staminaCost
     {
             base.UseAbility();
             player.Anim.SetTrigger("Dash");
@@ -26,7 +25,7 @@ public class MagicDash : BaseAbilityScript
            && Input.GetButtonDown("Ability")
            && !coolingDown && !player.Dead)
         {
-            if (player.Stamina >= abilityCost)
+            if (player.Stamina >= abilityCost)      //Gör så att MagicDash drar stamina istället för lifeforce
             {
                 player.StaminaBar.value = player.Stamina;
                 UseAbility();
@@ -34,8 +33,8 @@ public class MagicDash : BaseAbilityScript
         }
     }
 
-    //Enumerator smooths out the dash so it doesn't happen instantaneously
-    IEnumerator Dash()
+
+    IEnumerator Dash()    //Enumerator smooths out the dash so it doesn't happen instantaneously
     {
         player.CurrentMovementType = MovementType.Dashing;
         yield return new WaitForSeconds(duration);

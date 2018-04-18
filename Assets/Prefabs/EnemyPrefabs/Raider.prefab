@@ -1696,7 +1696,7 @@ MonoBehaviour:
   attackSpeed: 1
   loseAggroTime: 15
   loseAggroDistance: 100
-  maxAggroFollow: 100
+  maxAggroFollow: 1000
   maxPoise: 5
   staggerTime: 1
   poiseCooldown: 3
