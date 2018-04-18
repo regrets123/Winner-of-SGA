@@ -22277,11 +22277,26 @@ Prefab:
       propertyPath: deathScreen
       value: 
       objectReference: {fileID: 383657014}
+    - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: goBackButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1901776322}
+    - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: goBackButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1269014467}
     - target: {fileID: 114820794684758158, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
         type: 2}
       propertyPath: camBase
       value: 
       objectReference: {fileID: 1158883198}
+    - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: confirmQuitMenu
+      value: 
+      objectReference: {fileID: 1374690424}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0
