@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 /*By Andreas Nilsson && Björn Andersson*/
 
-//Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
-public interface IKillable
+
+public interface IKillable          //Interface som används av spelaren och alla fiender samt eventuella förstörbara objekt
 {
     void LightAttack();
     void HeavyAttack();
@@ -14,7 +14,7 @@ public interface IKillable
     void Kill();
 }
 
-public enum MovementType
+public enum MovementType            //Håller koll på hur spelaren rör sig för tillfället för att tillåta och hindra spelaren att göra vissa saker
 {
     Idle, Walking, Sprinting, Attacking, Dodging, Dashing, Jumping, Running, Interacting, SuperJumping, Stagger
 }
@@ -32,6 +32,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     [SerializeField]
     float maxStamina;
+
+    [SerializeField]
+    int leechAmount;
 
     [SerializeField]
     float maxLifeForce;
@@ -258,7 +261,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     List<DamageType> resistances = new List<DamageType>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
-        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false;
+        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false;    //bool shitManyBools = trueAF;
     #endregion
 
     #region Properties
@@ -393,7 +396,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (staminaRegenerating)
                 {
-                    stamina += staminaRegen;
+                    stamina += staminaRegen; //Låter spelaren få tillbaka stamina då denne inte sprintar eller använder staminabaserade anilities
 
                     if (stamina > maxStamina)
                     {
@@ -420,11 +423,11 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             staminaBar.value = stamina;
             if (currentMovementType != MovementType.Attacking && currentMovementType != MovementType.Interacting && currentMovementType != MovementType.Stagger)
             {
-                PlayerMovement(sprinting);
+                PlayerMovement(sprinting); //Tillåter spelaren att röra sig
             }
             if (!charController.isGrounded && !climbing && currentMovementType != MovementType.Interacting)
             {
-                yVelocity -= gravity;
+                yVelocity -= gravity; //Ser till så att spelaren faller
 
                 if (yVelocity < 0)
                 {
@@ -442,7 +445,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
 
 
-            if (currentInteractable != null && Input.GetButtonDown("Interact"))
+            if (currentInteractable != null && Input.GetButtonDown("Interact"))     //Låter spelaren interagera med föremål i närheten som implementerar IInteractable
             {
                 previousMovementType = currentMovementType;
                 currentMovementType = MovementType.Interacting;
@@ -452,7 +455,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 StartCoroutine("NonMovingInteract");
             }
 
-            if (currentWeapon != null && currentWeapon.CanAttack && charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack
+            if (currentWeapon != null && currentWeapon.CanAttack && charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack     //Låter spelaren slåss
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking || currentMovementType != MovementType.Stagger))
             {
                 if (Input.GetAxisRaw("Fire2") < -0.5)
@@ -489,8 +492,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 poiseReset -= Time.deltaTime;
             }
-
-            if (poiseReset <= 0)
+            else
             {
                 poise = maxPoise;
             }
@@ -503,13 +505,13 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Resources
-    public void RestoreHealth(int amount)
+    public void RestoreHealth(int amount)           //Låter spelaren få tillbaka liv
     {
         this.health = Mathf.Clamp(this.health + amount, 0, maxHealth);
         healthBar.value = health;
     }
 
-    public void ReceiveLifeForce(int value)
+    public void ReceiveLifeForce(int value)         //Låter spelaren få lifeforce
     {
         this.lifeForce = Mathf.Clamp(this.lifeForce + value, 0, 100);
         lifeForceBar.value = lifeForce;
@@ -518,7 +520,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Equipment
-    void SheatheAndUnsheathe()
+    void SheatheAndUnsheathe()          //Drar och stoppar undan vapen
     {
         if (!dead && canSheathe)
         {
@@ -539,7 +541,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    public void Equip(GameObject equipment)
+    public void Equip(GameObject equipment)         //Equippar föremål
     {
         if (dead)
         {
@@ -574,10 +576,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-
-
-    //Code for equipping different weapons
-    public void EquipWeapon(GameObject weaponToEquip)
+    public void EquipWeapon(GameObject weaponToEquip)    //Code for equipping different weapons
     {
         if (dead)
             return;
@@ -587,7 +586,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
         this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
         this.currentWeapon.Equipper = this;
-        print("mmkay");
     }
 
     public void UnEquipWeapon()
@@ -599,7 +597,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     #region Combat
     //Damage to player
-    public void TakeDamage(int incomingDamage, DamageType dmgType)
+    public void TakeDamage(int incomingDamage, DamageType dmgType)          //Gör så att spelaren kan ta skada och att olika saker händer beroende på vilken typ av skada det är
     {
         if (dead || invulnerable)
         {
@@ -653,7 +651,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    public void EnemyAggro(BaseEnemyScript enemy, bool aggroing)
+    public void EnemyAggro(BaseEnemyScript enemy, bool aggroing)        //Låter spelaren veta att en fiende upptäckt spelaren
     {
         if (aggroing)
         {
@@ -670,9 +668,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         else
             aggroIndicator.SetActive(false);
     }
-
-    //Sets the current movement type as attacking and which attack move thats used
-    public void LightAttack()
+    
+    public void LightAttack()    //Sets the current movement type as attacking and which attack move thats used
     {
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
@@ -721,7 +718,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    public void HeavyAttack()
+    public void HeavyAttack()    //Sets the current movement type as attacking and which attack move thats used
     {
         if (charController.isGrounded && grounded && attackCountdown <= 0f)
         {
@@ -762,15 +759,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    public void Leech(int damageDealt)
+    public void Leech(int damageDealt)      //Om spelaren slåss med ett vapen med leech får denne tillbaka 10% av skadan som liv
     {
-        //RestoreHealth(((damageDealt / 10) * leechAmount));
+        RestoreHealth(((damageDealt / 10) * leechAmount));
         float floatDmg = damageDealt;
         RestoreHealth(Mathf.RoundToInt(floatDmg / 100f) * leechPercentage);
     }
 
-    //Modifies damage depending on armor, resistance etc
-    int ModifyDamage(int damage, DamageType dmgType)
+    int ModifyDamage(int damage, DamageType dmgType)    //Modifies damage depending on armor, resistance etc
     {
         if (dmgType == DamageType.Physical)
         {
@@ -788,7 +784,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         return damage;
     }
 
-    public void Kill()
+    public void Kill()      //Dödar spelaren
     {
         if (!dead)
         {
@@ -796,7 +792,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    void Death()
+    void Death()            //Kallas när spelaren dör, via skada eller Kill()
     {
         dead = true;
         healthBar.value = 0f;
@@ -815,14 +811,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Systems
-    public void PauseMe(bool pausing)
+    public void PauseMe(bool pausing)       //Ser till att spelaren
     {
         inputEnabled = !pausing;
     }
     #endregion
 
     #region Movement
-    public void PlayerMovement(bool sprinting)
+    public void PlayerMovement(bool sprinting)      //Sköter spelarens rörelser
     {
         if (climbing)
             return;
@@ -1000,7 +996,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         anim.SetBool("Land", charController.isGrounded);
     }
 
-    float CalculateSpeed(Vector3 velocity)
+    float CalculateSpeed(Vector3 velocity)      //Räknar ut vilken fart spelaren har så att animatorn kan spela upp rätt animation
     {
         Vector3 newVelocity = new Vector3(velocity.x, 0f, velocity.z);
         return newVelocity.magnitude;
@@ -1009,7 +1005,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     #region Sound Events
 
-    void Footsteps()
+    void Footsteps()                            //Spelar upp fotstegsljud då spelaren går
     {
         if (charController.isGrounded && grounded && move != Vector3.zero)
         {
@@ -1036,7 +1032,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    void Landing()
+    void Landing()      //Spelar upp ett ljud då spelaren landar efter ett hopp
     {
         RaycastHit hit;
 
@@ -1068,7 +1064,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Colliders
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)         //Avgör vilken IIinteractable spelaren kan interagera med
     {
         if (other.gameObject.GetComponent<IInteractable>() != null)
             currentInteractable = other.gameObject.GetComponent<IInteractable>();
@@ -1081,14 +1077,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             currentInteractable = null;
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    void OnControllerColliderHit(ControllerColliderHit hit)         //Hjälper till att få spelaren att glida ned för branta ytor
     {
         hitNormal = hit.normal;
     }
     #endregion
 
     #region Coroutines
-    public IEnumerator Climb(AnimationClip climbAnim)
+    public IEnumerator Climb(AnimationClip climbAnim)           //Får spelaren att kunna klättra upp för vissa ytor
     {
         ClimbableScript currentClimb = currentClimbable;
         gameObject.transform.LookAt(currentClimbable.FinalClimbingPosition);
@@ -1101,14 +1097,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         this.climbing = false;
     }
 
-    public IEnumerator AbilityCooldown()
+    public IEnumerator AbilityCooldown()                //Hindrar spelaren från att använda abilities under en tid efter att en ability använts
     {
         BaseAbilityScript.CoolingDown = true;
         yield return new WaitForSeconds(abilityCooldown);
         BaseAbilityScript.CoolingDown = false;
     }
 
-    IEnumerator DodgeCooldown()
+    IEnumerator DodgeCooldown()                         //Hindrar spelaren från att hoppa eller använda sin dodge under en tid efter att spelaren hoppat eller dodgen använts
     {
         if (!dead)
         {
@@ -1119,9 +1115,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             canDodge = true;
         }
     }
-
-    //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
-    IEnumerator Dodge()
+       
+    IEnumerator Dodge()              //Enumerator smooths out the dodge/roll/evade so it doesn't happen instantaneously
     {
         if (!dead)
         {
@@ -1132,7 +1127,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    IEnumerator NonMovingInteract()
+    IEnumerator NonMovingInteract()             //Hindrar spelaren från att röra sig medan denne interagerar med något
     {
         canJump = false;
         yield return new WaitForSeconds(interactTime);
@@ -1140,7 +1135,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         canJump = true;
     }
 
-    IEnumerator SheathingTimer()
+    IEnumerator SheathingTimer()                //Spawnar och despawnar vapen efter en viss tid för att matcha med animationer
     {
         if (!dead)
         {
@@ -1159,14 +1154,14 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    IEnumerator Invulnerability()
+    IEnumerator Invulnerability()       //Hindrar spelaren från att ta skada under en viss tid
     {
         invulnerable = true;
         yield return new WaitForSeconds(invulnerablityTime);
         invulnerable = false;
     }
 
-    public IEnumerator PreventFallDamage()
+    public IEnumerator PreventFallDamage()          //Hindrar spelaren från att ta fallskada under en viss tid
     {
         fallInvulerability = true;
         yield return new WaitForSeconds(5f);
@@ -1185,7 +1180,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         currentMovementType = previousMovementType;
     }
 
-    protected IEnumerator Burn(float burnDuration, int burnDamage)
+    protected IEnumerator Burn(float burnDuration, int burnDamage)      //Gör så att spelaren tar eldskada under en viss tid
     {
         burning = true;
         timeToBurn += burnDuration;
@@ -1199,7 +1194,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         burning = false;
     }
 
-    protected IEnumerator Freeze(float freezeTime)
+    protected IEnumerator Freeze(float freezeTime)      //Får spelaren att röra sig långsammare under en viss tid
     {
         if (!frozen)
         {
@@ -1211,7 +1206,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    IEnumerator StaminaRegenerationWait()
+    IEnumerator StaminaRegenerationWait()           //Väntar en stund innan spelaren kan återfå stamina
     {
         staminaRegWait = true;
         yield return new WaitForSeconds(staminaRegenWait);
@@ -1219,11 +1214,10 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         staminaRegenerating = true;
     }
 
-    IEnumerator JumpCooldown()
+    IEnumerator JumpCooldown()          //Hindrar spelaren från att hoppa under en viss tid efter att denne hoppat
     {
         yield return new WaitForSeconds(jumpCooldown);
         canJump = true;
     }
-
     #endregion
 }

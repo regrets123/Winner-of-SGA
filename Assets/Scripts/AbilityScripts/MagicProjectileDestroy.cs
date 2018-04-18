@@ -24,7 +24,7 @@ public class MagicProjectileDestroy : MonoBehaviour
         target.TakeDamage(damage, dmgType);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)         //Gör skada på en träffad fiende
     {
         targetToHit = other.gameObject.GetComponent<IKillable>();
 

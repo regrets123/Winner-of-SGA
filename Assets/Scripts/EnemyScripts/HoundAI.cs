@@ -18,16 +18,16 @@ public class HoundAI : BaseEnemyScript
     protected override void Start()
     {
         base.Start();
-        this.weapon2 = Instantiate(weapon2, weapon2Pos);
+        this.weapon2 = Instantiate(weapon2, weapon2Pos);            //Då Hound har två vapen (tassar) instantieras det andra vapnet här
         weapon2.GetComponent<BaseWeaponScript>().GetComponent<Collider>().enabled = false;
     }
 
     protected override void Aggro(PlayerControls newTarget)
     {
-        StartCoroutine(AggroHowl(newTarget));
+        StartCoroutine(AggroHowl(newTarget));       //Fryser Hound och får den att yla då den upptäcker spelaren innan den blir aggressiv
     }
 
-    public override void LightAttack()
+    public override void LightAttack()      //Låter Hound göra en swipe attack
     {
         previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;
@@ -48,7 +48,7 @@ public class HoundAI : BaseEnemyScript
     }
 
 
-    protected IEnumerator JumpAttack()
+    protected IEnumerator JumpAttack()      //Låter Hound göra en hoppattack
     {
         if (alive && target != null)
         {
@@ -74,7 +74,7 @@ public class HoundAI : BaseEnemyScript
             nav.destination = target.gameObject.transform.position;
         }
     }
-    IEnumerator AggroHowl(PlayerControls newTarget)
+    IEnumerator AggroHowl(PlayerControls newTarget)     //Hound ylar innan den blir aggressiv mot spelaren
     {
         transform.LookAt(newTarget.transform);
         transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
