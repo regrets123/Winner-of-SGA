@@ -725,7 +725,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1396657538395508}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.92215, y: -0.78, z: 32.34585}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4822111426001182}
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroRange: 10
-  attackRange: 2
+  attackRange: 3
   invulnerabilityTime: 1
   attackSpeed: 2
   loseAggroTime: 100
@@ -1486,7 +1486,7 @@ MonoBehaviour:
   woodSteps: {fileID: 0}
   footSteps: {fileID: 0}
   healthBar: {fileID: 114070502564610598}
-  enemyCanvas: {fileID: 0}
+  enemyCanvas: {fileID: 223922318221093196}
   weaponPos2: {fileID: 4723306545436338}
   weapon2: {fileID: 1794665721886170, guid: 7e0a7f942b120274f90582e7a85909e5, type: 2}
 --- !u!114 &114811619362883082
