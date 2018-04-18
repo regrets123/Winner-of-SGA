@@ -44,7 +44,7 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel"))      //Gör olika saker då spelaren trycker ner escape eller "back" på en handkontroll beroende på vilken meny som är aktiv
         {
             if (playerInventory == null)
             {
@@ -54,7 +54,7 @@ public class PauseManager : MonoBehaviour
             {
                 playerInventory.HideInventory();
             }
-            else //if (settingsMenu.activeInHierarchy || deathScreen.activeInHierarchy || confirmQuitMenu.activeInHierarchy)
+            else
             {
                 foreach (Button goBackButton in goBackButtons)
                 {
@@ -69,8 +69,8 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    //Pausar/unpausar spelet och tar fram/döljer pausmenyn
-    public void PauseAndUnpause(bool inventory)
+
+    public void PauseAndUnpause(bool inventory)    //Pausar/unpausar spelet och tar fram/döljer pausmenyn
     {
         paused = !paused;
         if (paused)

@@ -4,14 +4,13 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public enum InputMode
+public enum InputMode           //Håller koll på om spelet körs som vanligt, är pausat eller om spelaren navigerar i inventoryt för att kunna göra olika saker med samma inputs
 {
     None, Playing, Paused, Inventory
 }
 
 public class InputManager : MonoBehaviour
 {
-
     static InputMode currentInputMode = InputMode.Playing;
 
     InventoryManager playerInventory;
@@ -52,63 +51,56 @@ public class InputManager : MonoBehaviour
         }
     }
     
-    public void ApplyUpgrade()
+    public void ApplyUpgrade()      //Uppgraderar ett valt vapen med en vald uppgradering
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.ApplyUpgrade();
     }
 
-    public void AddFavorite()
+    public void AddFavorite()       //Lägger till ett föremål bland spelarens favoriter för att kunna nå det via hotkeys
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.AddFavorite();
     }
 
-    public void SelectUpgrade(int upgradeIndex)
+    public void SelectUpgrade(int upgradeIndex)     //Väljer en uppgradering att lägga på ett vapen
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.SelectUpgrade(upgradeIndex);
     }
 
-    public void SelectEquipable(int index)
+    public void SelectEquipable(int index)          //Väljer ett föremål i inventoryt för att sedan kunna equippa eller uppgradera det
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.SelectItem(index);
     }
 
-    public void ViewInventoryCollection(int displayCollection)
+    public void ViewInventoryCollection(int displayCollection)      //Väljer om spelarens vapen, abilities, favoriter eller övriga föremål ska visas i inventoryt
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.DisplayNewCollection(displayCollection);
     }
 
-    public void Equip()
+    public void Equip()             //Equippar ett vapen eller en ability
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.Equip();
     }
 
-    public void ShowUpgradeOptions(bool show)
+    public void ShowUpgradeOptions(bool show)       //Visar tillgängliga uppgraderingar för ett valt vapen
     {
         if (playerInventory == null)
             this.playerInventory = FindObjectOfType<InventoryManager>();
         playerInventory.ShowUpgradeOptions(show);
     }
 
-    public void ChangeInventoryCollection(int collection)
-    {
-        if (playerInventory == null)
-            this.playerInventory = FindObjectOfType<InventoryManager>();
-        playerInventory.DisplayNewCollection(collection);
-    }
-
-    public void GoToMenu()
+    public void GoToMenu()              //Gör muspekaren tillgänglig då spelaren går till huvudmenyn
     {
         SetInputMode(InputMode.None);
         Cursor.lockState = CursorLockMode.None;
