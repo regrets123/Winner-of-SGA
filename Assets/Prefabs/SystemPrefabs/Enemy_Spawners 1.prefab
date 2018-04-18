@@ -1995,7 +1995,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1304296346815756}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.0947, y: -0.2082, z: 0.2292}
+  m_LocalPosition: {x: 0.0947, y: -0.1958, z: 0.2292}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4797768469901532}
@@ -2453,6 +2453,7 @@ MonoBehaviour:
   - {fileID: 1728055315802404, guid: 4aa0e6b29e9d5094398f807de9a4d28b, type: 2}
   spawnPositions:
   - {fileID: 4981411120575004}
+  respawnTime: 300
 --- !u!114 &114186072817317746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2476,6 +2477,7 @@ MonoBehaviour:
   - {fileID: 4701955840968620}
   - {fileID: 4114933475900170}
   - {fileID: 4817992598231558}
+  respawnTime: 300
 --- !u!114 &114199358919437432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2535,6 +2537,7 @@ MonoBehaviour:
   - {fileID: 4418340963610462}
   - {fileID: 4542773757438040}
   - {fileID: 4632783136323618}
+  respawnTime: 300
 --- !u!114 &114393291033957766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2558,6 +2561,7 @@ MonoBehaviour:
   - {fileID: 4575991990622270}
   - {fileID: 4583966070742140}
   - {fileID: 4574069385033366}
+  respawnTime: 300
 --- !u!114 &114788118901499252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2593,6 +2597,7 @@ MonoBehaviour:
   - {fileID: 4637935942834762}
   - {fileID: 4821280128327654}
   - {fileID: 4571128006553356}
+  respawnTime: 300
 --- !u!114 &114920861056038342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2624,6 +2629,7 @@ MonoBehaviour:
   - {fileID: 4871079715207322}
   - {fileID: 4664881085377304}
   - {fileID: 4590486675531816}
+  respawnTime: 300
 --- !u!114 &114926902438268368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2645,6 +2651,7 @@ MonoBehaviour:
   - {fileID: 4557863165081934}
   - {fileID: 4064963566719594}
   - {fileID: 4736068672075388}
+  respawnTime: 300
 --- !u!114 &114952903845259086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2657,6 +2664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesToSpawn:
-  - {fileID: 1556081773580112, guid: b4ecc8a5d33c4e74ea08356a1be489cc, type: 2}
+  - {fileID: 0}
   spawnPositions:
   - {fileID: 4536326081993934}
+  respawnTime: 300
