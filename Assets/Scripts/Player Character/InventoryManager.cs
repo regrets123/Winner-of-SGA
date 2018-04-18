@@ -123,6 +123,12 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()        //Hittar alla objekt relevanta för inventoryt då det skapas. Eftersom spelaren instanssierar inventoryt och det inte ligger i scenen från början kan dessa värden inte serialiseras.
     {
+        if (FindObjectOfType<PlayerControls>().Inventory != null)
+        {
+            print("jnb");
+            return;
+            Destroy(this);
+        }
         menuManager = FindObjectOfType<MenuManager>();
         defaultIcon = Resources.Load<Sprite>("EmptySlot");
         this.player = FindObjectOfType<PlayerControls>();
