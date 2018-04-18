@@ -22911,6 +22911,11 @@ Prefab:
       propertyPath: camBase
       value: 
       objectReference: {fileID: 1158883198}
+    - target: {fileID: 114771681752574162, guid: a02a09056ee9dbb4e9cc6bfdcec201bc,
+        type: 2}
+      propertyPath: confirmQuitMenu
+      value: 
+      objectReference: {fileID: 1374690424}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a02a09056ee9dbb4e9cc6bfdcec201bc, type: 2}
   m_IsPrefabParent: 0
