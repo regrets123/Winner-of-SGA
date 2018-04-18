@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Björn Andersson*/
+
 public class GuardianMiniBoss : GuardianAI {
 
     [SerializeField]
@@ -10,6 +12,6 @@ public class GuardianMiniBoss : GuardianAI {
     protected override void Death()
     {
         base.Death();
-        Instantiate(myDrop);
+        Instantiate(myDrop);        //Får minibossen att droppa en dash ability då den dör
     }
 }
