@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4805665745805128}
-  - component: {fileID: 114911691685901066}
+  - component: {fileID: 114460483339215314}
   m_Layer: 0
   m_Name: FrostUpgradePrefab
   m_TagString: Untagged
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114911691685901066
+--- !u!114 &114460483339215314
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,11 +48,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1545474234521034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fd0de8544f70644857b10d99d20c52, type: 3}
+  m_Script: {fileID: 11500000, guid: b0d6c6cd877407d4d8b73747bb0841af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryIcon: {fileID: 21300000, guid: 5c67388d1006db14dad2efcc518f5630, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 6156f218310b9524899efdfba4e4161e, type: 3}
   objectName: Frost Upgrade
   myType: 3
   upgrade: 3
-  upgradeInfo: Upgrades your weapon to cause frost damage and slow your enemies.
+  upgradeInfo: Upgrades your weapon with Frost, causing it to slow enemies down.

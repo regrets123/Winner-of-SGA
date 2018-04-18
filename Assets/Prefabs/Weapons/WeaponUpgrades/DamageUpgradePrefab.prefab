@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4373746724634398}
-  - component: {fileID: 114770713443165954}
+  - component: {fileID: 114723133293505812}
   m_Layer: 0
   m_Name: DamageUpgradePrefab
   m_TagString: Untagged
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114770713443165954
+--- !u!114 &114723133293505812
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,11 +48,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1831796699156086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fd0de8544f70644857b10d99d20c52, type: 3}
+  m_Script: {fileID: 11500000, guid: b0d6c6cd877407d4d8b73747bb0841af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryIcon: {fileID: 21300000, guid: 180eed75bcdb1e345a6d765d6e29d518, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 61c2e3952b56fef4281500d9a5c39300, type: 3}
   objectName: Damage Upgrade
   myType: 3
   upgrade: 1
-  upgradeInfo: Upgrades your weapon increase its damage.
+  upgradeInfo: Upgrades your weapon to increase the amount of damage it deals.
