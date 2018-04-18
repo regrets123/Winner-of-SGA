@@ -1,0 +1,35 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class LoadingManager : MonoBehaviour {
+
+    public Slider progressBar;
+    public GameObject loadingScreen;
+    public Text progressText;
+
+    public void LoadScene (int scene)
+    {
+        StartCoroutine(LoadingScene(scene));
+    }
+
+    IEnumerator LoadingScene (int scene)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
+
+        loadingScreen.SetActive(true);
+
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            progressBar.value = progress;
+            progressText.text = progress * 100 + "%";
+
+
+            yield return null;
+        }
+    }
+
+}
