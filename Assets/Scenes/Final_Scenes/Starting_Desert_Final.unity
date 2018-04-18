@@ -131,7 +131,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &109306609
 Transform:
@@ -241,7 +241,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &704105362
 Transform:
@@ -384,6 +384,14 @@ Prefab:
       propertyPath: m_Name
       value: Mesh_House_final1_Temple_TL (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
   m_IsPrefabParent: 0
@@ -427,7 +435,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &961942112
 Transform:
@@ -570,6 +578,14 @@ Prefab:
       propertyPath: m_Name
       value: Mesh_House_final1_Temple_TL (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
   m_IsPrefabParent: 0
@@ -604,12 +620,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1141729988}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canyon Mountain (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1141729988
 Transform:
@@ -689,6 +705,14 @@ Prefab:
       propertyPath: m_Name
       value: Mesh_House_final1_Temple_TL (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
   m_IsPrefabParent: 0
@@ -726,12 +750,12 @@ GameObject:
   - component: {fileID: 1320747130}
   - component: {fileID: 1320747129}
   - component: {fileID: 1320747128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Top_Canyon_1_OE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1320747127
 Transform:
@@ -823,7 +847,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1463086083
 Transform:
@@ -933,7 +957,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1478034718
 Transform:
@@ -1037,12 +1061,12 @@ GameObject:
   - component: {fileID: 1501950327}
   - component: {fileID: 1501950326}
   - component: {fileID: 1501950325}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh_Top_Canyon_3_OE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1501950324
 Transform:
@@ -1167,6 +1191,14 @@ Prefab:
       propertyPath: m_Name
       value: Mesh_House_final1_Temple_TL (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
   m_IsPrefabParent: 0
@@ -1210,7 +1242,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1839232403
 Transform:
@@ -1349,6 +1381,14 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 055125622d9b00643ac1d448ac2ca804, type: 2}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24c445c2fd45f054ca0a421b57008c27, type: 3}
   m_IsPrefabParent: 0
