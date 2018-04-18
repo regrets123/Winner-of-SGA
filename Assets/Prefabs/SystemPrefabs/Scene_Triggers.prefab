@@ -1313,7 +1313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadNames:
-  - Terrain_Scene_Final
   - Temple_Exterior_Final
   unloadNames: []
 --- !u!114 &114496741637806422
@@ -1418,7 +1417,6 @@ MonoBehaviour:
   loadNames: []
   unloadNames:
   - Temple_Exterior_Final
-  - Terrain_Scene_Final
 --- !u!114 &114855281185710648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1435,10 +1433,6 @@ MonoBehaviour:
   unloadNames:
   - Canyons_Final
   - Temple_Exterior_Final
-  - 
-  - 
-  - 
-  - 
 --- !u!114 &114957342847863166
 MonoBehaviour:
   m_ObjectHideFlags: 1
