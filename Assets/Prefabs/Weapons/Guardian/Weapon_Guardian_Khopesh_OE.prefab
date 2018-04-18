@@ -111,8 +111,8 @@ MonoBehaviour:
   inventoryIcon: {fileID: 0}
   objectName: Guardian Khopesh
   myType: 0
-  origninalLightDamage: 0
-  originalHeavyDamage: 0
+  origninalLightDamage: 10
+  originalHeavyDamage: 15
   attackSpeed: 1
   attacks: 
   dmgType: 0
