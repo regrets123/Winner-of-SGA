@@ -32,7 +32,7 @@ public class MagicForceJump : BaseAbilityScript
            && Input.GetButtonDown("Ability")
            && !coolingDown && !player.Dead)
         {
-            if (player.Stamina >= abilityCost)
+            if (player.Stamina >= abilityCost)          //Får magicforcejump att dra stamina istället för lifeforce
             {
                 player.StaminaBar.value = player.Stamina;
                 UseAbility();
@@ -43,7 +43,7 @@ public class MagicForceJump : BaseAbilityScript
     IEnumerator SuperJump()
     {   
         GameObject jumpParticles = Instantiate(effectsPrefab, spawnPos.transform.position, spawnPos.transform.rotation);
-        //player.Anim.SetTrigger("SuperJump");
+        player.Anim.SetTrigger("SuperJump");
         yield return new WaitForSeconds(delayTime);
         //Add a force to the player going up form your current position.
         player.YVelocity = magicJumpSpeed;

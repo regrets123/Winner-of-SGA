@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 /*By Björn Andersson*/
 
-public enum EquipableType
+public enum EquipableType       //Indikerar vilken typ av föremål något är så att det kan läggas i rätt kollektion i inventoryt och att olika saker kan göras med föremålet, såsom att endast vapen kan uppgraderas
 {
     Weapon, Ability, Consumable, ItemUpgrade
 }
@@ -121,7 +121,7 @@ public class InventoryManager : MonoBehaviour
         get { return this.equippedWeaponImage; }
     }
 
-    private void Awake()
+    private void Awake()        //Hittar alla objekt relevanta för inventoryt då det skapas. Eftersom spelaren instanssierar inventoryt och det inte ligger i scenen från början kan dessa värden inte serialiseras.
     {
         menuManager = FindObjectOfType<MenuManager>();
         defaultIcon = Resources.Load<Sprite>("EmptySlot");
@@ -178,7 +178,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Inventory") && inputManager.CurrentInputMode != InputMode.Paused)
         {
-            if (inventoryMenu.activeSelf)
+            if (inventoryMenu.activeSelf)           //Visar och döljer inventoryt
             {
                 HideInventory();
             }
@@ -189,7 +189,7 @@ public class InventoryManager : MonoBehaviour
         }
         else if (inventoryMenu.activeSelf && inputManager.CurrentInputMode == InputMode.Inventory && !coolingDown && !upgrading)
         {
-            if (!itemSelected)
+            if (!itemSelected)      //Låter spelaren navigera i inventoryt via handkontroll
             {
                 if (Input.GetAxis("NextInventoryRow") < 0f)
                 {
@@ -233,7 +233,6 @@ public class InventoryManager : MonoBehaviour
                 }
                 else if (Input.GetButtonDown("SelectItem"))
                 {
-                    //Equip();
                     equipButton.GetComponent<Button>().onClick.Invoke();
                 }
                 else if (Input.GetButtonDown("GoBack"))
@@ -346,7 +345,7 @@ public class InventoryManager : MonoBehaviour
                 UnEquipWeapon();
             }
         }
-        if (Input.GetKeyDown("r"))
+        if (Input.GetKeyDown("r"))      //Låter spelaren dra och stoppa undan det senast equippade vapnet
         {
             if (player.CurrentWeapon != null)
                 player.Equip(null);
@@ -355,12 +354,12 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void UnEquipWeapon()
+    void UnEquipWeapon()        //Stoppar undan ett vapen
     {
         player.UnEquipWeapon();
     }
 
-    public string[] ReportFavorites()
+    public string[] ReportFavorites()       //Meddelar SaveManagern vilka föremål som finns bland spelarens favoriter
     {
         string[] allFavorites = new string[inventory[3].Count];
         for (int i = 0; i < inventory[3].Count; i++)
@@ -370,7 +369,7 @@ public class InventoryManager : MonoBehaviour
         return allFavorites;
     }
 
-    void EquipFavorite(int favoriteIndex, bool controllerInput)
+    void EquipFavorite(int favoriteIndex, bool controllerInput)     //Equippar ett av spelarens favoritföremål utan att behöva gå in i inventoryt
     {
         print("Favorite: " + favoriteIndex);
         if (inventory[3] == null || inventory[3].Count <= favoriteIndex || inventory[3][favoriteIndex] == null)
@@ -388,7 +387,7 @@ public class InventoryManager : MonoBehaviour
         equippingFavorite = false;
     }
 
-    void UpgradeWeapon(bool upgrading)
+    void UpgradeWeapon(bool upgrading)          //Visar och döljer alternativ för att uppgradera vapen
     {
         this.upgrading = upgrading;
         upgradeOptions.SetActive(upgrading);
@@ -402,7 +401,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void ChangeInventoryRow(bool next)
+    void ChangeInventoryRow(bool next)      //Går upp eller ner en rad i inventoryt då spelaren använder handkontroll
     {
         StartCoroutine("MenuCooldown");
         int nextRow = 4;
@@ -425,7 +424,7 @@ public class InventoryManager : MonoBehaviour
         menuManager.Glow(inventoryButtons[collectionIndex].GetComponent<Outline>());
     }
 
-    void HighlightNextItem(bool next)
+    void HighlightNextItem(bool next)       //Går ett steg åt höger eller vänster i inventoryt då spelaren använder handkontroll
     {
         StartCoroutine("MenuCooldown");
         if (next)
@@ -441,19 +440,19 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    IEnumerator HighlightControllerInput()
+    IEnumerator HighlightControllerInput()      //Postproduktion
     {
         yield return null;
     }
 
-    IEnumerator MenuCooldown()
+    IEnumerator MenuCooldown()          //Då handkontrollers D-pad använder sig av axlar snarare än knappar läggs denna cooldown in för att underlätta spelarens navigering i menyer med handkontroll
     {
         coolingDown = true;
         yield return new WaitForSecondsRealtime(0.15f);
         coolingDown = false;
     }
 
-    void ShowInventory()
+    void ShowInventory()                //Visar spelarens inventory
     {
         if (currentChoice == null)
         {
@@ -471,7 +470,7 @@ public class InventoryManager : MonoBehaviour
         menuManager.Glow(currentChoice.GetComponent<Outline>());
     }
 
-    public string[] ReportItems()
+    public string[] ReportItems()           //Meddelar SaveManagern alla föremål som finns i spelarens inventory
     {
         string[] items = new string[inventory[0].Count + inventory[1].Count + inventory[3].Count];
         print(items.Length + " Items");
@@ -494,7 +493,7 @@ public class InventoryManager : MonoBehaviour
         return items;
     }
 
-    public string[] ReportWeaponNames()
+    public string[] ReportWeaponNames()     //Meddelar SaveManagern alla vapen i spelarens inventory
     {
         string[] weaponNames = new string[equippableWeapons.Count];
         for (int i = 0; i < equippableWeapons.Count; i++)
@@ -504,7 +503,7 @@ public class InventoryManager : MonoBehaviour
         return weaponNames;
     }
 
-    public string[][] ReportWeaponUpgrades()
+    public string[][] ReportWeaponUpgrades()    //Meddelar SaveManagern vilka vapen som uppgraderats, vilken typ av uppgradering det är och vilken nivå uppgraderingen har
     {
         string[][] weaponUpgrades = new string[equippableWeapons.Count][];
         for (int i = 0; i < equippableWeapons.Count; i++)
@@ -516,7 +515,7 @@ public class InventoryManager : MonoBehaviour
         return weaponUpgrades;
     }
 
-    public void DisplayNewCollection(int displayCollection)
+    public void DisplayNewCollection(int displayCollection)         //Väljer vilken av inventoryts kollektioner som ska visas
     {
         this.displayCollection = displayCollection;
         currentCategory.GetComponent<Outline>().enabled = false;
@@ -530,7 +529,7 @@ public class InventoryManager : MonoBehaviour
         UpdateSprites();
     }
 
-    void ShowItemOptions(bool show)
+    void ShowItemOptions(bool show)         //Ger spelaren möjlighet att att equippa föremål, lägga till de bland favoriter och uppgradera dem om de är vapen
     {
         //upgradeOptions.SetActive(show);
         if (!show || inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>() is BaseWeaponScript)
@@ -541,8 +540,7 @@ public class InventoryManager : MonoBehaviour
         favoriteButton.SetActive(show);
     }
 
-    //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
-    void UpdateSprites()
+    void UpdateSprites()   //Uppdaterar visuellt menyn av föremål och förmågor som spelaren kan välja mellan
     {
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
@@ -572,7 +570,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void ShowUpgradeOptions(bool show)
+    public void ShowUpgradeOptions(bool show)       //Väljer om spelaren ska navigera mellan föremål i inventoryt eller tillgängliga uppgraderingar
     {
         itemSelected = show;
         upgradeOptions.SetActive(show);
@@ -591,7 +589,7 @@ public class InventoryManager : MonoBehaviour
         UpdateSprites();
     }
 
-    public void SelectItem(int index)
+    public void SelectItem(int index)       //Väljer ett föremål att equippa, uppgradera eller lägga till bland favoriter
     {
         if (inventory[displayCollection] == null || index >= inventory[displayCollection].Count || inventory[displayCollection] == null)
             return;
@@ -602,14 +600,14 @@ public class InventoryManager : MonoBehaviour
         currentEquipableImage.sprite = inventory[displayCollection][index].GetComponent<BaseEquippableObject>().InventoryIcon;
     }
 
-    public void ApplyUpgrade()
+    public void ApplyUpgrade()              //Uppgraderar ett valt vapen
     {
         inventory[0][collectionIndex].GetComponent<BaseWeaponScript>().ApplyUpgrade(itemUpgrades[upgradeIndex].GetComponent<UpgradeScript>().MyUpgrade);
         itemUpgrades.Remove(itemUpgrades[upgradeIndex]);
         UpdateSprites();
     }
 
-    public void SelectUpgrade(int upgradeIndex)
+    public void SelectUpgrade(int upgradeIndex)         //Väljer en uppgradering att lägga på ett vapen
     {
         this.upgradeIndex = upgradeIndex;
         equipButton.SetActive(false);
@@ -617,8 +615,8 @@ public class InventoryManager : MonoBehaviour
         applyUpgradeButton.SetActive(true);
     }
 
-    //Equippar ett föremål som finns i spelarens inventory
-    public void Equip()
+
+    public void Equip()    //Equippar ett föremål som finns i spelarens inventory
     {
         if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count - 1 || inventory[displayCollection][collectionIndex] == null)
         {
@@ -629,7 +627,7 @@ public class InventoryManager : MonoBehaviour
         player.Equip(inventory[displayCollection][collectionIndex]);
     }
 
-    public void AddFavorite()
+    public void AddFavorite()   //Lägger till ett föremål bland spelarens favoriter
     {
         if (favoriteItems != null && favoriteItems.Count < 4)
         {
@@ -642,18 +640,25 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void AddFavorite(GameObject newFav)
+    public void AddFavorite(GameObject newFav)  //Samma som ovan, men tar emot ett föremål som argument
     {
-        inventory[3].Add(newFav);
+        if (favoriteItems != null && favoriteItems.Count < 4)
+        {
+            foreach (GameObject favorite in favoriteItems)
+            {
+                if (favorite == inventory[displayCollection][collectionIndex])
+                    return;
+            }
+            inventory[3].Add(newFav);
+        }
     }
 
-    void AddUpgrade(GameObject newUpgrade)
+    void AddUpgrade(GameObject newUpgrade)      //Lägger till en tillgänglig uppgradering i spelarens inventory
     {
         itemUpgrades.Add(newUpgrade);
     }
 
-    //Gömmer inventoryt
-    public void HideInventory()
+    public void HideInventory()    //Gömmer inventoryt
     {
         upgradeSelected = false;
         itemSelected = false;
@@ -670,8 +675,7 @@ public class InventoryManager : MonoBehaviour
         inventoryMenu.SetActive(false);
     }
 
-    //Lägger till nya föremål i spelarens inventory
-    public void NewEquippable(GameObject equippable)
+    public void NewEquippable(GameObject equippable)    //Lägger till nya föremål i spelarens inventory
     {
         switch (equippable.GetComponent<BaseEquippableObject>().MyType)
         {
@@ -697,7 +701,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void SetWeaponUpgrade(string weaponName, string upgradeName, int upgradeLevel)
+    public void SetWeaponUpgrade(string weaponName, string upgradeName, int upgradeLevel)       //Laddar in vapens uppgraderingar då ett sparat spel laddas
     {
         foreach (GameObject weapon in inventory[0])
         {
@@ -727,8 +731,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    //Lägger till equippable i rätt collection
-    void AddEquippable(GameObject equippable, int collection)
+    void AddEquippable(GameObject equippable, int collection)    //Lägger till equippable i rätt collection
     {
         inventory[collection].Add(equippable);
     }

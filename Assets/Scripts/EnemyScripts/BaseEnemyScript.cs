@@ -87,7 +87,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     #region Main Methods
-    protected virtual void Start()
+    protected virtual void Start()      //Hittar alla relevanta saker och instansierar vapen
     {
         this.nav = GetComponent<NavMeshAgent>();
         this.health = maxHealth;
@@ -112,7 +112,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     {
         if (alive && target != null)
         {
-            if (currentMovementType != MovementType.Attacking/* && (!(this is FamineBossAI) || !(this as FamineBossAI).Consuming)*/)
+            if (currentMovementType != MovementType.Attacking && (!(this is FamineBossAI) || !(this as FamineBossAI).Consuming))
             {
                 gameObject.transform.LookAt(target.transform);
                 gameObject.transform.rotation = new Quaternion(0f, gameObject.transform.rotation.y, 0f, gameObject.transform.rotation.w);
@@ -148,7 +148,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
             {
                 if (currentMovementType != MovementType.Stagger && currentMovementType != MovementType.Attacking)
                 {
-                    //if (!(this is FamineBossAI) || (!(this as FamineBossAI).Enraged || !(this as FamineBossAI).Consuming))
+                    if (!(this is FamineBossAI) || (!(this as FamineBossAI).Enraged || !(this as FamineBossAI).Consuming))
                     {
                         nav.isStopped = false;
                         nav.SetDestination(target.transform.position);
@@ -188,7 +188,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     #region Sounds
-    void Footstep()
+    void Footstep()         //Spelar upp fotstegsljud då fienden rör sig
     {
         if (!nav.isStopped)
         {
@@ -229,7 +229,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         }
     }
 
-    protected virtual void Aggro(PlayerControls newTarget)
+    protected virtual void Aggro(PlayerControls newTarget)       //Får fienden att bli aggressiv mot spelaren
     {
         print("aggro");
         if (this.initialPos == null)
@@ -243,7 +243,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     }
 
     //Gör att fienden kan bli skadad
-    public virtual void TakeDamage(int incomingDamage, DamageType dmgType)
+    public virtual void TakeDamage(int incomingDamage, DamageType dmgType)          //Låter fienden ta skada och gör olika saker beroende på skadetyp
     {
         if (!alive || invulnerable)
         {
@@ -326,17 +326,17 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         StartCoroutine("AttackCooldown");
     }
 
-    public virtual void HeavyAttack()
+    public virtual void HeavyAttack()           //Metod som overrideas av fiender som har heavy attacks
     {
         LightAttack();
     }
 
-    protected virtual void Dodge()
+    protected virtual void Dodge()              //Metod som overrideas av fiender som har dodge
     {
         return;
     }
 
-    protected void LoseAggro()
+    protected void LoseAggro()                  //Låter fienden sluta vara aggressiv mot spelaren
     {
         target.EnemyAggro(this, false);
         print("aggroloss");
@@ -344,9 +344,8 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         losingAggro = false;
         nav.SetDestination(initialPos);
     }
-
-    //Modifierar skadan fienden tar efter armor, resistance och liknande
-    protected virtual int ModifyDamage(int damage, DamageType dmgType)
+    
+    protected virtual int ModifyDamage(int damage, DamageType dmgType)    //Modifierar skadan fienden tar efter armor, resistance och liknande
     {
         foreach (DamageType resistance in this.resistances)
         {
@@ -359,7 +358,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         return damage;
     }
 
-    protected virtual void Death()
+    protected virtual void Death()          //Kallas när fienden dör
     {
         alive = false;
         anim.SetTrigger("Death");
@@ -374,7 +373,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         Destroy(gameObject, 7);
     }
 
-    public void Kill()
+    public void Kill()          //Dödar automatiskt fienden
     {
         alive = false;
         Death();
@@ -383,15 +382,15 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
     #region Coroutines
 
-    protected IEnumerator AttackCooldown()
+    protected IEnumerator AttackCooldown()          //Ser till att en viss tid går mellan fiendens attacker
     {
         canAttack = false;
         yield return new WaitForSeconds(attackSpeed);
         currentMovementType = previousMovementType;
         canAttack = true;
     }
-
-    protected virtual IEnumerator ActivateAttackCollider(int attackNo)
+        
+    protected virtual IEnumerator ActivateAttackCollider(int attackNo)          //Aktiverar fiendens vapens collider under en viss tid så att vapnet kan göra skada
     {
         yield return new WaitForSeconds(attackColliderActivationSpeed);
         weapon.GetComponent<BaseWeaponScript>().GetComponent<Collider>().enabled = true;
@@ -399,23 +398,21 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         weapon.GetComponent<BaseWeaponScript>().GetComponent<Collider>().enabled = false;
     }
 
-    protected IEnumerator LoseAggroTimer()
+    protected IEnumerator LoseAggroTimer()      //Får fienden att sluta vara aggressiv mot spelaren efter en viss tid
     {
         losingAggro = true;
         yield return new WaitForSeconds(loseAggroTime);
-        print("weird");
         LoseAggro();
     }
 
-    protected IEnumerator FreezeNav(float freezeTime)
+    protected IEnumerator FreezeNav(float freezeTime)           //Hindrar fienden från att röra sig under en viss tid
     {
         nav.isStopped = true;
-        print("freeze");
         yield return new WaitForSeconds(freezeTime);
         nav.isStopped = false;
     }
 
-    protected IEnumerator Burn(float burnDuration, int burnDamage)
+    protected IEnumerator Burn(float burnDuration, int burnDamage)              //Gör eldskada på fienden under en viss tid
     {
         burning = true;
         timeToBurn += burnDuration;
@@ -429,7 +426,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         burning = false;
     }
 
-    protected IEnumerator Freeze(float freezeTime)
+    protected IEnumerator Freeze(float freezeTime)          //Sänker fiendens fart under en viss tid
     {
         if (!frozen)
         {
@@ -453,7 +450,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         currentMovementType = previousMovementType;
     }
 
-    protected IEnumerator Invulnerability()
+    protected IEnumerator Invulnerability()         //Hindrar fienden från att ta skada under en viss tid
     {
         invulnerable = true;
         yield return new WaitForSeconds(invulnerabilityTime);

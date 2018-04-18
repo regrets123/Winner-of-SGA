@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*By Andreas Nilsson && Björn Andersson*/
+
 public class FamineBossAI : BaseEnemyScript
 {
-
     [SerializeField]
     Slider healthSlider;
 
@@ -49,7 +50,7 @@ public class FamineBossAI : BaseEnemyScript
             if (alive && target != null && canAttack && weapon.GetComponent<BaseWeaponScript>().CanAttack && !target.Dead && Vector3.Distance(transform.position, target.transform.position) > 8 &&
                 Vector3.Distance(transform.position, target.transform.position) < aggroRange && this.currentMovementType != MovementType.Attacking && !consuming)
             {
-                gapCloser = Random.Range(1, 3);
+                gapCloser = Random.Range(1, 3);             //Får bossen att närma sig spelaren genom att göra en hoppattack eller en "teleport" som förflyttar bossen under marken
 
                 if (gapCloser == 1)
                 {
@@ -75,7 +76,7 @@ public class FamineBossAI : BaseEnemyScript
         //healthSlider.value = health;
     }
 
-    void Enrage()
+    void Enrage()       //När bossen tagit tillräckligt mycket skada blir den enraged och gör mer skada
     {
         nav.isStopped = true;
         anim.SetTrigger("Enrage");
@@ -88,7 +89,7 @@ public class FamineBossAI : BaseEnemyScript
         base.Aggro(newTarget);
     }
 
-    void MagicAttack()
+    void MagicAttack()      //Låter bossen göra en magic black hole attack
     {
         nav.isStopped = true;
         consuming = true;
@@ -97,7 +98,7 @@ public class FamineBossAI : BaseEnemyScript
         StartCoroutine("Consume");
     }
 
-    IEnumerator JumpSlash()
+    IEnumerator JumpSlash()     //En hoppattack som används för att få bossen att närma sig spelaren
     {
         if (alive && target != null)
         {
@@ -124,7 +125,7 @@ public class FamineBossAI : BaseEnemyScript
         }
     }
 
-    IEnumerator Teleport()
+    IEnumerator Teleport()          //En teleport som flyttar bossen närmre spelaren
     {
         if (alive && target != null)
         {
@@ -147,7 +148,7 @@ public class FamineBossAI : BaseEnemyScript
         }
     }
 
-    IEnumerator WaveArms()
+    IEnumerator WaveArms()      //Spelar upp en animation när bossen blir enraged
     {
         this.enraging = true;
         yield return new WaitForSeconds(2.7f);
@@ -155,7 +156,7 @@ public class FamineBossAI : BaseEnemyScript
         MagicAttack();
     }
 
-    IEnumerator Consume()
+    IEnumerator Consume()       //En magisk attack som suger in spelaren mot ett objekt som i sin tur skadar spelaren
     {
         transform.LookAt(target.transform);
         transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
