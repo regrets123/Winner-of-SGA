@@ -187,7 +187,7 @@ public class CameraFollow : MonoBehaviour, IPausable
                                 break;
 
                             case "Raider":
-                                spriteOffset = 1f;
+                                spriteOffset = 0.5f;
                                 break;
 
                             default:
