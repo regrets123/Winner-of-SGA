@@ -32,6 +32,11 @@ public class InputManager : MonoBehaviour
         Cursor.visible = false;
     }
 
+    public void HideUpgrades()
+    {
+        playerInventory.ShowUpgradeOptions(false);
+    }
+
     public void SetInputMode(InputMode newMode)
     {
         if (newMode != currentInputMode)

@@ -12,7 +12,7 @@ public enum EquipableType       //Indikerar vilken typ av föremål något är s
 
 public class InventoryManager : MonoBehaviour
 {
-    GameObject inventoryMenu, upgradeOptions, equipButton, upgradeButton, favoriteButton, applyUpgradeButton;
+    GameObject inventoryMenu, upgradeOptions, equipButton, upgradeButton, favoriteButton, applyUpgradeButton, closeUpgradesButton;
 
     Image equippedWeaponImage, equippedAbilityImage, currentEquipableImage, currentUpgradeImage;
 
@@ -125,7 +125,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (FindObjectOfType<PlayerControls>().Inventory != null)
         {
-            print("jnb");
             Destroy(this);
         }
         menuManager = FindObjectOfType<MenuManager>();
@@ -145,6 +144,7 @@ public class InventoryManager : MonoBehaviour
         inventoryMenu = GameObject.Find("InventoryMenu");
         upgradeOptions = GameObject.Find("UpgradeOptions");
         upgradeButton = GameObject.Find("UpgradeButton");
+        closeUpgradesButton = GameObject.Find("CloseUpgradesButton");
         equipButton = GameObject.Find("EquipButton");
         favoriteButton = GameObject.Find("FavoriteButton");
         applyUpgradeButton = GameObject.Find("ApplyUpgradeButton");
@@ -171,6 +171,7 @@ public class InventoryManager : MonoBehaviour
         }
         currentCategory = categoryButtons[0];
         currentCategory.GetComponent<Outline>().enabled = true;
+        closeUpgradesButton.SetActive(false);
         upgradeOptions.SetActive(false);
         inventoryMenu.SetActive(false);
         upgradeButton.SetActive(false);
@@ -579,6 +580,7 @@ public class InventoryManager : MonoBehaviour
     {
         itemSelected = show;
         upgradeOptions.SetActive(show);
+        closeUpgradesButton.SetActive(show);
         this.upgrading = show;
         menuManager.NoGlow(currentChoice.GetComponent<Outline>());
         if (show)
