@@ -32,16 +32,16 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected DamageType[] resistances;
 
     [SerializeField]
-    AudioClip swordSwing1, swordSwing2, sandSteps, stoneSteps, woodSteps;
+    protected AudioClip swordSwing1, swordSwing2, sandSteps, stoneSteps, woodSteps;
 
     [SerializeField]
-    AudioSource footSteps;
+    protected AudioSource footSteps;
 
     [SerializeField]
-    Slider healthBar;
+    protected Slider healthBar;
 
     [SerializeField]
-    Canvas enemyCanvas;
+    protected Canvas enemyCanvas;
     #endregion
 
     #region Non-Serialized Variables
@@ -252,6 +252,7 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
 
         int damage = ModifyDamage(incomingDamage, dmgType);
         this.health -= damage;
+        this.healthBar.value = health;
 
         poise -= incomingDamage;
 
