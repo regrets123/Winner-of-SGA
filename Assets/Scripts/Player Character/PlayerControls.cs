@@ -458,7 +458,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (currentWeapon != null && currentWeapon.CanAttack && charController.isGrounded && this.currentWeapon != null && this.currentWeapon.CanAttack     //Låter spelaren slåss
                 && (currentMovementType == MovementType.Idle || currentMovementType == MovementType.Running || currentMovementType == MovementType.Sprinting || currentMovementType == MovementType.Walking || currentMovementType != MovementType.Stagger))
             {
-                if (Input.GetAxisRaw("Fire2") < -0.5)
+                if (Input.GetAxisRaw("Fire2") < -0.5 || Input.GetButtonDown("Fire2"))
                 {
                     if (!attacked)
                     {
