@@ -281,12 +281,12 @@ Prefab:
     - target: {fileID: 114418578451759764, guid: a3827ebaa661e784884b4526c1dc286a,
         type: 2}
       propertyPath: computerText
-      value: JUMP NEAR LEDGES TO GRAB
+      value: JUMP NEAR LEDGES TO CLIMB
       objectReference: {fileID: 0}
     - target: {fileID: 114418578451759764, guid: a3827ebaa661e784884b4526c1dc286a,
         type: 2}
       propertyPath: controllerText
-      value: JUMP NEAR LEDGES TO GRAB
+      value: JUMP NEAR LEDGES TO CLIMB
       objectReference: {fileID: 0}
     - target: {fileID: 114170484868280780, guid: a3827ebaa661e784884b4526c1dc286a,
         type: 2}
@@ -4365,6 +4365,16 @@ Prefab:
     - target: {fileID: 1842350846415822, guid: c9ee47d4811f77c40b47ef900ec40a09, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198877290936340612, guid: c9ee47d4811f77c40b47ef900ec40a09,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198105767816021994, guid: c9ee47d4811f77c40b47ef900ec40a09,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 198877290936340612, guid: c9ee47d4811f77c40b47ef900ec40a09,
         type: 2}
