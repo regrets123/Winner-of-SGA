@@ -28,7 +28,6 @@ public class CameraCollision : MonoBehaviour
         distance = transform.localPosition.magnitude;
 	}
 	
-	// Update is called once per frame
 	void LateUpdate ()
     {
         Vector3 desiredCameraPos = transform.parent.TransformPoint(dollyDir * maxDistance);

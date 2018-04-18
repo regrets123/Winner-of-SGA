@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*By Björn Andersson && Andreas Nilsson*/
 
-public enum DamageType
+public enum DamageType      //Olika typer av skada som kan hanteras på olika sätt och göra olika saker
 {
     Physical, Frost, Fire, Falling, Leech, AutoStagger
 }
@@ -19,7 +19,7 @@ public enum AttackMoveSets
     LightWeapon, HeavyWeapon
 }
 
-public enum Upgrade
+public enum Upgrade         //Olika uppgraderingstyper
 {
     None, DamageUpgrade, FireUpgrade, FrostUpgrade, LeechUpgrade
 }
@@ -104,24 +104,22 @@ public class BaseWeaponScript : BaseEquippableObject
         myColl.enabled = false;
     }
 
-    public void Attack(float attackTime, bool heavy)
+    public void Attack(float attackTime, bool heavy)        //Håller koll på om vapnet ska göra light eller heavy skada
     {
         if (!canAttack)
             return;
-        print("attack");
         this.heavy = heavy;
         StartCoroutine(AttackMove(attackTime));
     }
 
-    protected IEnumerator AttackMove(float attackTime)
+    protected IEnumerator AttackMove(float attackTime)      //Tillåter vapnet att göra skada under tiden det svingas
     {
-        print(attackTime);
         myColl.enabled = true;
         yield return new WaitForSeconds(attackTime);
         myColl.enabled = false;
     }
 
-    public IEnumerator AttackCooldown()
+    public IEnumerator AttackCooldown()         //Hindrar vapnet från att attackera under en viss tid efter det attackerat
     {
         this.canAttack = false;
         if (equipper is PlayerControls)
@@ -145,10 +143,8 @@ public class BaseWeaponScript : BaseEquippableObject
         this.canAttack = true;
     }
 
-    public void ApplyUpgrade(Upgrade upgrade)
+    public void ApplyUpgrade(Upgrade upgrade)       //Uppgraderar vapnet
     {
-        print(this.dmgType);
-        print(this.lightDamage);
         if (this.currentUpgrade != Upgrade.DamageUpgrade)
             this.upgradeLevel = 0;
         this.currentUpgrade = upgrade;
@@ -182,7 +178,6 @@ public class BaseWeaponScript : BaseEquippableObject
             this.lightDamage = origninalLightDamage;
             this.heavyDamage = originalHeavyDamage;
         }
-        print("upgrade applied!");
         print(this.dmgType);
         print(this.lightDamage);
     }

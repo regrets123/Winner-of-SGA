@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<SavedState>
+  <PlayerInfo>
+    <Transform>
+      <Position X="500.4247" Y="188.3422" Z="347.4344" />
+      <Rotation X="0" Y="-0.0626" Z="0" W="0.998" />
+    </Transform>
+    <Inventory>
+      <Upgrades>
+        <Upgrade Weapon="Sword00" Name="None" Level="0" />
+      </Upgrades>
+      <Favorites>
+      </Favorites>
+      <Item Name="Sword00" />
+    </Inventory>
+    <Resources HP="100" Stamina="100" LifeForce="0" />
+  </PlayerInfo>
+  <CameraTransform>
+    <Position X="500.433" Y="189.8036" Z="347.3681" />
+    <Rotation X="0.1655" Y="-0.0618" Z="0.0104" W="0.9842" />
+  </CameraTransform>
+  <UsedSavePoints>
+    <SavePoint Index="1" />
+  </UsedSavePoints>
+  <TrapsToRemove>
+  </TrapsToRemove>
+</SavedState>

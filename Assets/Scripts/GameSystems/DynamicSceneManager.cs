@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*By Andreas Nilsson*/
+
 public class DynamicSceneManager : MonoBehaviour
 {
 
@@ -18,9 +20,8 @@ public class DynamicSceneManager : MonoBehaviour
     private string TempleMonument;
 
     public static DynamicSceneManager instance { get; set; }
-
-    // Use this for initialization
-    private void Awake()
+    
+    private void Awake()        //Laddar in de områden som ska laddas då spelet startar
     {
         instance = this;
         Load(StartingArea);
@@ -32,7 +33,7 @@ public class DynamicSceneManager : MonoBehaviour
     }
 
 
-    public void Load(string sceneName)
+    public void Load(string sceneName)      //Laddar en scen additivt så att den är aktiv tillsammans med redan aktiva scener
     {
         if (!SceneManager.GetSceneByName(sceneName).isLoaded)
         {
@@ -40,7 +41,7 @@ public class DynamicSceneManager : MonoBehaviour
         }
     }
 
-    public void UnLoad(string sceneName)
+    public void UnLoad(string sceneName)        //Stänger av en aktiv scen
     {
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
         {

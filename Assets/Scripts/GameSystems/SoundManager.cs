@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class SoundManager : MonoBehaviour
 {
     [SerializeField]

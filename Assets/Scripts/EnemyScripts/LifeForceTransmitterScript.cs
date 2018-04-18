@@ -20,7 +20,7 @@ public class LifeForceTransmitterScript : MonoBehaviour
 
     float speed = 2f;
 
-    public void StartMe(PlayerControls target, int lifeForceAmount,BaseEnemyScript spawner)     //Då det blev problem att hindra scriptet från att ärva från MonoBehaviour och använda en konstruktor agerar denna metod som en improviserad konstruktor
+    public void StartMe(PlayerControls target, int lifeForceAmount, BaseEnemyScript spawner)     //Då det blev problem att hindra scriptet från att ärva från MonoBehaviour och använda en konstruktor agerar denna metod som en improviserad konstruktor
     {
         this.startPos = transform.position;
         this.target = target;
@@ -32,13 +32,11 @@ public class LifeForceTransmitterScript : MonoBehaviour
         StartCoroutine("SoulAnim");
     }
 
-    void Update() //Får fiendens själ att röra sig mot spelaren
+    void Update() //Får fiendens själ att röra sig mot spelaren och ge spelaren lifeforce då den kommer fram
     {
         if (soulAnimDone)
         {
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, target.transform.position + new Vector3(0f, 0.5f, 0f), speed * Time.deltaTime);
-            //gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.transform.position, 1f);
-
             if (Vector3.Distance(gameObject.transform.position, target.transform.position + new Vector3(0f, 0.5f, 0f)) <= 0.1f)
             {
                 this.target.ReceiveLifeForce(lifeForceAmount);
@@ -47,7 +45,7 @@ public class LifeForceTransmitterScript : MonoBehaviour
         }
     }
 
-    IEnumerator SoulAnim()
+    IEnumerator SoulAnim()      //Spelar upp en animation då själen instantieras
     {
         yield return new WaitForSeconds(soulanimTime);
         soulAnimDone = true;

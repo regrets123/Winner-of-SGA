@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*By Björn Andersson*/
 
-public class BaseEquippableObject : MonoBehaviour {
+public class BaseEquippableObject : MonoBehaviour {     //Script som alla föremål som kan ligga i inventoryt ärver från
 
     [SerializeField]
     protected Sprite inventoryIcon;

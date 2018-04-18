@@ -55,8 +55,7 @@ public class MainMenuScript : MonoBehaviour
                 {
                     if (goBackButton.gameObject.activeInHierarchy)
                     {
-                        //NewMenu(0);
-                        goBackButton.onClick.Invoke();
+                        goBackButton.onClick.Invoke();      //Går tillbaka om spelaren trycker på escape eller "back" på en handkontroll
                         break;
                     }
                 }
@@ -65,7 +64,7 @@ public class MainMenuScript : MonoBehaviour
             {
                 selectedButton.onClick.Invoke();
             }
-            else if ((Input.GetAxis("NextItem") != 0f || Input.GetAxis("NextInventoryRow") != 0f) && !coolingDown)
+            else if ((Input.GetAxis("NextItem") != 0f || Input.GetAxis("NextInventoryRow") != 0f) && !coolingDown)      //Låter spelaren navigera i huvudmenyn via handkontroller
             {
                 if (currentButtons != null || Input.GetAxis("NextInventoryRow") != 0f)
                     StartCoroutine("MenuCooldown");
@@ -105,7 +104,7 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    public void NewMenu(int newIndex)
+    public void NewMenu(int newIndex)       //Avgör vilken meny som ska visas och navigeras i
     {
         buttonSound.Play();
         currentIndex = 0;
@@ -133,7 +132,7 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    public void SelectNewButton(int newIndex)
+    public void SelectNewButton(int newIndex)       //Avgör vilken knapp som är vald
     {
         if (activeMenu == ActiveMenu.Credits)
             return;
@@ -145,8 +144,8 @@ public class MainMenuScript : MonoBehaviour
         selectedButton.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
     }
 
-    IEnumerator MenuCooldown()
-    {
+    IEnumerator MenuCooldown()      //Tillåter spelaren att navigera smidigt i huvudmenyn med handkontroll
+    {   
         coolingDown = true;
         yield return new WaitForSecondsRealtime(mainMenuCooldown);
         coolingDown = false;

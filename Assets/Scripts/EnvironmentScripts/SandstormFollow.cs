@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*By Andreas Nilsson*/
+
 public class SandstormFollow : MonoBehaviour
 {
     [SerializeField]
     GameObject effectFollowObj;
     [SerializeField]
     float effectFollowSpeed;
-	
-	// Update is called once per frame
-	void LateUpdate ()
+
+	void LateUpdate ()      //Får en sandstorm att följa efter spelaren för att ge illusionen att det blåser över hela kartan
     {
         Transform target = effectFollowObj.transform;
 
