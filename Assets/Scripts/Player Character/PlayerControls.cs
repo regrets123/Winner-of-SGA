@@ -415,7 +415,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 staminaRegWait = false;
                 if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
                 {
-                    stamina -= 0.5f;
+                    stamina -= (0.5f * Time.deltaTime);
                     sprinting = true;
 
                 }
@@ -441,7 +441,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             //Lets the character move with the character controller
             if (!climbing)
-                charController.Move(move / 8);
+                charController.Move((move / 8) * Time.deltaTime);
 
 
 

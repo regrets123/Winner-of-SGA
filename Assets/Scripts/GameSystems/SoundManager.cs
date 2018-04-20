@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour, IPausable
     float lowPitchedRange = 0.95f, highPitchedRange = 1.05f;
 
 	// Use this for initialization
-	void Awake ()
+	void Start ()
     {
         FindObjectOfType<PauseManager>().Pausables.Add(this);
 		if(instance == null)
@@ -27,7 +27,7 @@ public class SoundManager : MonoBehaviour, IPausable
             Destroy(gameObject);
         }
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 	}
 
     public void PauseMe(bool pausing)
