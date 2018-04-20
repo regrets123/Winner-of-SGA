@@ -26,8 +26,6 @@ public class SoundManager : MonoBehaviour, IPausable
         {
             Destroy(gameObject);
         }
-
-        //DontDestroyOnLoad(gameObject);
 	}
 
     public void PauseMe(bool pausing)
