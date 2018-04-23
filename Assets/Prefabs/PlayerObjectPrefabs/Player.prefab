@@ -1464,9 +1464,9 @@ MonoBehaviour:
   poiseCooldown: 2
   armor: 0
   leechPercentage: 0
-  moveSpeed: 1
+  moveSpeed: 5
   sprintSpeed: 4
-  jumpSpeed: 2
+  jumpSpeed: 650
   jumpCooldown: 1
   rotspeed: 2
   dodgeCost: 20
@@ -1476,7 +1476,7 @@ MonoBehaviour:
   attackMoveLength: 0.2
   attackCooldown: 0.4
   abilityCooldown: 0
-  gravity: 0.1
+  gravity: 35
   slopeLimit: 50
   slideFriction: -0.2
   safeFallDistance: 100
