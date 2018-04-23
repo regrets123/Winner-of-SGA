@@ -108,6 +108,7 @@ public class SaveManager : MonoBehaviour
         XPathNodeIterator nodes = xNav.Select("/SavedState/UsedSavePoints//SavePoint/@Index");
         foreach (XPathNavigator node in nodes)
         {
+            print(int.Parse(node.Value));
             savePoints[int.Parse(node.Value)].GetComponent<SavePointScript>().Reskin(saveMat);
         }
     }
