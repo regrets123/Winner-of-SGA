@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class DynamicSceneManager : MonoBehaviour
 {
-
     [SerializeField]
     private string masterSceneTriggers;
     [SerializeField]

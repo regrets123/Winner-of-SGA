@@ -396,7 +396,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 if (staminaRegenerating)
                 {
-                    stamina += staminaRegen; //Låter spelaren få tillbaka stamina då denne inte sprintar eller använder staminabaserade anilities
+                    stamina += (staminaRegen * Time.deltaTime); //Låter spelaren få tillbaka stamina då denne inte sprintar eller använder staminabaserade anilities
 
                     if (stamina > maxStamina)
                     {
@@ -415,7 +415,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 staminaRegWait = false;
                 if (charController.isGrounded && Input.GetButton("Sprint") && stamina > 0f && move != Vector3.zero)
                 {
-                    stamina -= 0.5f;
+                    stamina -= (0.5f * Time.deltaTime);
                     sprinting = true;
 
                 }
@@ -441,7 +441,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             //Lets the character move with the character controller
             if (!climbing)
-                charController.Move(move / 8);
+                charController.Move(move * Time.deltaTime);
 
 
 
@@ -909,7 +909,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 }
             }
         }
-        move.y += yVelocity;
+        move.y += (yVelocity * Time.deltaTime);
 
         //If the player character is on the ground you may dodge/roll/evade as a way to avoid something
         if (charController.isGrounded)
@@ -949,7 +949,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 dashVelocity = transform.forward * 3;
                 move.y = 0;
-                move += dashVelocity;
+                move += dashVelocity * Time.deltaTime;
                 dashDir = move;
                 dashedTime = 0f;
             }

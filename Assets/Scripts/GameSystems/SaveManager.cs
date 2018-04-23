@@ -80,6 +80,7 @@ public class SaveManager : MonoBehaviour
 
     void LoadGame()    //Laddar ett sparat spel
     {
+        print("loading");
         if (currentSave == null)
         {
             XmlDocument pathHolder = new XmlDocument();
@@ -385,6 +386,10 @@ public class SaveManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             ReloadGame();
+        }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            SaveGame(savePoints[0]);
         }
     }
 }

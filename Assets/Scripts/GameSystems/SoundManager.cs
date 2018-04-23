@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour, IPausable
     float lowPitchedRange = 0.95f, highPitchedRange = 1.05f;
 
 	// Use this for initialization
-	void Awake ()
+	void Start ()
     {
         FindObjectOfType<PauseManager>().Pausables.Add(this);
 		if(instance == null)
