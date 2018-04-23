@@ -11,7 +11,7 @@ public enum InputMode           //Håller koll på om spelet körs som vanligt, 
 
 public class InputManager : MonoBehaviour
 {
-    static InputMode currentInputMode = InputMode.Playing;
+    InputMode currentInputMode = InputMode.Playing;
 
     InventoryManager playerInventory;
 

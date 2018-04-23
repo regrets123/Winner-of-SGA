@@ -10,16 +10,17 @@ public class LoadTrigger : MonoBehaviour
     [SerializeField]
     string [] loadNames, unloadNames;
 
+    
+
 	private void OnTriggerEnter(Collider col)       //Laddar in en scen additivt då spelaren träffar en collider
     {
         if (col.gameObject.tag == "Player")
         {
             if (loadNames != null)
             {
-                Application.backgroundLoadingPriority = ThreadPriority.Low;
                 foreach (string scene in loadNames)
-                    
-                DynamicSceneManager.instance.Load(scene);
+
+                    StartCoroutine(DynamicSceneManager.instance.Load(scene));
             }
 
             if (unloadNames != null)
@@ -31,11 +32,11 @@ public class LoadTrigger : MonoBehaviour
 
     IEnumerator UnloadScene()       //Tar bort en laddad scen då spelaren träffar en collider
     {
-        Application.backgroundLoadingPriority = ThreadPriority.Low;
-        yield return new WaitForSeconds(0.1f);
+        
+        yield return new WaitForSeconds(0.01f);
         foreach (string scene in unloadNames)
         {
-            DynamicSceneManager.instance.UnLoad(scene);
+            StartCoroutine(DynamicSceneManager.instance.UnLoad(scene));
         }
     }
 }

@@ -9,43 +9,41 @@ public class DynamicSceneManager : MonoBehaviour
 {
 
     [SerializeField]
-    private string StartingArea;
+    private string masterSceneTriggers;
     [SerializeField]
-    private string FirstProps;
+    private string terrainScene;
     [SerializeField]
-    private string TerrainScene;
+    private string startArea;
     [SerializeField]
-    private string Canyons;
-    [SerializeField]
-    private string TempleMonument;
+    private string bridgeScene;
 
     public static DynamicSceneManager instance { get; set; }
     
     private void Awake()        //Laddar in de områden som ska laddas då spelet startar
     {
-        instance = this;
-        Load(StartingArea);
-        Load(FirstProps);
-        Load(TerrainScene);
-        Load(Canyons);
-        Load(TempleMonument);
         Application.backgroundLoadingPriority = ThreadPriority.Low;
+
+        instance = this;
+
+        StartCoroutine(Load(masterSceneTriggers));
+        StartCoroutine(Load(terrainScene));
+        StartCoroutine(Load(startArea));
+        StartCoroutine(Load(bridgeScene));
     }
 
-
-    public void Load(string sceneName)      //Laddar en scen additivt så att den är aktiv tillsammans med redan aktiva scener
+    public IEnumerator Load(string sceneName)      //Laddar en scen additivt så att den är aktiv tillsammans med redan aktiva scener
     {
         if (!SceneManager.GetSceneByName(sceneName).isLoaded)
         {
-            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         }
     }
 
-    public void UnLoad(string sceneName)        //Stänger av en aktiv scen
+    public IEnumerator UnLoad(string sceneName)        //Stänger av en aktiv scen
     {
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
         {
-            SceneManager.UnloadSceneAsync(sceneName);
+            yield return SceneManager.UnloadSceneAsync(sceneName);
         }
     }
 }
