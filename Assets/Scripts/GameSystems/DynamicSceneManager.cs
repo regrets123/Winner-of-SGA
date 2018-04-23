@@ -20,7 +20,7 @@ public class DynamicSceneManager : MonoBehaviour
     
     private void Awake()        //Laddar in de områden som ska laddas då spelet startar
     {
-        Application.backgroundLoadingPriority = ThreadPriority.Low;
+        Application.backgroundLoadingPriority = ThreadPriority.High;
 
         instance = this;
 

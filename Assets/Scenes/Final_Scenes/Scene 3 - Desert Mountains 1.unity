@@ -9023,8 +9023,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1931942390}
   m_LocalRotation: {x: -0, y: -0.41364658, z: -0, w: 0.9104376}
-  m_LocalPosition: {x: 506.6, y: 186.0341, z: 329.5}
-  m_LocalScale: {x: 5, y: 70.920975, z: 150.96243}
+  m_LocalPosition: {x: 508.3, y: 186.0341, z: 331.4}
+  m_LocalScale: {x: 13.367082, y: 70.920975, z: 150.96243}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -9043,7 +9043,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadNames:
   - Scene 5 - Temple Jagged Mountains
-  unloadNames: []
+  - Master Scene 2 - Triggers
+  - Scene 2 - Canyon
+  - Scene 1 and 2 Bridge
+  - Scene 0 - Canyon Terrain
+  unloadNames:
+  - Scene 1 - Start Area & Canyon
 --- !u!23 &1931942393
 MeshRenderer:
   m_ObjectHideFlags: 0
