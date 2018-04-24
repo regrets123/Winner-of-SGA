@@ -27,9 +27,9 @@ public enum Upgrade         //Olika uppgraderingstyper
 public class BaseWeaponScript : BaseEquippableObject
 {
     [SerializeField]
-    protected int origninalLightDamage, originalHeavyDamage;
+    protected int origninalLightDamage, originalHeavyDamage, lightDamage;
 
-    protected int lightDamage, heavyDamage;
+    protected int heavyDamage;
 
     [SerializeField]
     protected float attackSpeed;
@@ -91,6 +91,7 @@ public class BaseWeaponScript : BaseEquippableObject
     public IKillable Equipper
     {
         set { if (this.equipper == null) this.equipper = value; }
+        get { return this.equipper; }
     }
 
     protected override void Start()
@@ -98,10 +99,13 @@ public class BaseWeaponScript : BaseEquippableObject
         base.Start();
         this.myColl = GetComponent<Collider>();
         this.currentSpeed = attackSpeed;
-        this.lightDamage = origninalLightDamage;
-        this.heavyDamage = originalHeavyDamage;
+        if (this.lightDamage == 0)
+        {
+            this.lightDamage = origninalLightDamage;
+            this.heavyDamage = originalHeavyDamage;
+        }
         this.equipper = GetComponentInParent<IKillable>();
-        myColl.enabled = false;
+        this.myColl.enabled = false;
     }
 
     public void Attack(float attackTime, bool heavy)        //Håller koll på om vapnet ska göra light eller heavy skada
@@ -154,12 +158,14 @@ public class BaseWeaponScript : BaseEquippableObject
         this.currentUpgrade = upgrade;
         if (upgrade == Upgrade.DamageUpgrade && upgradeLevel < 3)
         {
+            print("kommer rätt");
             upgradeLevel++;
             this.lightDamage += lightDamage / 2;
             this.heavyDamage += heavyDamage / 2;
         }
         else
         {
+            print("kommer fel");
             this.upgradeLevel = 1;
             switch (upgrade)
             {
@@ -182,8 +188,6 @@ public class BaseWeaponScript : BaseEquippableObject
             this.lightDamage = origninalLightDamage;
             this.heavyDamage = originalHeavyDamage;
         }
-        print(this.dmgType);
-        print(this.lightDamage);
     }
 
     //Deals damage to an object with IKillable on it.

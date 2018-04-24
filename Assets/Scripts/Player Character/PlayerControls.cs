@@ -582,10 +582,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             return;
         if (currentWeapon != null)
         {
-            Destroy(currentWeapon.gameObject);
+            UnEquipWeapon();
         }
         this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
+        //print(currentWeapon.transform.position);
         this.currentWeapon.Equipper = this;
+        FindObjectOfType<SaveManager>().CheckIfUpgraded(this.currentWeapon);
     }
 
     public void UnEquipWeapon()
