@@ -80,7 +80,6 @@ public class SaveManager : MonoBehaviour
 
     void LoadGame()    //Laddar ett sparat spel
     {
-        print("loading");
         if (currentSave == null)
         {
             XmlDocument pathHolder = new XmlDocument();
@@ -98,7 +97,7 @@ public class SaveManager : MonoBehaviour
         {
             XmlDocument settingsDoc = new XmlDocument();
             settingsDoc.LoadXml(Application.dataPath + "/Settings.xml");
-            FindObjectOfType<SettingsMenuScript>().SetCamSensitivity(int.Parse(settingsDoc.SelectSingleNode("/Settings/Camer/@Sensitivity").Value));
+            FindObjectOfType<SettingsMenuScript>().SetCamSensitivity(int.Parse(settingsDoc.SelectSingleNode("/Settings/Camera/@Sensitivity").Value));
 
         }
     }
@@ -108,7 +107,6 @@ public class SaveManager : MonoBehaviour
         XPathNodeIterator nodes = xNav.Select("/SavedState/UsedSavePoints//SavePoint/@Index");
         foreach (XPathNavigator node in nodes)
         {
-            print(int.Parse(node.Value));
             savePoints[int.Parse(node.Value)].GetComponent<SavePointScript>().Reskin(saveMat);
         }
     }
@@ -116,7 +114,6 @@ public class SaveManager : MonoBehaviour
     void LoadInventory()    //Laddar in spelarens sparade inventory
     {
         XPathNodeIterator nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
-        XPathNodeIterator upgrades = xNav.Select("/SavedState/PlayerInfo/Inventory/Upgrades//Upgrade");
         XPathNodeIterator favorites = xNav.Select("/SavedState/PlayerInfo/Inventory/Favorites//Favorite/@Name");
         foreach (XPathNavigator node in nodes)
         {
@@ -126,17 +123,6 @@ public class SaveManager : MonoBehaviour
                 {
                     GameObject newItem = Instantiate(item);
                     player.Inventory.NewEquippable(newItem);
-                    if (newItem.GetComponent<BaseEquippableObject>() is BaseWeaponScript)
-                        while (upgrades.MoveNext())
-                        {
-                            XPathNavigator thisUpgrade = upgrades.Current.CreateNavigator();
-                            string weaponToUpgrade = thisUpgrade.GetAttribute("Weapon", "");
-                            if (newItem.GetComponent<BaseWeaponScript>().ObjectName == weaponToUpgrade)
-                            {
-                                player.Inventory.SetWeaponUpgrade(weaponToUpgrade, thisUpgrade.GetAttribute("Name", ""), int.Parse(thisUpgrade.GetAttribute("Level", "")));
-                                break;
-                            }
-                        }
                     while (favorites.MoveNext())
                     {
                         if (favorites.Current.Value == newItem.GetComponent<BaseEquippableObject>().ObjectName)
@@ -148,6 +134,49 @@ public class SaveManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void CheckIfUpgraded(BaseWeaponScript spawnedWeapon)
+    {
+        /*
+        if (!(spawnedWeapon.Equipper is PlayerControls))
+            return;
+            */
+        XPathNodeIterator appliedUpgrades = xNav.Select("/SavedState/PlayerInfo/Inventory/Upgrades/AppliedUpgrades//Upgrade");
+        while (appliedUpgrades.MoveNext())
+        {
+            XPathNavigator thisUpgrade = appliedUpgrades.Current.CreateNavigator();
+            string weaponToUpgrade = thisUpgrade.GetAttribute("Weapon", "");
+            if (spawnedWeapon.ObjectName == weaponToUpgrade)
+            {
+                Upgrade newUpgrade = Upgrade.DamageUpgrade;
+                switch (thisUpgrade.GetAttribute("Name", ""))
+                {
+                    case "FireUpgrade":
+                        newUpgrade = Upgrade.FireUpgrade;
+                        break;
+
+                    case "FrostUpgrade":
+                        newUpgrade = Upgrade.FrostUpgrade;
+                        break;
+
+                    case "LeechUpgrade":
+                        newUpgrade = Upgrade.LeechUpgrade;
+                        break;
+                }
+                //player.Inventory.SetWeaponUpgrade(weaponToUpgrade, thisUpgrade.GetAttribute("Name", ""), int.Parse(thisUpgrade.GetAttribute("Level", "")));
+                int upgradeLvl = int.Parse(thisUpgrade.GetAttribute("Level", ""));
+                //upgradeLvl++;
+                print("UpgradeLvl: " + upgradeLvl);
+                for (int i = 0; i < upgradeLvl; i++)
+                {
+                    print("eyyo");
+                    player.CurrentWeapon.ApplyUpgrade(newUpgrade);
+                }
+                break;
+            }
+        }
+
     }
 
     public void ReloadGame()        //Laddar spelet från där det senast sparades; om spelet inte sparats får spelaren börja om från början. Används framförallt då spelaren dör.
@@ -169,7 +198,7 @@ public class SaveManager : MonoBehaviour
             }
         }
         inputManager.SetInputMode(InputMode.Playing);
-        SceneManager.LoadScene("Master_Scene");
+        SceneManager.LoadScene("Master Scene 1 - Managers");
     }
 
     void MovePlayer()       //Flyttas spelaren till en sparad position
@@ -191,7 +220,7 @@ public class SaveManager : MonoBehaviour
     public void SaveGame(GameObject savePoint)      //Sparar spelet och byter material på den savepoint som använts för att indikera att den används
     {
         string spritePath = Screenshot();
-        usedSavePoints.Add(Array.IndexOf(savePoints, savePoint) + 1);
+        usedSavePoints.Add(Array.IndexOf(savePoints, savePoint));
         savePoint.GetComponent<SavePointScript>().Reskin(saveMat);
         GetInfoToSave();   //Matar in all info som ska sparas i den virtuella XML-filen
         if (currentSave == null)
@@ -238,7 +267,7 @@ public class SaveManager : MonoBehaviour
 
     void GetInfoToSave()        //Lagrar all relevant info i currentGame
     {
-        
+
         SavePlayerTransform();
         SavePlayerResources();
         SaveCamTransform();
@@ -318,9 +347,9 @@ public class SaveManager : MonoBehaviour
         }
         nodes = xNav.Select("/SavedState/PlayerInfo/Inventory//Item/@Name");
         string[] weaponNames = player.Inventory.ReportWeaponNames();
-        XPathNavigator upgradesNode = xNav.SelectSingleNode("//Upgrades");
+        XPathNavigator upgradesNode = xNav.SelectSingleNode("//AppliedUpgrades");
         XPathNodeIterator oldUpgrades = upgradesNode.SelectChildren(XPathNodeType.All);
-        XmlNodeList allOldUpgrades = currentGame.SelectNodes("//Upgrade");
+        XmlNodeList allOldUpgrades = currentGame.SelectNodes("//AppliedUpgrade");
         if (oldUpgrades.Count > 0)
         {
             for (int i = allOldUpgrades.Count - 1; i > -1; i--)
@@ -328,7 +357,7 @@ public class SaveManager : MonoBehaviour
                 allOldUpgrades[i].ParentNode.RemoveChild(allOldUpgrades[i]);    //Tar bort alla sparade upgrades från XML för att sedan kunna lägga in alla befintliga, för att undvika att spara dubletter eller redan använda upgrades
             }
         }
-        upgradesNode = xNav.SelectSingleNode("//Upgrades");
+        upgradesNode = xNav.SelectSingleNode("//AppliedUpgrades");
         string[][] newUpgrades = player.Inventory.ReportWeaponUpgrades();
         int index = 0;
         foreach (string[] upgradeInfo in newUpgrades)
@@ -340,7 +369,7 @@ public class SaveManager : MonoBehaviour
                 if (weaponNames[index] == newUpgrades[index][0])
                 {
                     index++;
-                    upgradesNode.AppendChild("<Upgrade Weapon=\"" + newUpgrades[i][0] + "\" Name=\"" + newName + "\" Level=\"" + upgradeLevel + "\"/>");
+                    upgradesNode.AppendChild("<AppliedUpgrade Weapon=\"" + newUpgrades[i][0] + "\" Name=\"" + newName + "\" Level=\"" + upgradeLevel + "\"/>");
                     break;
                 }
             }
