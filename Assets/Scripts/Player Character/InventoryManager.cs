@@ -18,7 +18,7 @@ public class InventoryManager : MonoBehaviour
 
     List<GameObject> equippableWeapons, equippableAbilities, consumables, favoriteItems, itemUpgrades;
 
-    List<GameObject>[] inventory = new List<GameObject>[4];
+    List<GameObject>[] playerInventory = new List<GameObject>[4];
 
     PlayerControls player;
 
@@ -43,6 +43,11 @@ public class InventoryManager : MonoBehaviour
     Text equippableName, upgradeName, upgradeInfo;
 
     bool coolingDown = false, itemSelected = false, upgrading = false, equippingFavorite = false, upgradeSelected = false;
+
+    public List<GameObject>[] PlayerInventory
+    {
+        get { return this.playerInventory; }
+    }
 
     public bool Upgrading
     {
@@ -132,15 +137,15 @@ public class InventoryManager : MonoBehaviour
         this.player = FindObjectOfType<PlayerControls>();
         pM = FindObjectOfType<PauseManager>();
         inputManager = FindObjectOfType<InputManager>();
-        inventory[0] = new List<GameObject>();
-        inventory[1] = new List<GameObject>();
-        inventory[2] = new List<GameObject>();
-        inventory[3] = new List<GameObject>();
+        playerInventory[0] = new List<GameObject>();
+        playerInventory[1] = new List<GameObject>();
+        playerInventory[2] = new List<GameObject>();
+        playerInventory[3] = new List<GameObject>();
         itemUpgrades = new List<GameObject>();
-        equippableWeapons = inventory[0];
-        equippableAbilities = inventory[1];
-        consumables = inventory[2];
-        favoriteItems = inventory[3];
+        equippableWeapons = playerInventory[0];
+        equippableAbilities = playerInventory[1];
+        consumables = playerInventory[2];
+        favoriteItems = playerInventory[3];
         inventoryMenu = GameObject.Find("InventoryMenu");
         upgradeOptions = GameObject.Find("UpgradeOptions");
         upgradeButton = GameObject.Find("UpgradeButton");
@@ -217,14 +222,14 @@ public class InventoryManager : MonoBehaviour
                 {
                     if (displayCollection == 0)
                     {
-                        DisplayNewCollection(inventory.Length - 1);
+                        DisplayNewCollection(playerInventory.Length - 1);
                     }
                     else
                         DisplayNewCollection(displayCollection - 1);
                 }
                 else if (Input.GetButtonDown("NextInventoryCategory"))
                 {
-                    DisplayNewCollection((displayCollection + 1) % inventory.Length);
+                    DisplayNewCollection((displayCollection + 1) % playerInventory.Length);
                 }
             }
             if (itemSelected)
@@ -351,13 +356,24 @@ public class InventoryManager : MonoBehaviour
                 UnEquipWeapon();
             }
         }
-        if (Input.GetKeyDown("r"))      //Låter spelaren dra och stoppa undan det senast equippade vapnet
+        if (!coolingDown && (Input.GetKeyDown("r") || Input.GetAxis("Fire2") == -1f))      //Låter spelaren dra och stoppa undan det senast equippade vapnet
         {
+            StartCoroutine(MenuCooldown());
             if (player.CurrentWeapon != null)
                 player.Equip(null);
             else if (player.LastEquippedWeapon != null)
                 player.Equip(player.LastEquippedWeapon);
         }
+    }
+
+    public string[] ReportAvailableUpgrades()
+    {
+        string[] upgradeNames = new string[itemUpgrades.Count];
+        for(int i = 0; i < itemUpgrades.Count; i++)
+        {
+            upgradeNames[i] = itemUpgrades[i].GetComponent<UpgradeScript>().ObjectName;
+        }
+        return upgradeNames;
     }
 
     void UnEquipWeapon()        //Stoppar undan ett vapen
@@ -367,10 +383,10 @@ public class InventoryManager : MonoBehaviour
 
     public string[] ReportFavorites()       //Meddelar SaveManagern vilka föremål som finns bland spelarens favoriter
     {
-        string[] allFavorites = new string[inventory[3].Count];
-        for (int i = 0; i < inventory[3].Count; i++)
+        string[] allFavorites = new string[playerInventory[3].Count];
+        for (int i = 0; i < playerInventory[3].Count; i++)
         {
-            allFavorites[i] = inventory[3][i].GetComponent<BaseEquippableObject>().ObjectName;
+            allFavorites[i] = playerInventory[3][i].GetComponent<BaseEquippableObject>().ObjectName;
         }
         return allFavorites;
     }
@@ -378,9 +394,9 @@ public class InventoryManager : MonoBehaviour
     void EquipFavorite(int favoriteIndex, bool controllerInput)     //Equippar ett av spelarens favoritföremål utan att behöva gå in i inventoryt
     {
         print("Favorite: " + favoriteIndex);
-        if (inventory[3] == null || inventory[3].Count <= favoriteIndex || inventory[3][favoriteIndex] == null)
+        if (playerInventory[3] == null || playerInventory[3].Count <= favoriteIndex || playerInventory[3][favoriteIndex] == null)
             return;
-        player.Equip(inventory[3][favoriteIndex]);
+        player.Equip(playerInventory[3][favoriteIndex]);
         StartCoroutine(DisplayEquippedFavorite(favoriteIndex));
         if (controllerInput)
             StartCoroutine("HighlightControllerInput");
@@ -444,8 +460,7 @@ public class InventoryManager : MonoBehaviour
         }
         menuManager.Glow(inventoryButtons[collectionIndex].GetComponent<Outline>());
     }
-
-
+    
     IEnumerator HighlightControllerInput()      //Postproduktion
     {
         yield return null;
@@ -478,22 +493,22 @@ public class InventoryManager : MonoBehaviour
 
     public string[] ReportItems()           //Meddelar SaveManagern alla föremål som finns i spelarens inventory
     {
-        string[] items = new string[inventory[0].Count + inventory[1].Count + inventory[3].Count];
+        string[] items = new string[playerInventory[0].Count + playerInventory[1].Count + playerInventory[2].Count];
         print(items.Length + " Items");
         int index = 0;
-        for (int i = 0; i < inventory[0].Count; i++)
+        for (int i = 0; i < playerInventory[0].Count; i++)
         {
-            items[index] = inventory[0][i].GetComponent<BaseEquippableObject>().ObjectName;
+            items[index] = playerInventory[0][i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
-        for (int i = 0; i < inventory[1].Count; i++)
+        for (int i = 0; i < playerInventory[1].Count; i++)
         {
-            items[index] = inventory[1][i].GetComponent<BaseEquippableObject>().ObjectName;
+            items[index] = playerInventory[1][i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
-        for (int i = 0; i < inventory[2].Count; i++)
+        for (int i = 0; i < playerInventory[2].Count; i++)
         {
-            items[index] = inventory[2][i].GetComponent<BaseEquippableObject>().ObjectName;
+            items[index] = playerInventory[2][i].GetComponent<BaseEquippableObject>().ObjectName;
             index++;
         }
         return items;
@@ -537,8 +552,7 @@ public class InventoryManager : MonoBehaviour
 
     void ShowItemOptions(bool show)         //Ger spelaren möjlighet att att equippa föremål, lägga till de bland favoriter och uppgradera dem om de är vapen
     {
-        //upgradeOptions.SetActive(show);
-        if (!show || inventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>() is BaseWeaponScript)
+        if (!show || playerInventory[displayCollection][collectionIndex].GetComponent<BaseEquippableObject>() is BaseWeaponScript)
         {
             upgradeButton.SetActive(show);
         }
@@ -550,9 +564,9 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
-            if (i < inventory[displayCollection].Count && inventory[displayCollection][i] != null)
+            if (i < playerInventory[displayCollection].Count && playerInventory[displayCollection][i] != null)
             {
-                inventoryButtons[i].image.sprite = inventory[displayCollection][i].GetComponent<BaseEquippableObject>().InventoryIcon;
+                inventoryButtons[i].image.sprite = playerInventory[displayCollection][i].GetComponent<BaseEquippableObject>().InventoryIcon;
             }
             else
             {
@@ -598,18 +612,18 @@ public class InventoryManager : MonoBehaviour
 
     public void SelectItem(int index)       //Väljer ett föremål att equippa, uppgradera eller lägga till bland favoriter
     {
-        if (inventory[displayCollection] == null || index >= inventory[displayCollection].Count || inventory[displayCollection] == null)
+        if (playerInventory[displayCollection] == null || index >= playerInventory[displayCollection].Count || playerInventory[displayCollection] == null)
             return;
         collectionIndex = index;
         itemSelected = true;
         ShowItemOptions(true);
-        equippableName.text = inventory[displayCollection][index].GetComponent<BaseEquippableObject>().ObjectName;
-        currentEquipableImage.sprite = inventory[displayCollection][index].GetComponent<BaseEquippableObject>().InventoryIcon;
+        equippableName.text = playerInventory[displayCollection][index].GetComponent<BaseEquippableObject>().ObjectName;
+        currentEquipableImage.sprite = playerInventory[displayCollection][index].GetComponent<BaseEquippableObject>().InventoryIcon;
     }
 
     public void ApplyUpgrade()              //Uppgraderar ett valt vapen
     {
-        inventory[0][collectionIndex].GetComponent<BaseWeaponScript>().ApplyUpgrade(itemUpgrades[upgradeIndex].GetComponent<UpgradeScript>().MyUpgrade);
+        playerInventory[0][collectionIndex].GetComponent<BaseWeaponScript>().ApplyUpgrade(itemUpgrades[upgradeIndex].GetComponent<UpgradeScript>().MyUpgrade/*, false*/);
         itemUpgrades.Remove(itemUpgrades[upgradeIndex]);
         UpdateSprites();
     }
@@ -625,13 +639,13 @@ public class InventoryManager : MonoBehaviour
 
     public void Equip()    //Equippar ett föremål som finns i spelarens inventory
     {
-        if (inventory[displayCollection] == null || collectionIndex > inventory[displayCollection].Count - 1 || inventory[displayCollection][collectionIndex] == null)
+        if (playerInventory[displayCollection] == null || collectionIndex > playerInventory[displayCollection].Count - 1 || playerInventory[displayCollection][collectionIndex] == null)
         {
             print(collectionIndex);
             Debug.Log("Not able to equip");
             return;
         }
-        player.Equip(inventory[displayCollection][collectionIndex]);
+        player.Equip(playerInventory[displayCollection][collectionIndex]);
     }
 
     public void AddFavorite()   //Lägger till ett föremål bland spelarens favoriter
@@ -640,10 +654,10 @@ public class InventoryManager : MonoBehaviour
         {
             foreach (GameObject favorite in favoriteItems)
             {
-                if (favorite == inventory[displayCollection][collectionIndex])
+                if (favorite == playerInventory[displayCollection][collectionIndex])
                     return;
             }
-            inventory[3].Add(inventory[displayCollection][collectionIndex]);
+            playerInventory[3].Add(playerInventory[displayCollection][collectionIndex]);
         }
     }
 
@@ -653,14 +667,14 @@ public class InventoryManager : MonoBehaviour
         {
             foreach (GameObject favorite in favoriteItems)
             {
-                if (favorite == inventory[displayCollection][collectionIndex])
+                if (favorite == playerInventory[displayCollection][collectionIndex])
                     return;
             }
-            inventory[3].Add(newFav);
+            playerInventory[3].Add(newFav);
         }
     }
 
-    void AddUpgrade(GameObject newUpgrade)      //Lägger till en tillgänglig uppgradering i spelarens inventory
+    public void AddUpgrade(GameObject newUpgrade)      //Lägger till en tillgänglig uppgradering i spelarens inventory
     {
         itemUpgrades.Add(newUpgrade);
     }
@@ -710,7 +724,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SetWeaponUpgrade(string weaponName, string upgradeName, int upgradeLevel)       //Laddar in vapens uppgraderingar då ett sparat spel laddas
     {
-        foreach (GameObject weapon in inventory[0])
+        foreach (GameObject weapon in playerInventory[0])
         {
             BaseWeaponScript weaponScript = weapon.GetComponent<BaseWeaponScript>();
             if (weaponScript.ObjectName == weaponName)
@@ -730,9 +744,10 @@ public class InventoryManager : MonoBehaviour
                         upgrade = Upgrade.FireUpgrade;
                         break;
                 }
+                print(upgradeLevel);
                 for (int i = 0; i < upgradeLevel; i++)
                 {
-                    weaponScript.ApplyUpgrade(upgrade);
+                    weaponScript.ApplyUpgrade(upgrade/*, false*/);
                 }
             }
         }
@@ -740,6 +755,6 @@ public class InventoryManager : MonoBehaviour
 
     void AddEquippable(GameObject equippable, int collection)    //Lägger till equippable i rätt collection
     {
-        inventory[collection].Add(equippable);
+        playerInventory[collection].Add(equippable);
     }
 }

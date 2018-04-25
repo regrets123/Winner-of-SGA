@@ -158,14 +158,12 @@ public class BaseWeaponScript : BaseEquippableObject
         this.currentUpgrade = upgrade;
         if (upgrade == Upgrade.DamageUpgrade && upgradeLevel < 3)
         {
-            print("kommer rätt");
             upgradeLevel++;
             this.lightDamage += lightDamage / 2;
             this.heavyDamage += heavyDamage / 2;
         }
         else
         {
-            print("kommer fel");
             this.upgradeLevel = 1;
             switch (upgrade)
             {
