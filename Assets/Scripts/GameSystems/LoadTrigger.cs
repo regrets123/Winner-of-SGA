@@ -10,8 +10,6 @@ public class LoadTrigger : MonoBehaviour
     [SerializeField]
     string [] loadNames, unloadNames;
 
-    
-
 	private void OnTriggerEnter(Collider col)       //Laddar in en scen additivt då spelaren träffar en collider
     {
         if (col.gameObject.tag == "Player")

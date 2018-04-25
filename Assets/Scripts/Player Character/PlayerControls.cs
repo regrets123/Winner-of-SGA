@@ -129,6 +129,9 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     [SerializeField]
     float safeFallDistance;
 
+    [SerializeField]
+    Transform playerNewGamePos;
+
     [Space(10)]
 
     [Header("Player Sounds")]
@@ -261,7 +264,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     List<DamageType> resistances = new List<DamageType>();
 
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
-        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false;    //bool shitManyBools = trueAF;
+        combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false, noGravity = true;    //bool shitManyBools = trueAF;
     #endregion
 
     #region Properties
@@ -384,6 +387,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
         lifeForceBar.value = lifeForce;
         aggroIndicator.SetActive(false);
         cameraFollow = FindObjectOfType<CameraFollow>();
+        StartCoroutine("ZeroGravity");
     }
 
     private void Update()
@@ -425,7 +429,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             {
                 PlayerMovement(sprinting); //Tillåter spelaren att röra sig
             }
-            if (!charController.isGrounded && !climbing && currentMovementType != MovementType.Interacting)
+            if (!charController.isGrounded && !climbing && currentMovementType != MovementType.Interacting && !noGravity)
             {
                 yVelocity -= gravity; //Ser till så att spelaren faller
 
@@ -1095,6 +1099,12 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     #endregion
 
     #region Coroutines
+    public IEnumerator ZeroGravity()
+    {
+        yield return new WaitForSeconds(3);
+        noGravity = false;
+    }
+
     public IEnumerator Climb(AnimationClip climbAnim)           //Får spelaren att kunna klättra upp för vissa ytor
     {
         ClimbableScript currentClimb = currentClimbable;
