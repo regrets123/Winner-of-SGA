@@ -659,6 +659,11 @@ Transform:
   - {fileID: 599576573}
   - {fileID: 190513165}
   - {fileID: 280536016}
+  - {fileID: 544642109}
+  - {fileID: 1830856171}
+  - {fileID: 306495273}
+  - {fileID: 1870220054}
+  - {fileID: 1342096716}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1200,7 +1205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadNames:
-  - 
+  - Scene 9 - Temple Interior Lower Storage Area 1
   unloadNames:
   - Scene 7 - Temple Interior Great Hall
 --- !u!23 &280536018
@@ -1363,6 +1368,113 @@ MeshFilter:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 290576280}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &306495272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1727888121954482, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 306495273}
+  - component: {fileID: 306495277}
+  - component: {fileID: 306495276}
+  - component: {fileID: 306495275}
+  - component: {fileID: 306495274}
+  m_Layer: 0
+  m_Name: Load/Unload Scene 12/8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &306495273
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4249924186696950, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 306495272}
+  m_LocalRotation: {x: -0, y: -0.66628367, z: -0, w: 0.74569845}
+  m_LocalPosition: {x: 802.44, y: -109.75, z: -137.4}
+  m_LocalScale: {x: 2.9736814, y: 13.31452, z: 19.770817}
+  m_Children: []
+  m_Father: {fileID: 152068703}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: -83.562004, z: 0}
+--- !u!114 &306495274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114731566873074532, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 306495272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1a5d27677e3aa4aa9d3c53a7099067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadNames:
+  - Scene 12 - Bridge To Bossroom
+  unloadNames:
+  - Scene 8 - Temple Interior Great Hall Backroom
+  - Scene 7&8 - Temple Interior Props
+--- !u!23 &306495275
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 23545816894460270, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 306495272}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &306495276
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 65621662122884692, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 306495272}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &306495277
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 33388122044576026, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 306495272}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &329449564
 GameObject:
@@ -1891,6 +2003,102 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 530392061}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &544642108
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 152068703}
+    m_Modifications:
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 825.03516
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -81.440765
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -165.9914
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000029802319
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.069756456
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -9.3132246e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9975641
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_RootOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 15.000937
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 15.000948
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 65309165303762024, guid: e10b94f0d1c66354488ea764eb4f3f6c,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1605623346515208, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1605623346515208, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1605623346515208, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+      propertyPath: m_Name
+      value: Load Scene 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114495503376498406, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: e10b94f0d1c66354488ea764eb4f3f6c, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &544642109 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4940475296968332, guid: e10b94f0d1c66354488ea764eb4f3f6c,
+    type: 2}
+  m_PrefabInternal: {fileID: 544642108}
+--- !u!1 &544642110 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1605623346515208, guid: e10b94f0d1c66354488ea764eb4f3f6c,
+    type: 2}
+  m_PrefabInternal: {fileID: 544642108}
+--- !u!114 &544642111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 544642110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1a5d27677e3aa4aa9d3c53a7099067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadNames:
+  - Scene 10 - Temple Interior Lower Great Hall
+  unloadNames: []
 --- !u!1 &599576572
 GameObject:
   m_ObjectHideFlags: 0
@@ -3372,6 +3580,114 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341245990}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1342096715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1727888121954482, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1342096716}
+  - component: {fileID: 1342096720}
+  - component: {fileID: 1342096719}
+  - component: {fileID: 1342096718}
+  - component: {fileID: 1342096717}
+  m_Layer: 0
+  m_Name: Unload Scene 11/9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1342096716
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4249924186696950, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342096715}
+  m_LocalRotation: {x: -0, y: 0.06670928, z: -0, w: 0.99777246}
+  m_LocalPosition: {x: 916.4, y: -112.57001, z: -119.07}
+  m_LocalScale: {x: 2.9736795, y: 36.007103, z: 43.83637}
+  m_Children: []
+  m_Father: {fileID: 152068703}
+  m_RootOrder: 24
+  m_LocalEulerAnglesHint: {x: 0, y: 7.65, z: 0}
+--- !u!114 &1342096717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114731566873074532, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342096715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1a5d27677e3aa4aa9d3c53a7099067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadNames:
+  - Scene 13 - Bossroom
+  - Scene 11 - Temple Interior Lower Storage Hall 2Scene 11 - Temple Interior Lower
+    Storage Hall 2
+  - Scene 9 - Temple Interior Lower Storage Area 1
+  unloadNames: []
+--- !u!23 &1342096718
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 23545816894460270, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342096715}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &1342096719
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 65621662122884692, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342096715}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1342096720
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 33388122044576026, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342096715}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1382856663
 GameObject:
   m_ObjectHideFlags: 0
@@ -4294,6 +4610,113 @@ Transform:
   m_Father: {fileID: 1902387086}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 99.782005, z: 0}
+--- !u!1 &1830856170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1727888121954482, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1830856171}
+  - component: {fileID: 1830856175}
+  - component: {fileID: 1830856174}
+  - component: {fileID: 1830856173}
+  - component: {fileID: 1830856172}
+  m_Layer: 0
+  m_Name: Load Scene 11/8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1830856171
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4249924186696950, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1830856170}
+  m_LocalRotation: {x: 0, y: 0.06670928, z: 0, w: 0.99777246}
+  m_LocalPosition: {x: 805.28, y: -109.75, z: -159.07}
+  m_LocalScale: {x: 2.9736814, y: 13.31452, z: 19.770807}
+  m_Children: []
+  m_Father: {fileID: 152068703}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 7.65, z: 0}
+--- !u!114 &1830856172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114731566873074532, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1830856170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1a5d27677e3aa4aa9d3c53a7099067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadNames:
+  - Scene 8 - Temple Interior Great Hall Backroom
+  - Scene 7&8 - Temple Interior Props
+  - Scene 11 - Temple Interior Lower Storage Hall 2
+  unloadNames: []
+--- !u!23 &1830856173
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 23545816894460270, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1830856170}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &1830856174
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 65621662122884692, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1830856170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1830856175
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 33388122044576026, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1830856170}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1852482319
 GameObject:
   m_ObjectHideFlags: 0
@@ -4399,6 +4822,114 @@ MeshFilter:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1852482319}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1870220053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1727888121954482, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1870220054}
+  - component: {fileID: 1870220058}
+  - component: {fileID: 1870220057}
+  - component: {fileID: 1870220056}
+  - component: {fileID: 1870220055}
+  m_Layer: 0
+  m_Name: Load Scene 13/11/9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1870220054
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4249924186696950, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1870220053}
+  m_LocalRotation: {x: -0, y: 0.06670928, z: -0, w: 0.99777246}
+  m_LocalPosition: {x: 881.05, y: -112.57, z: -114.32}
+  m_LocalScale: {x: 2.9736795, y: 24.057785, z: 19.770805}
+  m_Children: []
+  m_Father: {fileID: 152068703}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 7.65, z: 0}
+--- !u!114 &1870220055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114731566873074532, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1870220053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1a5d27677e3aa4aa9d3c53a7099067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadNames:
+  - Scene 13 - Bossroom
+  - Scene 11 - Temple Interior Lower Storage Hall 2Scene 11 - Temple Interior Lower
+    Storage Hall 2
+  - Scene 9 - Temple Interior Lower Storage Area 1
+  unloadNames: []
+--- !u!23 &1870220056
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 23545816894460270, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1870220053}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &1870220057
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 65621662122884692, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1870220053}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1870220058
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 33388122044576026, guid: acfd23d8042ef4742b1e7b3a212363a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1870220053}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1872567479
 GameObject:
