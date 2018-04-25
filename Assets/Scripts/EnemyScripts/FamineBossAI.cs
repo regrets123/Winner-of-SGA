@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class FamineBossAI : BaseEnemyScript
 {
-
     [SerializeField]
     Text bossNameText;
 

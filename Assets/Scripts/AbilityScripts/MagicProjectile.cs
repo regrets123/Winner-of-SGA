@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class MagicProjectile : BaseAbilityScript
 {
-
     public GameObject magicProjectilePrefab;
     public Camera cameraPosition;
 

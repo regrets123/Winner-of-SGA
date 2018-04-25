@@ -31,8 +31,7 @@ public class LoadTrigger : MonoBehaviour
     }
 
     IEnumerator UnloadScene()       //Tar bort en laddad scen då spelaren träffar en collider
-    {
-        
+    {        
         yield return new WaitForSeconds(0.01f);
         foreach (string scene in unloadNames)
         {

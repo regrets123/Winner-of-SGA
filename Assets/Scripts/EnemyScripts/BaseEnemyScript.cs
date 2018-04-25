@@ -247,11 +247,9 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         {
             return;
         }
-        print("ouchie");
         int damage = ModifyDamage(incomingDamage, dmgType);
         this.health -= damage;
         healthBar.value = health;
-
         poise -= incomingDamage;
 
         switch (dmgType)
@@ -270,8 +268,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
                 FindObjectOfType<PlayerControls>().Leech(damage);
                 break;
         }
-
-
         if (incomingDamage < health && poise < incomingDamage)
         {
             StartCoroutine("Stagger");
@@ -337,7 +333,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
     protected void LoseAggro()                  //Låter fienden sluta vara aggressiv mot spelaren
     {
         target.EnemyAggro(this, false);
-        print("aggroloss");
         target = null;
         losingAggro = false;
         nav.SetDestination(initialPos);
@@ -361,7 +356,6 @@ public class BaseEnemyScript : MonoBehaviour, IKillable, IPausable
         alive = false;
         anim.SetTrigger("Death");
         SoundManager.instance.RandomizeSfx(death);
-        print("deadson");
         this.target = null;
         nav.isStopped = true;
         PlayerControls player = FindObjectOfType<PlayerControls>();
