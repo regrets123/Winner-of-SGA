@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Final_Scenes/MainMenu_JP_Final.unity
     guid: 03eec48463ae22a48a442609e1362fbb
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Final_Scenes/Credits_JP_Final.unity
     guid: 9d8f5bcba4e5e944b9be484ed2b21a9c
   - enabled: 1
@@ -63,8 +63,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Final_Scenes/Scene 6 - Temple Terrain.unity
     guid: 4200bb43b1e11de44aa795a4d86ba622
   - enabled: 1
-    path: Assets/Scene 6 - Temple Exterior 6.unity
+    path: Assets/Scenes/Final_Scenes/Scene 6 - Temple Exterior 6.unity
     guid: e6a727e9a728f2a47a75f98ee1c008a4
   - enabled: 1
-    path: Assets/Scene 6 - Temple Exterior 7.unity
+    path: Assets/Scenes/Final_Scenes/Scene 6 - Temple Exterior 7.unity
     guid: d9c2a00ea767af346a1acbf6772e288d
