@@ -68,8 +68,7 @@ public class PauseManager : MonoBehaviour
             PauseAndUnpause(false);
         }
     }
-
-
+    
     public void PauseAndUnpause(bool inventory)    //Pausar/unpausar spelet och tar fram/döljer pausmenyn
     {
         paused = !paused;

@@ -12,7 +12,6 @@ public enum ActiveMenu
 
 public class MainMenuScript : MonoBehaviour
 {
-
     [SerializeField]
     Button[] mainMenuButtons, newGameButtons, loadGameButtons, goBackButtons;
 

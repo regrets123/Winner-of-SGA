@@ -15,7 +15,6 @@ public class RaiderAI : BaseEnemyScript
         {
             return;
         }
-
         StartCoroutine(FreezeNav(2f));
         previousMovementType = currentMovementType;
         this.currentMovementType = MovementType.Attacking;

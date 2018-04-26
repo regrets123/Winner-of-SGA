@@ -9,33 +9,25 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-
     InventoryManager iM;
 
     [SerializeField]
-    Color inactiveColor, activeColor;
-    
+    Color inactiveColor, activeColor;    
     
     public void ToggleMenu(GameObject menuToToggle)     //Visar och döljer menyer
-
     {
         menuToToggle.SetActive(!menuToToggle.activeSelf);
     }
-
-
+    
     public void LoadScene(string sceneName)             //Laddar en vald scen
-
     {
         SceneManager.LoadScene(sceneName);
     }
-
-
+    
     public void ExitApplication()                       //Avslutar spelet
-
     {
         Application.Quit();
     }
-
 
     public void Glow(Outline o)         //Får knappar att lysa
     {

@@ -260,6 +260,8 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
     List<DamageType> resistances = new List<DamageType>();
 
+    BaseAbilityScript currentAbility;
+
     bool inputEnabled = true, jumpMomentum = false, grounded, invulnerable = false, canDodge = true, dead = false, canSheathe = true, burning = false, frozen = false, wasGrounded,
         combatStance = false, attacked = false, climbing = false, staminaRegenerating = false, staminaRegWait = false, canJump = true, fallInvulerability = false;    //bool shitManyBools = trueAF;
     #endregion
@@ -281,8 +283,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
     {
         get { return this.inventory; }
     }
-
-    BaseAbilityScript currentAbility;
 
     public BaseAbilityScript CurrentAbility
     {
@@ -443,8 +443,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             if (!climbing)
                 charController.Move(move * Time.deltaTime);
 
-
-
             if (currentInteractable != null && Input.GetButtonDown("Interact"))     //Låter spelaren interagera med föremål i närheten som implementerar IInteractable
             {
                 previousMovementType = currentMovementType;
@@ -585,7 +583,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             UnEquipWeapon();
         }
         this.currentWeapon = Instantiate(weaponToEquip, weaponPosition).GetComponent<BaseWeaponScript>();
-        //print(currentWeapon.transform.position);
         this.currentWeapon.Equipper = this;
         FindObjectOfType<SaveManager>().CheckIfUpgraded(this.currentWeapon);
     }
@@ -643,7 +640,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 StartCoroutine("Stagger");
             }
         }
-
         if (health <= 0)
         {
             Death();
@@ -755,7 +751,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
             SoundManager.instance.RandomizeSfx(heavyAttack1, heavyAttack2);
 
             move = Vector3.zero;
-            //move += transform.forward * attackMoveLength;
 
             attackCountdown = attackCooldown;
 
@@ -960,7 +955,6 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
                 move = (Vector3)dashDir;
                 if (dashedTime < 2f)
                 {
-                    print(dashedTime);
                     dashedTime += Time.deltaTime;
                 }
                 else
@@ -991,8 +985,7 @@ public class PlayerControls : MonoBehaviour, IKillable, IPausable
 
             if (move.y < -safeFallDistance)
             {
-                print(move.y);
-                TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 3f) + safeFallDistance)), DamageType.Falling);  //FallDamage
+                //TakeDamage(Mathf.Abs(Mathf.RoundToInt((move.y * 3f) + safeFallDistance)), DamageType.Falling);  //FallDamage, avstängd för att den dödar spelaren utan att spelaren faktiskt faller då vissa av spelarens handlingar/animationer får spelaren att inte räknas som grounded
             }
 
             jumpMomentum = false;

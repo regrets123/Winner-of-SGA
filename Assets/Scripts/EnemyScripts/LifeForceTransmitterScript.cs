@@ -26,7 +26,6 @@ public class LifeForceTransmitterScript : MonoBehaviour
         this.target = target;
         this.lifeForceAmount = lifeForceAmount;
         this.transform.position = spawner.transform.position;
-        print(this.transform.position + "         " + spawner.transform.position);
         anim = GetComponentInChildren<Animator>();
         anim.SetTrigger("SoulDrain");
         StartCoroutine("SoulAnim");

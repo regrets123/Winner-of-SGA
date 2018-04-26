@@ -393,7 +393,6 @@ public class InventoryManager : MonoBehaviour
 
     void EquipFavorite(int favoriteIndex, bool controllerInput)     //Equippar ett av spelarens favoritföremål utan att behöva gå in i inventoryt
     {
-        print("Favorite: " + favoriteIndex);
         if (playerInventory[3] == null || playerInventory[3].Count <= favoriteIndex || playerInventory[3][favoriteIndex] == null)
             return;
         player.Equip(playerInventory[3][favoriteIndex]);
@@ -641,8 +640,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (playerInventory[displayCollection] == null || collectionIndex > playerInventory[displayCollection].Count - 1 || playerInventory[displayCollection][collectionIndex] == null)
         {
-            print(collectionIndex);
-            Debug.Log("Not able to equip");
             return;
         }
         player.Equip(playerInventory[displayCollection][collectionIndex]);
@@ -747,7 +744,7 @@ public class InventoryManager : MonoBehaviour
                 print(upgradeLevel);
                 for (int i = 0; i < upgradeLevel; i++)
                 {
-                    weaponScript.ApplyUpgrade(upgrade/*, false*/);
+                    weaponScript.ApplyUpgrade(upgrade);
                 }
             }
         }

@@ -117,8 +117,7 @@ public class SettingsMenuScript : MonoBehaviour
         SetEnvironmentalVolume(startingEnvironmental);
         sensitivitySlider.value = startingSense;
         settingsMenu.SetActive(false);
-    }
-    
+    }    
     
     public void SetBrightness()                         //Ställer in ljusets intensitet
     {

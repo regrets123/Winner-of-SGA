@@ -20,8 +20,7 @@ public class CameraCollision : MonoBehaviour
     LayerMask layerToMask;
 
     Vector3 dollyDir;
-
-	
+    	
 	void Awake ()
     {
         dollyDir = transform.localPosition.normalized;
