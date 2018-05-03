@@ -33,8 +33,13 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Assets/Prefabs/WeaponPrefabs.meta
-Assets/Prefabs/WeaponPrefabs.meta
-Assets/Prefabs/WeaponPrefabs.meta
 Assets/Scripts/Player Character/PlayerControls.cs
-Assets/Scripts/Player Character/PlayerControls.cs
-Assets/Scripts/Player Character/PlayerControls.cs
+
+# Lightmaps
+*.exr
+*.exr.meta
+LightmapSnapshot.asset
+LightmapSnapshot.asset.meta
+LightingData.asset
+LightingData.asset.meta
+
